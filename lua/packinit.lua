@@ -31,6 +31,9 @@ require('packer').startup({
 
         -- 主题
         use { "tjdevries/colorbuddy.nvim", "svrana/neosolarized.nvim", require("after.neosolarized_rc") }
+
+        -- lualine
+        use { "nvim-lualine/lualine.nvim", require( 'after.lualine_rc' ) }
     end,
     config = {
         git = { clone_timeout = 120, depth = 1 },
