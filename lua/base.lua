@@ -1,7 +1,18 @@
 local G = require('G')
 
 -- 设置编码
+G.scriptencoding = 'utf-8'
 G.opt.encoding = 'utf-8'
+G.opt.fileencoding = 'utf-8'
+
+-- 显示标题
+G.opt.title = true
+
+-- 显示行号
+G.opt.number = true
+
+-- 相对行号
+G.opt.relativenumber = true
 
 -- 行结尾可以跳到下一行
 G.opt.whichwrap = 'b,s,[,],h'
@@ -18,13 +29,14 @@ G.opt.wildmenu = true
 -- 高亮搜索
 G.opt.hlsearch = true
 
+-- 高亮对应括号
 G.opt.showmatch = true
 
 -- 弹出菜单的最大高度
 G.opt.pumheight = 10
 
 -- 正常显示文本(是否显示可隐藏文本)
-G.opt.conceallevel = 3 
+G.opt.conceallevel = 0 
 
 -- 保存撤销文件的位置
 G.optundodir = os.getenv('HOME') .. '/.config/nvim/cache/undodir'
@@ -32,20 +44,8 @@ G.optundodir = os.getenv('HOME') .. '/.config/nvim/cache/undodir'
 -- mkview 存储文件的所在目录
 G.opt.viewdir = os.getenv('HOME') .. '/.config/nvim/cache/viewdir'
 
--- 设置高亮当前行
-G.opt.cursorline = true
-
 -- 列不超过80
-G.opt.colorcolumn = "80"
-
--- 显示行号
-G.opt.number = true
-
--- 相对行号
-G.opt.relativenumber = true
-
--- 行号宽度
-G.opt.numberwidth = 2
+-- G.opt.colorcolumn = "80"
 
 -- 启用光标
 G.opt.mouse = "a"
@@ -89,14 +89,13 @@ G.opt.swapfile = false
 G.opt.termguicolors = true
 
 -- 左侧多一列
-G.opt.signcolumn = 'yes'
+G.opt.signcolumn = 'no'
 
--- 光标样式
+G.opt.path:append { '**' }
+
 G.cmd([[
-    let &t_SI .= '\e[5 q'
-    let &t_EI .= '\e[1 q'
-    let &t_vb = ''
-    let &t_ut = ''
+    let &t_Cs = "\e[4:3m"
+    let &t_Ce = "\e[4:0m"
 ]])
 
 function MagicFoldText()

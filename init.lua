@@ -10,7 +10,8 @@
 --#=================
 --# basic config
 --#=================
-require ('profile')
+require ('base')
+require ('highlights')
 
 --#=================
 --# package init
