@@ -25,6 +25,12 @@ require('packer').startup({
     function(use)
         -- packer 管理自己的版本
         use { 'wbthomason/packer.nvim' }
+
+        -- 启动时间分析
+        use { "dstein64/vim-startuptime", cmd = "StartupTime" }
+
+        -- 主题
+        use { "tjdevries/colorbuddy.nvim", "svrana/neosolarized.nvim", require("after.neosolarized_rc") }
     end,
     config = {
         git = { clone_timeout = 120, depth = 1 },
