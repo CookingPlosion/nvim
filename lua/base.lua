@@ -91,7 +91,7 @@ G.opt.path:append { '**' }
 G.opt.smartcase = true
 
 -- 相应时间
-G.opt.timeoutlen = 150
+G.opt.timeoutlen = 500
 
 -- 关闭备份功能
 G.opt.backup = false
