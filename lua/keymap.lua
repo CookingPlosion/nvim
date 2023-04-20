@@ -1,6 +1,7 @@
 local G = require ('G')
 
 G.g.mapleader = " "
+G.g.maplocalleader = " "
 
 G.map({
     -- -------------------------------插入模式-------------------------------

@@ -1,5 +1,7 @@
 local G = require('G')
 
+local indent = 4
+
 -- 设置编码
 G.scriptencoding = 'utf-8'
 G.opt.encoding = 'utf-8'
@@ -54,13 +56,13 @@ G.opt.mouse = "a"
 G.opt.clipboard = 'unnamed,unnamedplus'
 
 -- 缩进4个空格等于一个Tab
-G.opt.tabstop = 4 
+G.opt.tabstop = indent 
 
 -- 计算空格数
-G.opt.softtabstop = 4
+G.opt.softtabstop = indent
 
 -- 移动宽度
-G.opt.shiftwidth = 4
+G.opt.shiftwidth = indent
 
 -- >> << 时移动长度
 G.opt.shiftround = true
@@ -77,14 +79,6 @@ G.opt.smartindent = true
 -- 禁止拆分行
 G.opt.wrap = false
 
--- split window 从下边和右边出现
-G.opt.splitbelow = true
-G.opt.splitright = true
-
--- 关闭备份功能
-G.opt.backup = false
-G.opt.swapfile = false
-
 -- 终端真颜色
 G.opt.termguicolors = true
 
@@ -93,28 +87,22 @@ G.opt.signcolumn = 'no'
 
 G.opt.path:append { '**' }
 
+-- 模糊搜索
+G.opt.smartcase = true
+
+-- 相应时间
+G.opt.timeoutlen = 150
+
+-- 关闭备份功能
+G.opt.backup = false
+G.opt.swapfile = false
+
+-- split window 从下边和右边出现
+G.opt.splitbelow = true
+G.opt.splitright = true
+
+-- 光标
 G.cmd([[
     let &t_Cs = "\e[4:3m"
     let &t_Ce = "\e[4:0m"
 ]])
-
-function MagicFoldText()
-    local spacetext = ("        "):sub(0, G.opt.shiftwidth:get())
-    local line = G.fn.getline(G.v.foldstart):gsub("\t", spacetext)
-    local folded = G.v.foldend - G.v.foldstart + 1
-    local findresult = line:find('%S')
-    if not findresult then return '+ folded ' .. folded .. ' lines ' end
-    local empty = findresult - 1
-    local funcs = {
-        [0] = function(_) return '' .. line end,
-        [1] = function(_) return '+' .. line:sub(2) end,
-        [2] = function(_) return '+ ' .. line:sub(3) end,
-        [-1] = function(c)
-            local result = ' ' .. line:sub(c + 1)
-            local foldednumlen = #tostring(folded)
-            for _ = 1, c - 2 - foldednumlen do result = '-' .. result end
-            return '+' .. folded .. result
-        end,
-    }
-    return funcs[empty <= 2 and empty or -1](empty) .. ' folded ' .. folded .. ' lines '
-end
