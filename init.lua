@@ -12,6 +12,7 @@
 --#=================
 require ('base')
 require ('highlights')
+require ('utills')
 
 --#=================
 --# package init
