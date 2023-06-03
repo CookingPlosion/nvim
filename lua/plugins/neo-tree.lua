@@ -7,7 +7,7 @@ return {
 		{ "MunifTanjim/nui.nvim" },
     },
     keys = {
-        { "<leader>tt", "<cmd>NeoTreeRevealToggle<CR>", "n" },
+        { "<leader>tt", "<cmd>Neotree toggle reveal_force_cwd<CR>", "n" },
     },
     config = function()
         require('neo-tree').setup( {
@@ -24,7 +24,7 @@ return {
                 padding = 1, -- extra padding on left hand side
             },
             filesystem = { 
-                hijack_netrw_behavior = "open_current",
+                hijack_netrw_behavior = "open_default",
                                     -- "open_current",  
                                     -- "disabled",
             },
