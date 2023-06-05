@@ -10,6 +10,7 @@ return {
         "yioneko/nvim-yati",
         "nvim-treesitter/nvim-treesitter-context",
         "nvim-treesitter/playground",
+        "windwp/nvim-autopairs",
     },
     config = function()
         -- https://github.com/p00f/nvim-ts-rainbow/issues/81#issuecomment-1058124957
@@ -175,5 +176,7 @@ return {
             -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
             separator = nil,
         })
+
+        require("nvim-autopairs").setup()
     end,
 }
