@@ -38,6 +38,9 @@ return {
                 "org",
                 "vim",
                 "markdown",
+                "bash",
+                "make",
+                "cmake",
                 "markdown_inline"
             },
             sync_install = true,
