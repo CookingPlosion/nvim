@@ -1,16 +1,22 @@
 ~~~
-    [02;34m.[0m
-    ├── [00minit.lua[0m
-    ├── [00mlazy-lock.json[0m
-    ├── [01;34mlua[0m
-    │   ├── [00mautocmd.lua[0m
-    │   ├── [00mbase.lua[0m
-    │   ├── [00mG.lua[0m
-    │   ├── [00mhighlights.lua[0m
-    │   ├── [00mkeymap.lua[0m
-    │   ├── [01;34mplugins[0m
-    │   └── [00mutills.lua[0m
-    └── [00mREADME.md[0m
+    .
+    ├── init.lua
+    ├── lua
+    │   ├── autocmd.lua
+    │   ├── base.lua
+    │   ├── G.lua
+    │   ├── highlights.lua
+    │   ├── keymap.lua
+    │   ├── plugins
+    │   └── utills.lua
+    └── README.md
 
-    3 directories, 9 files
+    3 directories, 8 files
+~~~
+
+## Download
+~~~sh
+    # linux
+    mv ~/.config/nvim ~/.config/nvim.bak
+    git clone https://github.com/zhipeng33/nvim.git
 ~~~
