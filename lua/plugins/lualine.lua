@@ -3,18 +3,18 @@ return {
     "nvim-lualine/lualine.nvim",
     dependencies = "nvim-tree/nvim-web-devicons",
     event = "VeryLazy",
---    keys = {
---        { "<A-1>", "<cmd>LualineBuffersJump! 1<cr>" },
---        { "<A-2>", "<cmd>LualineBuffersJump! 2<cr>" },
---        { "<A-3>", "<cmd>LualineBuffersJump! 3<cr>" },
---        { "<A-4>", "<cmd>LualineBuffersJump! 4<cr>" },
---        { "<A-5>", "<cmd>LualineBuffersJump! 5<cr>" },
---        { "<A-6>", "<cmd>LualineBuffersJump! 6<cr>" },
---        { "<A-7>", "<cmd>LualineBuffersJump! 7<cr>" },
---        { "<A-8>", "<cmd>LualineBuffersJump! 8<cr>" },
---        { "<A-9>", "<cmd>LualineBuffersJump! 9<cr>" },
---        { "<A-$>", "<cmd>LualineBuffersJump! $<cr>" },
---    },
+    keys = {
+        { "<A-1>", "<cmd>LualineBuffersJump! 1<cr>" },
+        { "<A-2>", "<cmd>LualineBuffersJump! 2<cr>" },
+        { "<A-3>", "<cmd>LualineBuffersJump! 3<cr>" },
+        { "<A-4>", "<cmd>LualineBuffersJump! 4<cr>" },
+        { "<A-5>", "<cmd>LualineBuffersJump! 5<cr>" },
+        { "<A-6>", "<cmd>LualineBuffersJump! 6<cr>" },
+        { "<A-7>", "<cmd>LualineBuffersJump! 7<cr>" },
+        { "<A-8>", "<cmd>LualineBuffersJump! 8<cr>" },
+        { "<A-9>", "<cmd>LualineBuffersJump! 9<cr>" },
+        { "<A-$>", "<cmd>LualineBuffersJump! $<cr>" },
+    },
     config = function()
         require("lualine").setup({
             options = {
