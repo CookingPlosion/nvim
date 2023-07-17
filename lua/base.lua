@@ -83,7 +83,7 @@ G.opt.wrap = false
 G.opt.termguicolors = true
 
 -- 左侧多一列
-G.opt.signcolumn = 'no'
+G.opt.signcolumn = 'number'
 
 G.opt.path:append { '**' }
 
