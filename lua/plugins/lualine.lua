@@ -24,11 +24,29 @@ return {
             },
             sections = {
                 lualine_a = { "mode" },
-                lualine_b = { "branch", "diff", "diagnostics" },
-                lualine_c = { "filename" },
-                lualine_x = { "encoding", "fileformat", "filetype" },
+                lualine_b = {
+                    "branch",
+                    "diff",
+                    {
+                        "diagnostics",
+                        symbols = { Error = "", Warn = " ", Hint = " ", Info = " " },
+                        colored = true,           -- Displays diagnostics status in color if set to true.
+                        update_in_insert = false, -- Update diagnostics in insert mode.
+                        always_visible = false,   -- Show diagnostics even if there are none.
+                    },
+                },
+                lualine_c = { "filename", },
+                lualine_x = { "filesize", "encoding", "fileformat", "filetype" },
                 lualine_y = {},
                 lualine_z = { "progress" },
+            },
+            winbar = {
+                lualine_a = {},
+                lualine_b = {},
+                lualine_c = {''},
+                lualine_x = {},
+                lualine_y = {},
+                lualine_z = {}
             },
             inactive_sections = {
                 lualine_a = {},
@@ -39,12 +57,21 @@ return {
                 lualine_z = {},
             },
             tabline = {
-                lualine_a = {},
-                lualine_b = {},
-                lualine_c = { { "buffers", mode = 2, max_length = vim.o.columns * 9 / 10 } },
-                lualine_x = { "tabs" },
-                lualine_y = {},
-                lualine_z = {},
+               lualine_a = {},
+               lualine_b = {},
+               lualine_c = {{
+                    "buffers",
+                    mode = 2,
+                    max_length = vim.o.columns * 9 / 10,
+                    symbols = {
+                        modified = ' ',      -- Text to show when the buffer is modified
+                        alternate_file = '#', -- Text to show to identify the alternate file
+                        directory =  '',     -- Text to show when the buffer is a directory
+                    }
+                }},
+               lualine_x = { "tabs" },
+               lualine_y = {},
+               lualine_z = {},
             },
             extensions = {
                 "aerial",
