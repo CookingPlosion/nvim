@@ -24,7 +24,7 @@ return {
             "https://ghproxy.com/https://github.com/")
         end
 
-        require("nvim-treesitter.configs").setup({
+        require("nvim-treesitter.configs").setup ({
             -- HACK:
             parser_install_dir = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter",
             ensure_installed = {
