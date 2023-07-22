@@ -99,8 +99,8 @@ return {
 
         lspconfig.lua_ls.setup ({
             capabilities = capabilities,
+            cmd = { "lua-language-server", "--locale=zh-cn" },
             settings = {
-                cmd = { "lua-language-server", "--locale=zh-cn" },
                 Lua = {
                     completion = {
                         callSnippet = "Replace",
