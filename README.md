@@ -7,8 +7,14 @@
 # ✨ Features
 - [`✔️` nvim-tree:](https://github.com/nvim-neo-tree/neo-tree.nvim) **nvim**下更美观的文件树,支持任意位置.<details>
     <summary>点击预览 🌞</summary>
-    ![预览图片](https://github.com/zhipeng33/nvim/blob/doc/images/nvim-tree.png?raw=true))
+    <img src="https://github.com/zhipeng33/nvim/blob/doc/images/nvim-tree.png?raw=true" style="30%"/>
 </details>
+
+# 📎 dependent 
+⚠️ **注意**: 根据实际情况选择安装
+- [`neovim`](https://neovim.io):  `nvim`本身,建议用最新版本(可以用发行版包管理器下载).
+- [`unzip`](http://infozip.sourceforge.net/UnZip.html):  解压`zip`文件,有些**linux**可能自带.
+- [`ttf-jetbrains-mono-nerd`](https://github.com/ryanoasis/nerd-fonts/releases/download/v3.0.2/JetBrainsMono.zip):  **可选**,一种支持连体的字体.
 
 # ⚡ make use of it
 - linux 
