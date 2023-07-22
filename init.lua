@@ -10,57 +10,21 @@
 --#=================
 --# basic config
 --#=================
-require ('base')
-require ('highlights')
-require ('utills')
+require ('core.base')
+require ('core.highlights')
+require ('core.utills')
 
 --#================
 --# set kbd 
 --#================
-require ('keymap')
+require ('core.keymap')
 
 --#================
 --# set kbd 
 --#================
-require ('autocmd')
-
+require('core.autocmd')
 
 --#================
 --# lazy 
 --#================
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({
-        "git",
-        "clone",
-        "--filter=blob:none",
-        "--single-branch",
-        "https://github.com/folke/lazy.nvim.git",
-        lazypath,
-    })
-end
-
-vim.opt.runtimepath:prepend(lazypath)
-
-require("lazy").setup("plugins", {
-    border = "rounded",
-    install = { colorscheme = { "onedark" } },
-    checker = { enabled = true },
-    change_detection = {
-        notify = false,
-    },
-    performance = {
-        rtp = {
-            disabled_plugins = {
-                "gzip",
-                "matchit",
-                "matchparen",
-                "netrwPlugin",
-                "tarPlugin",
-                "tohtml",
-                "tutor",
-                "zipPlugin",
-            },
-        },
-    },
-})
+require('core.lazy-nvim')

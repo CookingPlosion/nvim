@@ -1,3 +1,5 @@
+-- 自定义函数
+
 -- 判断是否为大文件
 function IsNotLargeFile()
 	local max_filesize = 100 * 1024 -- 100 KB
