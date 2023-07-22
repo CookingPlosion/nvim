@@ -12,3 +12,12 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
             + "r" -- But do continue when pressing enter.
     end,
 })
+
+-- 高亮当前编辑文件(默认情况下: 使用cursorline会高亮所有文件)
+vim.cmd[[
+    augroup CursorLine
+    au!
+    au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+    au WinLeave * setlocal nocursorline
+    augroup END
+]]

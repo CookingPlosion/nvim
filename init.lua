@@ -11,18 +11,21 @@
 --# basic config
 --#=================
 require ('core.base')
-require ('core.highlights')
+
+--#=================
+--# auto command
+--#=================
+require('core.autocmd')
+
+--#=================
+--# some functions
+--#=================
 require ('core.utills')
 
 --#================
 --# set kbd 
 --#================
 require ('core.keymap')
-
---#================
---# set kbd 
---#================
-require('core.autocmd')
 
 --#================
 --# lazy 

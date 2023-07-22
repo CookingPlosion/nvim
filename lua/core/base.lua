@@ -78,6 +78,9 @@ vim.opt.smartindent = true
 -- 禁止拆分行
 vim.opt.wrap = false
 
+-- 设置status line(底部状态栏)为global bottom(总是最下面)
+vim.opt.laststatus = 3
+
 -- 左侧多一列
 vim.opt.signcolumn = 'number'
 
@@ -97,6 +100,24 @@ vim.opt.swapfile = false
 -- split window 从下边和右边出现
 vim.opt.splitbelow = true
 vim.opt.splitright = true
+
+-- 高亮当前行
+vim.opt.cursorline = true
+
+-- 终端真颜色
+vim.opt.termguicolors = true
+
+-- 垂直(补全)弹出列表
+vim.opt.wildoptions = 'pum'
+
+-- 背景颜色
+vim.opt.background = 'dark'
+
+-- 启用浮动窗口的伪透明度(0~100)
+vim.opt.winblend = 0
+
+-- 启用弹出菜单的伪透明度(0~100)
+vim.opt.pumblend = 0
 
 -- 光标
 vim.cmd([[
