@@ -2,12 +2,12 @@
 
 自定义的[`nvim`](https://neovim.io)配置,目标是打造一个个性化的`IDE` 
 
-![预览图片](https://github.com/zhipeng33/nvim/blob/doc/images/nvim.png?raw=true)
+![预览图片](https://gitee.com/zhipeng33/nvim/raw/master/images/nvim.png)
 
 # ✨ Features
 - [`✔️` nvim-tree:](https://github.com/nvim-neo-tree/neo-tree.nvim) **nvim**下更美观的文件树,支持任意位置.<details>
     <summary>点击预览 🌞</summary>
-    <img src="https://github.com/zhipeng33/nvim/blob/doc/images/nvim-tree.png?raw=true" style="30%"/>
+    <img src="https://gitee.com/zhipeng33/nvim/raw/master/images/nvim-tree.png" style="30%"/>
 </details>
 
 # 📎 dependent 
