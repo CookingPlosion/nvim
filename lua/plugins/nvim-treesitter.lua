@@ -19,11 +19,6 @@ return {
             vim.cmd(("hi rainbowcol%d guifg=%s"):format(i, c))
         end
 
-        for _, config in pairs(require("nvim-treesitter.parsers").get_parser_configs()) do
-            config.install_info.url = config.install_info.url:gsub("https://github.com/",
-            "https://ghproxy.com/https://github.com/")
-        end
-
         require("nvim-treesitter.configs").setup ({
             -- HACK:
             parser_install_dir = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter",
