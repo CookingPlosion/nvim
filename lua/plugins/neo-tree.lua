@@ -46,7 +46,7 @@ return {
                 },
             },
             filesystem = {
-                hijack_netrw_behavior = "open_default",
+                hijack_netrw_behavior = "open_current",
                                     -- open_default
                                     -- "open_current",  
                                     -- "disabled",
