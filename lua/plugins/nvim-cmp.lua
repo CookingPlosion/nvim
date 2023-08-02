@@ -9,6 +9,7 @@ return {
         "hrsh7th/cmp-cmdline",
         "L3MON4D3/LuaSnip",
         "saadparwaiz1/cmp_luasnip",
+        "onsails/lspkind.nvim"
     },
     config = function()
         local has_words_before = function()
@@ -17,8 +18,37 @@ return {
             return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
         end
 
+        -- local lspkind = require('lspkind')
         local cmp = require("cmp")
         local luasnip = require('luasnip')
+        
+        local kind_icons = {
+            Text = "",
+            Method = "󰆧",
+            Function = "󰊕",
+            Constructor = "",
+            Field = "󰇽",
+            Variable = "󰂡",
+            Class = "󰠱",
+            Interface = "",
+            Module = "",
+            Property = "󰜢",
+            Unit = "",
+            Value = "󰎠",
+            Enum = "",
+            Keyword = "󰌋",
+            Snippet = "",
+            Color = "󰏘",
+            File = "󰈙",
+            Reference = "",
+            Folder = "󰉋",
+            EnumMember = "",
+            Constant = "󰏿",
+            Struct = "",
+            Event = "",
+            Operator = "󰆕",
+            TypeParameter = "󰅲",
+        }
 
         cmp.setup({
             snippet = {
@@ -27,7 +57,23 @@ return {
                     luasnip.lsp_expand(args.body) -- For `luasnip` users.
                 end,
             },
-
+            formatting = {
+                fields = { 'kind', 'abbr', 'menu' },
+                format = function(entry, vim_item)
+                    -- Kind icons
+                    vim_item.kind = string.format('%s', kind_icons[vim_item.kind]) -- This concatonates the icons with the name of the item kind
+                    -- Source
+                    vim_item.menu = ({
+                        buffer = "[Buffer]",
+                        nvim_lsp = "[LSP]",
+                        luasnip = "[LuaSnip]",
+                        nvim_lua = "[Lua]",
+                        latex_symbols = "[LaTeX]",
+                        treesitter = "[treesitter]",
+                    })[entry.source.name]
+                    return vim_item
+                end
+            },
             window = {
                 documentation = cmp.config.window.bordered(),
                 completion = cmp.config.window.bordered(),
@@ -35,8 +81,7 @@ return {
             sources = cmp.config.sources({
                 { name = "treesitter" },
                 { name = "nvim_lsp" },
-                { name = "luasnip" },
-            }, {
+                { name = "luasnip", option = { show_autosnippets = true } },
                 { name = "path" },
                 { name = "buffer" },
             }),
@@ -79,8 +124,7 @@ return {
         cmp.setup.cmdline(':', {
             mapping = cmp.mapping.preset.cmdline(),
             sources = cmp.config.sources({
-            { name = 'path' }
-            }, {
+            { name = 'path' },
             { name = 'cmdline' }
             })
         })
