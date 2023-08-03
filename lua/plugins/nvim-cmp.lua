@@ -4,6 +4,7 @@ return {
     dependencies = {
         "hrsh7th/nvim-cmp",
         "hrsh7th/cmp-nvim-lsp",
+        "hrsh7th/cmp-calc",
         "hrsh7th/cmp-buffer",
         "hrsh7th/cmp-path",
         "hrsh7th/cmp-cmdline",
@@ -79,11 +80,12 @@ return {
                 completion = cmp.config.window.bordered(),
             },
             sources = cmp.config.sources({
-                { name = "treesitter" },
-                { name = "nvim_lsp" },
                 { name = "luasnip", option = { show_autosnippets = true } },
+                { name = "nvim_lsp" },
+                { name = "treesitter" },
                 { name = "path" },
                 { name = "buffer" },
+                { name = "calc"},
             }),
             mapping = cmp.mapping.preset.insert({
                 ["<C-p>"] = cmp.mapping(function(fallback)
