@@ -12,7 +12,7 @@ return {
         "saadparwaiz1/cmp_luasnip",
         "onsails/lspkind.nvim"
     },
-    config = function()
+    opts = function()
         local has_words_before = function()
             unpack = unpack or table.unpack
             local line, col = unpack(vim.api.nvim_win_get_cursor(0))
@@ -22,34 +22,7 @@ return {
         -- local lspkind = require('lspkind')
         local cmp = require("cmp")
         local luasnip = require('luasnip')
-        
-        local kind_icons = {
-            Text = "",
-            Method = "󰆧",
-            Function = "󰊕",
-            Constructor = "",
-            Field = "󰇽",
-            Variable = "󰂡",
-            Class = "󰠱",
-            Interface = "",
-            Module = "",
-            Property = "󰜢",
-            Unit = "",
-            Value = "󰎠",
-            Enum = "",
-            Keyword = "󰌋",
-            Snippet = "",
-            Color = "󰏘",
-            File = "󰈙",
-            Reference = "",
-            Folder = "󰉋",
-            EnumMember = "",
-            Constant = "󰏿",
-            Struct = "",
-            Event = "",
-            Operator = "󰆕",
-            TypeParameter = "󰅲",
-        }
+
 
         cmp.setup({
             snippet = {
@@ -60,24 +33,56 @@ return {
             },
             formatting = {
                 fields = { 'kind', 'abbr', 'menu' },
-                format = function(entry, vim_item)
-                    -- Kind icons
-                    vim_item.kind = string.format('%s', kind_icons[vim_item.kind]) -- This concatonates the icons with the name of the item kind
-                    -- Source
-                    vim_item.menu = ({
-                        buffer = "[Buffer]",
-                        nvim_lsp = "[LSP]",
-                        luasnip = "[LuaSnip]",
-                        nvim_lua = "[Lua]",
-                        latex_symbols = "[LaTeX]",
-                        treesitter = "[treesitter]",
-                    })[entry.source.name]
-                    return vim_item
-                end
+                format = require("lspkind").cmp_format({
+                    mode = "symbol",
+                    before = function(entry, vim_item)
+                        vim_item.menu = "[" .. string.upper(entry.source.name) .. "]"
+                        if string.upper(entry.source.name) == "COPILOT" then
+                            vim_item.kind = " C"
+                        end
+
+                        local fixed_width = false
+
+                        local content = vim_item.abbr
+
+                        -- Set the fixed completion window width.
+                        if fixed_width then
+                            vim.o.pumwidth = fixed_width
+                        end
+
+                        -- Get the width of the current window.
+                        local win_width = vim.api.nvim_win_get_width(0)
+
+                        -- Set the max content width based on either: 'fixed_width'
+                        -- or a percentage of the window width, in this case 20%.
+                        -- We subtract 10 from 'fixed_width' to leave room for 'kind' fields.
+                        local max_content_width = fixed_width and fixed_width - 10 or math.floor(win_width * 0.2)
+
+                        -- Truncate the completion entry text if it's longer than the
+                        -- max content width. We subtract 3 from the max content width
+                        -- to account for the "..." that will be appended to it.
+                        if #content > max_content_width then
+                            vim_item.abbr = vim.fn.strcharpart(" " .. content, 0, max_content_width - 3) .. "..."
+                        else
+                            vim_item.abbr = " " .. content .. (" "):rep(max_content_width - #content)
+                        end
+                        return vim_item
+                    end
+                })
+            },
+            view = {
+                entries = { name = "custom", selection_order = "near_cursor" },
             },
             window = {
                 documentation = cmp.config.window.bordered(),
                 completion = cmp.config.window.bordered(),
+            },
+            completion = {
+                -- https://zhuanlan.zhihu.com/p/106070272
+                completeopt = 'menu,preview',
+            },
+            experimental = {
+                ghost_text = true, -- this feature conflict with copilot.vim's preview.
             },
             sources = cmp.config.sources({
                 { name = "luasnip", option = { show_autosnippets = true } },
