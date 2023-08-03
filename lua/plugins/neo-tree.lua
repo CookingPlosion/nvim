@@ -8,7 +8,8 @@ return {
 		{ "MunifTanjim/nui.nvim" },
     },
     keys = {
-        { "<leader>tt", "<cmd>Neotree toggle reveal_force_cwd<CR>", "n" },
+        { "<leader>t", "<cmd>Neotree toggle reveal_force_cwd<CR>", "n" },
+        { "<leader>T", "<cmd>Neotree toggle buffers<CR>", "n" },
     },
     config = function()
         require('neo-tree').setup({
