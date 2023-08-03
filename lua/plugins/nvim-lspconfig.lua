@@ -97,6 +97,14 @@ return {
             capabilities = capabilities
         })
 
+        lspconfig.marksman.setup({
+            capabilities = capabilities
+        })
+
+        lspconfig.cmake.setup({
+            capabilities = capabilities
+        })
+
         lspconfig.lua_ls.setup ({
             capabilities = capabilities,
             cmd = { "lua-language-server", "--locale=zh-cn" },
