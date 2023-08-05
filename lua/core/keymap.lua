@@ -40,26 +40,29 @@ end
 
 -- 自定义快捷键(按以下方式添加)
 keymap({
-    -- --------------------------------插入模式-------------------------------- --
-    { 'i', 'jk',            '<ESC>',                                        {} },
+    -- -------------------------------- 插入模式 -------------------------------- --
+    { 'i', 'jk',            '<ESC>',                                            {} },
 
-    -- --------------------------------视觉模式-------------------------------- --
-    { 'v', 'J',             ":m '>+1<CR>gv=gv",                             {} },
-    { 'v', 'K',             ":m '<-2<CR>gv=gv",                             {} },
-    { 'v', 'jk',            '<ESC>',                                        {} },
+    -- -------------------------------- 视觉模式 -------------------------------- --
+    { 'v', 'J',             ":m '>+1<CR>gv=gv",                                 {} },
+    { 'v', 'K',             ":m '<-2<CR>gv=gv",                                 {} },
+    { 'v', 'jk',            '<ESC>',                                            {} },
 
-    -- --------------------------------普通模式-------------------------------- --
-    { "n", '<leader>nh',    ':nohl<CR>',                                    {} },
-    { 'n', "<leader>F",     '<cmd>Neotree toggle buffers<CR>',              {} },
-    { 'n', "<leader>fr",    '<cmd>Neotree toggle reveal_force_cwd<CR>',     {} },
-    { 'n', "<leader>f",     '<cmd>Neotree toggle<CR>',                      {} },
-    { 'n', '<leader>aa',    ':lua _G.Me_Sudo_write()<CR>',                  { silent = true } },
+    -- -------------------------------- 普通模式 -------------------------------- --
+    -- 修改默认快捷键
+    { "n", '<leader>nh',    ':nohl<CR>',                                        {} },
+    -- 插件快捷键
+    { 'n', "<leader>F",     '<cmd>Neotree toggle buffers<CR>',                  {} },
+    { 'n', "<leader>f",     '<cmd>Neotree toggle<CR>',                          {} },
+    { 'n', "<leader>fr",    '<cmd>Neotree toggle reveal_force_cwd<CR>',         {} },
+    -- 自定义功能
+    { 'n', '<leader>aa',    ':lua _G.Me_Sudo_write()<CR>',                      { silent = true } },
     -- 更新相关
-    { 'n', '<leader>lil', ':LspInfo<CR>',                                   {} },
-    { 'n', '<leader>lim', ':Mson<CR>',                                      {} },
-    { 'n', '<leader>lip', ':Lazy<CR>',                                      {} },
-    { 'n', '<leader>lum', ':MasonUpdate<CR>',                               {} },
-    { 'n', '<leader>lul', ':Lazy update<CR>',                               {} },
-    { 'n', '<leader>llm', ':MasonLog<CR>',                                  {} },
-    { 'n', '<leader>lll', ':LspLog<CR>',                                    {} },
+    { 'n', '<leader>lil',   ':LspInfo<CR>',                                     {} },
+    { 'n', '<leader>lim',   ':Mson<CR>',                                        {} },
+    { 'n', '<leader>lip',   ':Lazy<CR>',                                        {} },
+    { 'n', '<leader>lll',   ':LspLog<CR>',                                      {} },
+    { 'n', '<leader>llm',   ':MasonLog<CR>',                                    {} },
+    { 'n', '<leader>lul',   ':Lazy update<CR>',                                 {} },
+    { 'n', '<leader>lum',   ':MasonUpdate<CR>',                                 {} },
 })
