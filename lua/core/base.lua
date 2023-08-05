@@ -91,7 +91,7 @@ vim.opt.path:append { '**' }
 vim.opt.smartcase = true
 
 -- 相应时间
-vim.opt.timeoutlen = 500
+-- vim.opt.timeoutlen = 500
 
 -- 关闭备份功能
 vim.opt.backup = false
