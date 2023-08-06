@@ -2,15 +2,14 @@
 return {
     'lukas-reineke/indent-blankline.nvim',
     event = { "BufReadPost", "BufNewFile" },
-    enabled = _G.IsNotLargeFile(),
+    enabled = _G.Me_IsNotLargeFile(),
     config = function()
         require("indent_blankline").setup({
-            char = "|", -- ['|, '¦', '┆', '┊']
             context_char = "|",
             use_treesitter = true,
             space_char_blankline = " ",
             show_current_context = true,
-            show_current_context_start = false,
+            show_current_context_start = true,
 			buftype_exclude = {
                 "terminal",
 				"[No Name]",

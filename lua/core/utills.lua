@@ -1,5 +1,6 @@
----------- -- 自定义函数 -- -----------
+-- 自定义函数,变量
 
+-- ---------------------------------- function ---------------------------------- --
 -- cmdline echo
 function Me_Echo_multiline(msg)
     for _, s in ipairs(vim.fn.split(msg, "\n")) do
@@ -25,6 +26,7 @@ function Me_Err(msg)
     vim.cmd("echohl None")
 end
 
+-- ---------------------------------- 变量 ---------------------------------- --
 -- 判断是否为大文件
 Me_IsNotLargeFile = function ()
 	local max_filesize = 100 * 1024 -- 100 KB

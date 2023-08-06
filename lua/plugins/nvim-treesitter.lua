@@ -15,38 +15,42 @@ return {
     config = function()
         -- https://github.com/p00f/nvim-ts-rainbow/issues/81#issuecomment-1058124957
         local rainbow = { "#CC8888", "#CCCC88", "#88CC88", "#88CCCC", "#8888CC", "#CC88CC" }
+        local servers = {
+            "c",
+            "cpp",
+            "rust",
+            "lua",
+            "python",
+            "java",
+            "html",
+            "javascript",
+            "org",
+            "vim",
+            "markdown",
+            "bash",
+            "make",
+            "cmake",
+            "markdown_inline"
+        }
         for i, c in ipairs(rainbow) do
             vim.cmd(("hi rainbowcol%d guifg=%s"):format(i, c))
         end
 
         require("nvim-treesitter.configs").setup ({
+            modules = {},
+            ignore_install = {},
+            auto_install = true,
             -- HACK:
             parser_install_dir = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter",
-            ensure_installed = {
-                "c",
-                "cpp",
-                "rust",
-                "lua",
-                "python",
-                "java",
-                "html",
-                "javascript",
-                "org",
-                "vim",
-                "markdown",
-                "bash",
-                "make",
-                "cmake",
-                "markdown_inline"
-            },
+            ensure_installed = servers,
             sync_install = true,
             highlight = {
-                enable = _G.IsNotLargeFile(),
+                enable = _G.Me_IsNotLargeFile(),
                 disable = {},
                 additional_vim_regex_highlighting = { "org" },
             },
             incremental_selection = {
-                enable = _G.IsNotLargeFile(),
+                enable = _G.Me_IsNotLargeFile(),
                 keymaps = {
                     init_selection = "<CR>",
                     node_incremental = "<CR>",
@@ -59,23 +63,23 @@ return {
                 disable = {},
             },
             yati = {
-                enable = _G.IsNotLargeFile(),
+                enable = _G.Me_IsNotLargeFile(),
             },
             autotag = {
-                enable = _G.IsNotLargeFile(),
+                enable = _G.Me_IsNotLargeFile(),
             },
             rainbow = {
-                enable = _G.IsNotLargeFile(),
+                enable = _G.Me_IsNotLargeFile(),
                 extended_mode = true,
                 max_file_lines = nil, -- Do not enable for files with more than n lines, int
                 colors = rainbow,     -- table of hex strings
                 termcolors = rainbow, --table of colour name strings
             },
             context_commentstring = {
-                enable = _G.IsNotLargeFile(),
+                enable = _G.Me_IsNotLargeFile(),
             },
             playground = {
-                enable = _G.IsNotLargeFile(),
+                enable = _G.Me_IsNotLargeFile(),
                 disable = {},
                 updatetime = 25,         -- Debounced time for highlighting nodes in the playground from source code
                 persist_queries = false, -- Whether the query persists across vim sessions
@@ -95,7 +99,7 @@ return {
         })
 
         require("treesitter-context").setup({
-            enable = _G.IsNotLargeFile(), -- Enable this plugin (Can be enabled/disabled later via commands)
+            enable = _G.Me_IsNotLargeFile(), -- Enable this plugin (Can be enabled/disabled later via commands)
             max_lines = 0,                -- How many lines the window should span. Values <= 0 mean no limit.
             trim_scope = "outer",         -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
             min_window_height = 30,        -- Minimum editor window height to enable context. Values <= 0 mean no limit.
