@@ -60,14 +60,15 @@ return {
                 -- Disable sections and component separators
                 component_separators = '',
                 section_separators = '',
-                theme = {
-                    -- We are going to use lualine_c an lualine_x as left and
-                    -- right section. Both are highlighted by c theme .  So we
-                    -- are just setting default looks o statusline
-                    normal = { c = { fg = colors.fg, bg = colors.bg } },
-                    inactive = { c = { fg = colors.fg, bg = colors.bg } },
-                 },
-                disabled_filetypes = {'neo-tree'}
+                always_divide_middle = false,
+                theme = 'auto',
+                -- {
+                --     -- We are going to use lualine_c an lualine_x as left and
+                --     -- right section. Both are highlighted by c theme .  So we
+                --     -- are just setting default looks o statusline
+                --     -- normal = { c = { fg = colors.fg, bg = colors.bg } },
+                --     -- inactive = { c = { fg = colors.fg, bg = colors.bg } },
+                --  },
             },
             sections = {
                 -- these are to remove the defaults
@@ -88,16 +89,17 @@ return {
                 lualine_c = {},
                 lualine_x = {},
             },
+            tabline = {}
         }
 
         -- Inserts a component in lualine_c at left section
         local function ins_left(component)
-            table.insert(config.sections.lualine_c, component)
+            table.insert(config.sections.lualine_b, component)
         end
 
         -- Inserts a component in lualine_x at right section
         local function ins_right(component)
-            table.insert(config.sections.lualine_x, component)
+            table.insert(config.sections.lualine_b, component)
         end
 
         ins_left {
@@ -150,24 +152,18 @@ return {
             fmt = trunc(0, 0, 60, true),
         }
 
-        ins_left {
-            function ()
-                local trunc_nmuber = 12
-                local filename = vim.fn.expand('%:t:r')
-                -- local trunc_prefix_filename = string.sub(filename, 1 , trunc_nmuber)
-                local ex = '.' .. vim.fn.expand('%:e')
-                if #ex == 1 then
-                    ex = ""
-                end
-                if #filename < trunc_nmuber * 2 then
-                    return filename .. ex
-                end
-                local trunc_suffix_filename = string.sub(filename, #filename - trunc_nmuber - 8, #filename)
-                return "..." .. trunc_suffix_filename .. ex
-            end,
+        ins_right {
+            "filename",
+            path = 0,
+            newfile_status = true,
+            show_filename_only = false,
             padding = { left = 0, right = 1 },
-            color = { fg = colors.magenta, gui = 'bold' },
-            fmt = trunc(0, 0, 20, true)
+            fmt = function(str)
+                if #str > 24 then
+                    return str:sub(#str - 23, #str)
+                end
+                return str
+            end,
         }
 
         ins_left { 'location', fmt = trunc(0, 0, 60, true), }
@@ -197,7 +193,6 @@ return {
             function()
                 return '%='
             end,
-            fmt = trunc(0, 145, 100, true),
         }
 
         ins_left {
@@ -219,7 +214,13 @@ return {
             end,
             icon = ' LSP:',
             color = { fg = '#ffffff', gui = 'bold' },
-            fmt = trunc(150, 0, 150, true)
+            fmt = trunc(150, 0, 160, true)
+        }
+
+        ins_left {
+            function()
+                return '%='
+            end,
         }
 
         -- window number
