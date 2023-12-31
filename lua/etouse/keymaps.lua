@@ -31,6 +31,8 @@ vim.cmd([[
 ]])
 
 -- Standard Operatons
+maps.v["<M-p>"] = { ":m '>-2<CR>gv=gv", desc = "Move up row" }
+maps.v["<M-n>"] = { ":m '>+1<CR>gv=gv", desc = "Move down row" }
 maps.i["jk"] = { "<ESC>", desc = "Quit insert mode" }
 maps.n["j"] = { "v:count == 0 ? 'gj' : 'j'", expr = true, desc = "Move cursor down" }
 maps.n["k"] = { "v:count == 0 ? 'gk' : 'k'", expr = true, desc = "Move cursor up" }
@@ -58,7 +60,7 @@ if is_available "Comment.nvim" then
 end
 
 -- NeoTree
-if is_available then
+if is_available 'neo-tree.nvim' then
   maps.n["<leader>e"] = { "<cmd>Neotree toggle<cr>", desc = "Toggle Explorer" }
   maps.n["<leader>o"] = {
     function()
@@ -72,38 +74,11 @@ if is_available then
   }
 end
 
--- 自定义快捷键(按以下方式添加)
--- keymap({
---     -- -------------------------------- 插入模式 -------------------------------- --
---     { 'i', 'jk',         '<ESC>',                                    {} },
---
---     -- -------------------------------- 视觉模式 -------------------------------- --
---     { 'v', '<C-p>',      ":m '>+1<CR>gv=gv",                         {} },
---     { 'v', '<C-n>',      ":m '<-2<CR>gv=gv",                         {} },
---
---     -- -------------------------------- 普通模式 -------------------------------- --
---     { 'n', '<leader>q',  ':qa!<CR>',                                 {} },
---     { 'n', '<leader>w',  ':w<CR>',                                   {} },
---     -- 修改默认快捷键
---     { "n", '<leader>nh', ':nohl<CR>',                                {} },
---     -- neo tree
---     { 'n', "<leader>e",  '<cmd>Neotree toggle reveal_force_cwd<CR>', {} },
---     { 'n', '<leader>x',  ':lua Neotree_switch_focus()<CR>',                {} },
---
---     -- 自定义功能
---     { 'n', '<leader>aa', ':lua _G.Me_Sudo_write()<CR>',              { silent = true } },
---     { 'n', '<Leader>t',  ':ToggleTerm<CR>',                          { noremap = true, silent = true } },
---
---     -- 更新相关
---     { 'n', '<leader>pM', ':Mson<CR>',                                {} },
---     { 'n', '<leader>pl', ':Lazy<CR>',                                {} },
---     { 'n', '<leader>pl', ':MasonLog<CR>',                            {} },
---     { 'n', '<leader>pa', ':Lazy update<CR>',                         {} },
---     { 'n', '<leader>pm', ':MasonUpdate<CR>',                         {} },
---
---     -- lsp mapping
---     { 'n', '<leader>li', ':LspInfo<CR>',                             {} },
---     { 'n', '<leader>ll', ':LspLog<CR>',                              {} },
--- })
+-- LSP
+-- if is_available "nvim-lspconfig" then
+--   maps.n["gD"] = { vim.lsp.buf.declaration, desc = 'sssss' }
+--   maps.n["gd"] = { vim.lsp.buf.definition, desc = 'sssss' }
+--   maps.n["<leader>d"] = { vim.diagnostic.open_float, desc = 'sssss' }
+-- end
 
 utils.set_mappings(maps)

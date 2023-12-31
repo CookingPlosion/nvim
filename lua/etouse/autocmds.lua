@@ -8,8 +8,8 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
   callback = function()
     -- vim.opt.formatoptions = vim.opt.formatoptions - { "c", "r", "o" }
     vim.opt.formatoptions = vim.opt.formatoptions
-        - "o"     -- O and o, don't continue comments
-        + "r"     -- But do continue when pressing enter.
+        - "o" -- O and o, don't continue comments
+        + "r" -- But do continue when pressing enter.
   end,
 })
 
@@ -24,7 +24,7 @@ vim.cmd [[
 
 
 -- 根据文件类型设置缩进
-vim.cmd[[
+vim.cmd [[
   augroup Indentation
     autocmd!
     autocmd FileType python,java,c,cpp,ruby,go,swift,rust,php,html,css setlocal shiftwidth=4

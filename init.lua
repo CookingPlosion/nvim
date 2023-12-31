@@ -7,27 +7,14 @@
 --#          |_|                                    #--
 --#.................................................#--
 
---#=================
---# basic config
---#=================
-require ('core.base')
-
---#=================
---# auto command
---#=================
-require('core.autocmd')
-
---#=================
---# some functions
---#=================
-require ('core.utills')
-
---#================
---# set kbd 
---#================
-require ('core.keymap')
-
---#================
---# lazy 
---#================
-require('core.lazy-nvim')
+for _, source in ipairs {
+  "etouse.options",
+  "etouse.lazy",
+  "etouse.autocmds",
+  "etouse.keymaps",
+} do
+  local status_ok, fault = pcall(require, source)
+  if not status_ok then
+    vim.api.nvim_err_writeln("加载失败: " .. source .. "\n\n" .. fault)
+  end
+end
