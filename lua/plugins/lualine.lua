@@ -61,7 +61,7 @@ return {
         component_separators = '',
         section_separators = '',
         always_divide_middle = false,
-        theme = 'auto',
+        theme = "auto",
         -- {
         --   -- We are going to use lualine_c an lualine_x as left and
         --   -- right section. Both are highlighted by c theme .  So we
@@ -106,7 +106,7 @@ return {
         return '▊'
       end,
       color = { fg = colors.blue },      -- Sets highlighting of component
-      padding = { left = 0, right = 1 }, -- We don't need space before this
+      padding = { right = 0 }, -- We don't need space before this
     }
 
     ins_left {
@@ -140,55 +140,52 @@ return {
         }
         return { fg = mode_color[vim.fn.mode()] }
       end,
-      padding = { right = 1 },
     }
 
     ins_left {
       "filesize",
       fmt = trunc(0, 0, 60, true),
-      padding = { left = 1, right = 1 },
     }
 
     ins_left {
       "filetype",
       icon_only = true,
       fmt = trunc(0, 0, 60, true),
-      padding = { left = 1, right = 0 },
     }
 
-    ins_left {
-      "filename",
-      path = 0,
-      newfile_status = false,
-      show_filename_only = false,
-      padding = { left = 1, right = 1 },
-      fmt = function(str)
-        local dot_index = str:reverse():find('%.')
-        local extension = ''
-        local name = str
-
-        if dot_index then
-          extension = str:sub(-dot_index)
-          name = str:sub(1, #str - dot_index)
-        end
-
-        if #name > 24 - #extension then
-          name = name:sub(1, 24 - #extension)
-        end
-
-        if vim.bo.filetype == 'neo-tree' then
-          name = vim.bo.filetype
-        end
-
-        return name .. extension
-      end
-    }
+    -- ins_left {
+    --   "filename",
+    --   path = 0,
+    --   newfile_status = false,
+    --   show_filename_only = false,
+    --   padding = { left = 1, right = 1 },
+    --   fmt = function(str)
+    --     local dot_index = str:reverse():find('%.')
+    --     local extension = ''
+    --     local name = str
+    --
+    --     if dot_index then
+    --       extension = str:sub(-dot_index)
+    --       name = str:sub(1, #str - dot_index)
+    --     end
+    --
+    --     if #name > 24 - #extension then
+    --       name = name:sub(1, 24 - #extension)
+    --     end
+    --
+    --     if vim.bo.filetype == 'neo-tree' then
+    --       name = vim.bo.filetype
+    --     end
+    --
+    --     return name .. extension
+    --   end
+    -- }
 
     -- ins_left { 'location', fmt = trunc(0, 0, 60, true), }
 
     ins_left {
       'progress',
-      padding = { left = 1, right = 1 },
+      padding = { left = 0, right = 1 },
       color = { fg = colors.fg, gui = 'bold' },
       fmt = trunc(0, 0, 30, true),
     }
@@ -203,15 +200,7 @@ return {
         color_warn = { fg = colors.yellow },
         color_info = { fg = colors.cyan },
       },
-      always_visible = true,
-    }
-
-    -- Insert mid section. You can make any number of sections in neovim :)
-    -- for lualine it's any number greater then 2
-    ins_right {
-      function()
-        return '%='
-      end,
+      always_visible = false,
     }
 
     ins_right {
@@ -219,7 +208,7 @@ return {
       function()
         local msg = 'No Active Lsp'
         local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
-        local clients = vim.lsp.get_active_clients()
+        local clients = vim.lsp.get_clients()
         if next(clients) == nil then
           return msg
         end
@@ -236,12 +225,8 @@ return {
       fmt = trunc(150, 0, 160, true)
     }
 
-    ins_right {
-      function()
-        return '%='
-      end,
-    }
-
+    -- Insert mid section. You can make any number of sections in neovim :)
+    -- for lualine it's any number greater then 2
     ins_right {
       function()
         return '%='
@@ -324,7 +309,7 @@ return {
         return '▊'
       end,
       color = { fg = colors.blue },
-      padding = { left = 1 },
+      padding = { left = 0 },
     }
 
     -- Now don't forget to initialize lualine
