@@ -1,146 +1,142 @@
 return {
-  "neovim/nvim-lspconfig",
-  event = { "BufReadPre", "BufNewFile" },
-  dependencies = {
-    "williamboman/mason.nvim",
-    "williamboman/mason-lspconfig.nvim",
-    "folke/neodev.nvim",
+  {
+    'williamboman/mason.nvim',
+    opts = function(_, opts)
+      opts.ui = { width = 1, height = 0.95 }
+    end,
   },
-  cmd = {
-    "Mason",
-    "MasonInstall",
-    "MasonUninstall",
-    "MasonUpdate",
-    "MasonUninstallAll",
-    "MasonLog"
+  {
+    'williamboman/mason-lspconfig.nvim',
+    event = 'VeryLazy',
+    -- cmd = { 'LspInstall', 'LspUnInstall' },
+    opts = function(_, opts)
+      opts.ensure_installed = require('utils').list_insert_unique(opts.ensure_installed, { 'lua_ls' })
+    end,
   },
-  config = function()
-    -- Add additional capabilities supported by nvim-cmp
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
-    local lspconfig = require("lspconfig")
-    local servers = {
-      ["clangd"] = {},
-      ["lua_ls"] = {
-        cmd = { "lua-language-server", "--locale=zh-cn" },
-        settings = {
-          Lua = {
-            completion = {
-              callSnippet = "Replace",
-              autoRequire = false,
-            },
-            runtime = {
-              -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-              version = "LuaJIT",
-            },
-            diagnostics = {
-              -- Get the language server to recognize the `vim` global
-              globals = { "vim" },
-              disable = {
-                "redefined-local",
-              },
-            },
-            workspace = {
-              -- Make the server aware of Neovim runtime files
-              library = vim.api.nvim_get_runtime_file("", true),
-              -- https://github.com/neovim/nvim-lspconfig/issues/1700#issuecomment-1356282825
-              checkThirdParty = false,
-            },
-            -- Do not send telemetry data containing a randomized but unique identifier
-            telemetry = {
-              enable = false,
-            },
+  {
+    'WhoIsSethDaniel/mason-tool-installer.nvim',
+    event = 'VeryLazy',
+    -- cmd = { 'MasonToolsInstall', 'MasonToolsUpdate', 'MasonToolsClean', 'MasonToolsUpdateSync' },
+    opts = function(_, opts)
+      opts.ensure_installed = require('utils').list_insert_unique(opts.ensure_installed, { 'stylua', 'selene' })
+    end,
+  },
+  {
+    'neovim/nvim-lspconfig',
+    -- event = 'VeryLazy',
+    opts = function(_, opts)
+      local server = {
+        lua_ls = {
+          cmd = {
+            'lua-language-server',
+            '--locale=zh-cn',
           },
-        }
-      },
-      -- ["pyright"] = {},
-      ["cmake"] = {},
-      ["marksman"] = {},
-      ["bashls"] = {},
-    }
-
-    require("mason-lspconfig").setup({
-      ensure_installed = servers,
-      automatic_installation = true,
-    })
-
-    require("mason").setup({
-      ui = {
-        border = "rounded",
-        icons = {
-          package_installed = "✓",
-          package_pending = "➜",
-          package_uninstalled = "✗"
-        }
-      },
-    })
-
-    require("neodev").setup()
-
-    -- Customizing how diagnostics are displayed
-    vim.diagnostic.config({
-      virtual_text = true,
-      signs = true,
-      underline = true,
-      update_in_insert = true,
-      severity_sort = false,
-      float = {
-        show_header = true,
-        close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
-        border = 'rounded',
-        source = 'always',
-        prefix = '',
-        scope = 'line',
+        },
       }
-    })
-
-    -- Change diagnostic symbols in the sign column (gutter)
-    local signs = { Error = "", Warn = " ", Hint = "", Info = " " }
-    for type, icon in pairs(signs) do
-      local hl = "DiagnosticSign" .. type
-      vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-    end
-
-    -- Global mappings.
-    -- See `:help vim.diagnostic.*` for documentation on any of the below functions
-    -- vim.keymap.set('n', '<leader>e', vim.diagnostic.setloclist)
-    vim.keymap.set('n', '<leader>i', vim.diagnostic.open_float)
-    vim.keymap.set('n', '[d', vim.diagnostic.goto_next)
-    vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
-    vim.api.nvim_create_autocmd('LspAttach', {
-      group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-      callback = function(ev)
-        -- Enable completion triggered by <c-x><c-o>
-        vim.bo[ev.buf].omnifunc = 'v:lua.vim.lsp.omnifunc'
-
-        -- Buffer local mappings.
-        -- See `:help vim.lsp.*` for documentation on any of the below functions
-        local opts = { buffer = ev.buf }
-        vim.keymap.set('n', '<leader>ld', vim.lsp.buf.type_definition, opts)
-        vim.keymap.set('n', '<leader>ln', vim.lsp.buf.rename, opts)
-        vim.keymap.set('n', '<leader>lwa', vim.lsp.buf.add_workspace_folder, opts)
-        vim.keymap.set('n', '<leader>lwr', vim.lsp.buf.remove_workspace_folder, opts)
-        vim.keymap.set('n', '<leader>lwl', function()
-          print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-        end, opts)
-        vim.keymap.set('n', '<space>lf', function()
-          vim.lsp.buf.format { async = true }
-        end, opts)
-        vim.keymap.set('n', 'K', vim.lsp.buf.hover, opts)
-        -- vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-        vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
-        vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
-        vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
-        vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
-        vim.keymap.set({ 'n', 'v' }, '<space>ca', vim.lsp.buf.code_action, opts)
+      opts.servers = require('utils').table_insert_unique_keys(opts.servers, server)
+    end,
+    config = function(_, opts)
+      local capabities = {
+        textDocument = {},
+      }
+      capabities = require('blink-cmp').get_lsp_capabilities(capabities)
+      local handlers = {
+        ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+          border = 'single',
+          title = 'hover',
+        }),
+        ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+          border = 'single',
+        }),
+      }
+      for server, config in pairs(opts.servers) do
+        config.capabilities = vim.tbl_deep_extend('force', capabities, config.capabilities or {})
+        config.handlers = vim.tbl_deep_extend('force', handlers, config.handlers or {})
+        require('lspconfig')[server].setup(config)
+      end
+    end,
+  },
+  {
+    'glepnir/lspsaga.nvim',
+    event = 'LspAttach',
+    opts = {
+      ui = { border = 'single' },
+      breadcrumbs = { enable = true },
+      implement = { enable = true, lang = { 'c' } },
+    },
+    keys = {
+      { 'ga', '<cmd>Lspsaga finder<cr>', desc = 'Open symbol finder' },
+      { 'ghi', '<cmd>Lspsaga finder imp<cr>', desc = 'Find all implementations' },
+      { 'ghr', '<cmd>Lspsaga finder ref<cr>', desc = 'Find all references' },
+      { 'ghd', '<cmd>Lspsaga finder def<cr>', desc = 'Find all definitions' },
+      { 'gr', '<cmd>Lspsaga rename<cr>', desc = 'Rename symbol' },
+      { 'gR', '<cmd>Lspsaga rename ++project<cr>', desc = 'Rename symbol (project)' },
+      { 'gd', '<cmd>Lspsaga peek_definition<cr>', desc = 'Peek definition' },
+      { 'gD', '<cmd>Lspsaga goto_definition<cr>', desc = 'Goto definition' },
+      { 'gt', '<cmd>Lspsaga peek_type_definition<cr>', desc = 'Peek type definition' },
+      { 'gT', '<cmd>Lspsaga goto_type_definition<cr>', desc = 'Goto type definition' },
+      { '<leader>sl', '<cmd>Lspsaga show_line_diagnostics ++unfocus<cr>', desc = 'Show line diagnostics' },
+      { '<leader>sc', '<cmd>Lspsaga show_cursor_diagnostics<cr>', desc = 'Show cursor diagnostics' },
+      { '<leader>sb', '<cmd>Lspsaga show_buf_diagnostics<cr>', desc = 'Show buffer diagnostics' },
+      { '<leader>sw', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Show workspace diagnostics' },
+      { '[d', '<cmd>Lspsaga diagnostic_jump_prev<cr>', desc = 'Jump to previous diagnostic' },
+      { ']d', '<cmd>Lspsaga diagnostic_jump_next<cr>', desc = 'Jump to next diagnostic' },
+      { 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', desc = 'Show symbol information', mode = { 'n', 'v' } },
+      -- { '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', desc = 'Show symbol document', mode = { 'i' } },
+      {
+        '[e',
+        function()
+          require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.ERROR })
+        end,
+        desc = 'Jump to previous error',
+      },
+      {
+        ']e',
+        function()
+          require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.ERROR })
+        end,
+        desc = 'Jump to next error',
+      },
+      {
+        '[w',
+        function()
+          require('lspsaga.diagnostic'):goto_prev({ severity = vim.diagnostic.severity.WARN })
+        end,
+        desc = 'Jump to previous warning',
+      },
+      {
+        ']w',
+        function()
+          require('lspsaga.diagnostic'):goto_next({ severity = vim.diagnostic.severity.WARN })
+        end,
+        desc = 'Jump to next warning',
+      },
+    },
+  },
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    dependencies = { 'Bilal2453/luvit-meta' },
+    opts = function(_, opts)
+      if not opts.library then
+        opts.library = {
+          { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+          { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
+          { path = 'lazy.nvim', words = { 'Lazy' } },
+        }
+      end
+    end,
+  },
+  {
+    'OXY2DEV/helpview.nvim',
+    ft = 'help',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      opts = function(_, opts)
+        if opts.ensure_installed ~= 'all' then
+          opts.ensure_installed = require('utils').list_insert_unique(opts.ensure_installed, { 'vimdoc' })
+        end
       end,
-    })
-
-    for key, v in pairs(servers) do
-      lspconfig[key].setup({
-        capabilities = capabilities,
-        cmd = v.cmd,
-        settings = v.settings,
-      })
-    end
-  end,
+    },
+  },
 }

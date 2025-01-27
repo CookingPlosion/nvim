@@ -1,14 +1,10 @@
 return {
   "lewis6991/gitsigns.nvim",
-  opts = {
-    signs = {
-      add          = { text = '│' },
-      change       = { text = '│' },
-      delete       = { text = '_' },
-      topdelete    = { text = '‾' },
-      changedelete = { text = '~' },
-      untracked    = { text = '┆' },
-    },
-    worktrees = vim.g.git_worktrees,
-  },
+  event = "VeryLazy",
+  config = function()
+    require("gitsigns").setup({
+      culhl = true,
+      worktrees = vim.g.git_worktrees,
+    })
+  end
 }

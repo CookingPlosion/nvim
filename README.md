@@ -18,11 +18,12 @@
 
 # ⚡ make use of it
 - linux 
-
+    <details>
+    <summary>点击预览 🌞</summary>
     **可选步骤**: 先将自己的配置备份 
     
     ~~~sh
-    $ cp ~/.config/nvim/ ~/.config/nvim.bak
+    $ cp ~/.config/nvim/ ~/.config/nvim.backup
     ~~~ 
     
     使用以下命令克隆项目 
@@ -30,3 +31,5 @@
     ~~~sh
     $ git clone https://https://github.com/zhipeng33/nvim.git
     ~~~
+    </details>
+

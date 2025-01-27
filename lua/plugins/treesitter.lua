@@ -1,183 +1,92 @@
-local utils = require("etouse.utils")
-
--- -- 语法高亮
 return {
-  "nvim-treesitter/nvim-treesitter",
-  build = ":TSUpdate",
-  event = { "BufReadPost", "BufNewFile" },
-  dependencies = {
-    -- "JoosepAlviste/nvim-ts-context-commentstring",
-    "p00f/nvim-ts-rainbow",
-    "windwp/nvim-ts-autotag",
-    "yioneko/nvim-yati",
-    -- "nvim-treesitter/nvim-treesitter-context",
-    "nvim-treesitter/playground",
-    "windwp/nvim-autopairs",
-  },
-  config = function()
-  --   -- https://github.com/p00f/nvim-ts-rainbow/issues/81#issuecomment-1058124957
-  --   local rainbow = { "#CC8888", "#CCCC88", "#88CC88", "#88CCCC", "#8888CC", "#CC88CC" }
-  --   local servers = {
-  --     "c",
-  --     "cpp",
-  --     "rust",
-  --     "lua",
-  --     "python",
-  --     "java",
-  --     "html",
-  --     "javascript",
-  --     "org",
-  --     "vim",
-  --     "markdown",
-  --     "bash",
-  --     "make",
-  --     "cmake",
-  --     "markdown_inline"
-  --   }
-  --   for i, c in ipairs(rainbow) do
-  --     vim.cmd(("hi rainbowcol%d guifg=%s"):format(i, c))
-  --   end
-  --
-  --   require("nvim-treesitter.configs").setup({
-  --     modules = {},
-  --     ignore_install = {},
-  --     auto_install = true,
-  --     -- HACK:
-  --     parser_install_dir = vim.fn.stdpath("data") .. "/lazy/nvim-treesitter",
-  --     ensure_installed = servers,
-  --     sync_install = true,
-  --     highlight = {
-  --       enable = utils.IsNotLargeFile(),
-  --       disable = {},
-  --       additional_vim_regex_highlighting = { "org" },
-  --     },
-  --     incremental_selection = {
-  --       enable = utils.IsNotLargeFile(),
-  --       keymaps = {
-  --         init_selection = "<CR>",
-  --         node_incremental = "<CR>",
-  --         node_decremental = "<BS>",
-  --         scope_incremental = nil,
-  --       },
-  --     },
-  --     indent = {
-  --       enable = false,
-  --       disable = {},
-  --     },
-  --     yati = {
-  --       enable = utils.IsNotLargeFile(),
-  --     },
-  --     autotag = {
-  --       enable = utils.IsNotLargeFile(),
-  --     },
-  --     rainbow = {
-  --       enable = utils.IsNotLargeFile(),
-  --       extended_mode = true,
-  --       max_file_lines = nil,         -- Do not enable for files with more than n lines, int
-  --       colors = rainbow,             -- table of hex strings
-  --       termcolors = rainbow,         --table of colour name strings
-  --     },
-  --     -- context_commentstring = {
-  --     --     enable = _G.Me_IsNotLargeFile(),
-  --     -- },
-  --     playground = {
-  --       enable = utils.IsNotLargeFile(),
-  --       disable = {},
-  --       updatetime = 25,                 -- Debounced time for highlighting nodes in the playground from source code
-  --       persist_queries = false,         -- Whether the query persists across vim sessions
-  --       keybindings = {
-  --         toggle_query_editor = "o",
-  --         toggle_hl_groups = "i",
-  --         toggle_injected_languages = "t",
-  --         toggle_anonymous_nodes = "a",
-  --         toggle_language_display = "I",
-  --         focus_language = "f",
-  --         unfocus_language = "F",
-  --         update = "R",
-  --         goto_node = "<cr>",
-  --         show_help = "?",
-  --       },
-  --     },
-  --   })
-
-    -- require("treesitter-context").setup({
-    --     enable = utils.IsNotLargeFile(), -- Enable this plugin (Can be enabled/disabled later via commands)
-    --     max_lines = 0,                -- How many lines the window should span. Values <= 0 mean no limit.
-    --     trim_scope = "outer",         -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
-    --     min_window_height = 30,        -- Minimum editor window height to enable context. Values <= 0 mean no limit.
-    --     patterns = {
-    --         -- Match patterns for TS nodes. These get wrapped to match at word boundaries.
-    --         -- For all filetypes
-    --         -- Note that setting an entry here replaces all other patterns for this entry.
-    --         -- By setting the 'default' entry below, you can control which nodes you want to
-    --         -- appear in the context window.
-    --         default = {
-    --             "class",
-    --             "function",
-    --             "method",
-    --             "for",
-    --             "while",
-    --             "if",
-    --             "switch",
-    --             "case",
-    --         },
-    --         -- Patterns for specific filetypes
-    --         -- If a pattern is missing, *open a PR* so everyone can benefit.
-    --         tex = {
-    --             "chapter",
-    --             "section",
-    --             "subsection",
-    --             "subsubsection",
-    --         },
-    --         rust = {
-    --             "impl_item",
-    --             "struct",
-    --             "enum",
-    --         },
-    --         scala = {
-    --             "object_definition",
-    --         },
-    --         vhdl = {
-    --             "process_statement",
-    --             "architecture_body",
-    --             "entity_declaration",
-    --         },
-    --         markdown = {
-    --             "section",
-    --         },
-    --         elixir = {
-    --             "anonymous_function",
-    --             "arguments",
-    --             "block",
-    --             "do_block",
-    --             "list",
-    --             "map",
-    --             "tuple",
-    --             "quoted_content",
-    --         },
-    --         json = {
-    --             "pair",
-    --         },
-    --         yaml = {
-    --             "block_mapping_pair",
-    --         },
-    --     },
-    --     exact_patterns = {
-    --         -- Example for a specific filetype with Lua patterns
-    --         -- Treat patterns.rust as a Lua pattern (i.e "^impl_item$" will
-    --         -- exactly match "impl_item" only)
-    --         -- rust = true,
-    --     },
-    --     -- [!] The options below are exposed but shouldn't require your attention,
-    --     --     you can safely ignore them.
-    --
-    --     zindex = 20,     -- The Z-index of the context window
-    --     mode = "topline", -- Line used to calculate context. Choices: 'cursor', 'topline'
-    --     -- Separator between context and content. Should be a single character string, like '-'.
-    --     -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
-    --     separator = nil,
-    -- })
-
-    require("nvim-autopairs").setup()
+  'nvim-treesitter/nvim-treesitter',
+  version = false,
+  event = { 'VeryLazy' },
+  dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
+  opts = function()
+    return {
+      ensure_installed = { 'lua' },
+      sync_install = false,
+      auto_install = false,
+      modules = {},
+      ignore_install = {}, -- List of parsers to ignore installing
+      highlight = {
+        enable = true,   -- false will disable the whole extension
+        is_supported = function()
+          return vim.api.nvim_buf_line_count(0) < 10000
+        end,
+        disable = {} -- list of language that will be disabled
+      },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = '<CR>',
+          scope_incremental = '<CR>',
+          node_incremental = '<TAB>',
+          node_decremental = '<S-TAB>'
+        }
+      },
+      indent = { enable = true },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ['af'] = { query = '@function.outer', desc = 'Select around function' },
+            ['if'] = { query = '@function.inner', desc = 'Select inside function' },
+            ['al'] = { query = '@loop.outer', desc = 'Select around loop' },
+            ['il'] = { query = '@loop.inner', desc = 'Select inside loop' },
+            ['ib'] = { query = '@block.inner', desc = 'Select inside block' },
+            ['ab'] = { query = '@block.outer', desc = 'Select around block' },
+            ['ir'] = { query = '@parameter.inner', desc = 'Select inside parameter' },
+            ['ar'] = { query = '@parameter.outer', desc = 'Select around parameter' },
+            ['ic'] = { query = '@call.inner', desc = 'Select inside call' },
+            ['ac'] = { query = '@call.outer', desc = 'Select around call' },
+            ['aC'] = { query = '@class.outer', desc = 'Select around class' },
+            ['iC'] = { query = '@class.inner', desc = 'Select inside class' },
+            ['id'] = { query = '@conditional.inner', desc = 'Select inside conditional' },
+            ['ad'] = { query = '@conditional.outer', desc = 'Select around conditional' },
+          }
+        },
+        move = {
+          enable = true,
+          set_jumps = true, -- whether to set jumps in the jumplist
+          goto_next_start = {
+            [']f'] = '@function.outer',
+            [']]'] = '@class.outer',
+            [']r'] = '@parameter.inner',
+          },
+          goto_next_end = {
+            [']F'] = '@function.outer',
+            [']['] = '@class.outer',
+            [']R'] = '@parameter.inner',
+          },
+          goto_previous_start = {
+            ['[f'] = '@function.outer',
+            ['[['] = '@class.outer',
+            ['[r'] = '@parameter.inner',
+          },
+          goto_previous_end = {
+            ['[F'] = '@function.outer',
+            ['[]'] = '@class.outer',
+            ['[R'] = '@parameter.inner',
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            ['g>r'] = { query = '@parameter.inner', desc = 'Swap with next parameter' },
+            ['g>f'] = { query = '@function.outer', desc = 'Swap with next function' },
+          },
+          swap_previous = {
+            ['g<r'] = { query = '@parameter.inner', desc = 'Swap with previous parameter' },
+            ['g<f'] = { query = '@function.outer', desc = 'Swap with previous function' },
+          },
+        },
+      },
+    }
+  end,
+  config = function(_, opts)
+    require('nvim-treesitter.configs').setup(opts)
   end,
 }
