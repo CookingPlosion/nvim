@@ -37,9 +37,9 @@ return {
         ft_ignore = { 'sagaoutline', 'help', 'noice', 'neo-tree', 'Trouble', 'lazy', 'man' },
         segments = {
           { sign = { namespace = { 'diagnostic/signs' }, colwidth = 3 }, click = 'v:lua.ScSa' },
-          { text = { builtin.lnumfunc }, click = 'v:lua.ScLa' },
-          { sign = { namespace = { 'gitsign' }, colwidth = 1 }, click = 'v:lua.ScFa' },
-          { text = { builtin.foldfunc, ' ' }, click = 'v:lua.ScFa' },
+          { text = { builtin.lnumfunc },                                 click = 'v:lua.ScLa' },
+          { sign = { namespace = { 'gitsign' }, colwidth = 1 },          click = 'v:lua.ScFa' },
+          { text = { builtin.foldfunc, ' ' },                            click = 'v:lua.ScFa' },
         },
       }
     end,
@@ -50,8 +50,7 @@ return {
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufNew' }, {
         callback = function()
           if vim.tbl_contains(opts.ft_ignore, vim.bo.filetype) then
-            vim.opt_local.foldcolumn = '0'
-            vim.opt_local.statuscolumn = ''
+            -- vim.opt_local.foldcolumn = '0'
             vim.opt_local.number = false
             -- vim.opt_local.numberwidth = #tostring(vim.api.nvim_buf_line_count(0)) + 1
           end
@@ -118,16 +117,16 @@ return {
           end
         end
         return (filetype == '' or buftype == 'nofile') and 'indent' -- only use indent until a file is opened
-          or function(bufnr)
-            return require('ufo')
-              .getFolds(bufnr, 'lsp')
-              :catch(function(err)
-                return handleFallbackException(bufnr, err, 'treesitter')
-              end)
-              :catch(function(err)
-                return handleFallbackException(bufnr, err, 'indent')
-              end)
-          end
+            or function(bufnr)
+              return require('ufo')
+                  .getFolds(bufnr, 'lsp')
+                  :catch(function(err)
+                    return handleFallbackException(bufnr, err, 'treesitter')
+                  end)
+                  :catch(function(err)
+                    return handleFallbackException(bufnr, err, 'indent')
+                  end)
+            end
       end,
     },
   },
@@ -146,4 +145,9 @@ return {
       }
     end,
   },
+  {
+    'NMAC427/guess-indent.nvim',
+    lazy = false,
+    opts = {}
+  }
 }

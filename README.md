@@ -1,6 +1,6 @@
 # nvim 配置
 
-自定义的[`nvim`](https://neovim.io)配置,目标是打造一个个性化的`IDE` 
+Sapnvim（Simple and practical neovim）是一个自定义的[`nvim`](https://neovim.io)配置,目标是打造一个个性化的`IDE` 
 
 ![预览图片](https://gitee.com/zhipeng33/nvim/raw/master/images/nvim.png)
 

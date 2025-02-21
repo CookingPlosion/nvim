@@ -5,7 +5,7 @@ return {
   opts = {
     popupmenu = {
       backend = 'nui', -- backend to use to show regular cmdline completions
-      kind_icons = false, -- set to `false` to disable icons
+      kind_icons = true, -- set to `false` to disable icons
     },
     lsp = {
       progress = { enabled = true },

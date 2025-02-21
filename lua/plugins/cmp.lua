@@ -1,6 +1,7 @@
 return {
   'saghen/blink.cmp',
   event = 'VeryLazy',
+  version = '*',
   dependencies = { 'rafamadriz/friendly-snippets' },
   opts = {
     keymap = {
@@ -30,7 +31,7 @@ return {
       ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
       ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
       -- toggle signature
-      -- ['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
+      ['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
     },
     completion = {
       keyword = { range = 'full' },
@@ -43,8 +44,8 @@ return {
           padding = 1,
           gap = 2,
           columns = {
-            { 'label', 'label_description' },
-            { 'kind_icon', 'source_name', gap = 1 },
+            { 'label',     'label_description' },
+            { 'kind_icon', 'source_name',      gap = 1 },
           },
           treesitter = { 'lsp' },
         },
@@ -53,6 +54,12 @@ return {
     sources = {
       default = { 'lazydev', 'snippets', 'lsp', 'buffer', 'path' },
       providers = {
+        -- cmdline = {
+        --   enabled = false
+        --   -- enabled = function()
+        --   --   return vim.fn.getcmdline():sub(1, 1) ~= '!'
+        --   -- end
+        -- },
         lazydev = {
           name = 'LazyDev',
           module = 'lazydev.integrations.blink',

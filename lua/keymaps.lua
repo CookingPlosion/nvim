@@ -1,5 +1,5 @@
 -- set mapping
-local utils = require 'utils'
+local utils = require('utils')
 local is_available = utils.is_available
 local maps = utils.empty_map_table()
 
@@ -36,13 +36,15 @@ maps.v['<M-n>'] = { ":m '>+1<CR>gv=gv", desc = 'Move down row' }
 maps.i['jk'] = { '<ESC>', desc = 'Quit insert mode' }
 maps.n['j'] = { "v:count == 0 ? 'gj' : 'j'", expr = true, desc = 'Move cursor down' }
 maps.n['k'] = { "v:count == 0 ? 'gk' : 'k'", expr = true, desc = 'Move cursor up' }
-maps.n['<leader>w'] = { '<cmd>w<cr>', desc = 'Save' }
+maps.n['<leader>w'] = { '<cmd>silent! w<cr>', desc = 'Save' }
 maps.n['<leader>W'] = { "<cmd>wal<cr>', desc = Save all" }
 maps.n['<leader>q'] = { '<cmd>confirm q<cr>', desc = 'Quit' }
 maps.n['<leader>Q'] = { '<cmd>confirm qall<cr>', desc = 'Quit all' }
 maps.n['<leader>n'] = { '<cmd>enew<cr>', desc = 'New File' }
 maps.n['<C-s>'] = { '<cmd>w!<cr>', desc = 'Force write' }
 maps.n['<C-q>'] = { '<cmd>qa!<cr>', desc = 'Force quit' }
+maps.n['u'] = { '<cmd>silent undo<cr>', desc = 'silent undo' }
+maps.n['<C-r>'] = { '<cmd>silent redo<cr>', desc = "silent redo" }
 maps.n['|'] = { '<cmd>vsplit<cr>', desc = 'Vertical Split' }
 maps.n['\\'] = { '<cmd>split<cr>', desc = 'Horizontal Split' }
 -- TODO: Remove when dropping support for <Neovim v0.10
@@ -51,7 +53,7 @@ maps.n['\\'] = { '<cmd>split<cr>', desc = 'Horizontal Split' }
 -- Manage Buffers
 maps.n['<leader>c'] = {
   function()
-    require 'utils.buffer'.close(0, false)
+    utils.close(0, false)
   end,
   desc = 'Close buffer',
 }
@@ -282,14 +284,16 @@ if is_available 'telescope.nvim' then
   }
   maps.n['<leader>E'] = {
     function()
-      local input = vim.fn.expand('%:p:h')
+      local path = vim.fn.expand('%:p:h')
       vim.ui.input({
         prompt = 'Enter directory path: ', -- Prompt user to input directory path
-        default = input,
-        completion = nil, -- Use directory completion
-      }, function()
-        if vim.fn.isdirectory(vim.fn.expand(input)) == 1 then
+        default = path,
+        completion = 'dir',                -- Use directory completion
+      }, function(input)
+        if 1 == vim.fn.isdirectory(vim.fn.expand(input)) then
           telescope_file_browser(input)
+        else
+          vim.notify("ERROR: Invalid input path!")
         end
       end)
     end,
@@ -316,6 +320,10 @@ if is_available 'telescope.nvim' then
     desc = 'Find treesitter symbols',
   }
 end
+
+-- sessions
+maps.n['<leader>sw'] = { '<cmd>ProjectAdd<cr>', desc = "Save a session" }
+maps.n['<leader>sf'] = { '<cmd>ProjectSwitch<cr>', desc = "Select a session" }
 
 -- maps.n[':'] = { ":Telescope cmdline<CR>", desc = "CmdLine" }
 -- maps.n['<leader><leader>'] = { ":Telescope cmdline<CR>", desc = "CmdLine" }

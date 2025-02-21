@@ -1,22 +1,15 @@
---- @class M
---- @field is_available fun(plugin: string): boolean 检查插件是否在 lazy 中定义
---- @field empty_map_table fun(): table<string, table> 获取一个空的映射表，其中每个模式都有一个键
---- @field set_mappings fun(map_table: table, base?: table):  nil 基于表的 API 设置键映射
---- @field list_insert_unique fun(dst: any[]|nil, src: any[]): any[] 插入一个或多个值到类似列表的表中，并确保不插入非唯一值
---- @field table_insert_unique_keys fun(des: table, src: table): table 插入唯一键从源表到目标表
-
 local M = {}
 
 --- 检查插件是否在 lazy 中定义。适用于懒加载，当插件尚未加载时。
---- @param plugin string 要搜索的插件
---- @return boolean available # 插件是否可用
+---@param plugin string 要搜索的插件
+---@return boolean available # 插件是否可用
 function M.is_available(plugin)
   local lazy_config_avail, lazy_config = pcall(require, 'lazy.core.config')
   return lazy_config_avail and lazy_config.spec.plugins[plugin] ~= nil
 end
 
 --- 获取一个空的映射表，其中每个模式都有一个键
---- @return table<string,table> # 一个包含每个映射模式条目的表
+---@return table<string,table> # 一个包含每个映射模式条目的表
 function M.empty_map_table()
   local maps = {}
   for _, mode in ipairs { '', 'n', 'v', 'x', 's', 'o', '!', 'i', 'l', 'c', 't' } do
@@ -31,8 +24,8 @@ function M.empty_map_table()
 end
 
 --- 基于表的 API 设置键映射
---- @param map_table table 嵌套表，第一个键是 vim 模式，第二个键是要映射的键，值是设置映射的函数
---- @param base? table 每个键绑定要设置的一组基本选项
+---@param map_table table 嵌套表，第一个键是 vim 模式，第二个键是要映射的键，值是设置映射的函数
+---@param base? table 每个键绑定要设置的一组基本选项
 function M.set_mappings(map_table, base)
   -- 迭代每个模式的第一个键
   base = base or {}
@@ -71,9 +64,9 @@ function M.set_mappings(map_table, base)
 end
 
 --- 插入一个或多个值到类似列表的表中，并确保不插入非唯一值（这会修改 `dst`）
---- @param dst any[]|nil 要插入的列表类型的表
---- @param src any[] 要插入的值
---- @return any[] # 修改后的列表类型的表
+---@param dst any[]|nil 要插入的列表类型的表
+---@param src any[] 要插入的值
+---@return any[] # 修改后的列表类型的表
 function M.list_insert_unique(dst, src)
   if not dst then
     dst = {}
@@ -96,9 +89,9 @@ end
 --- 将唯一键从源表插入目标表。
 --- 如果 `src` 中的键不存在于 `des` 中，则将其添加到 `des` 中。
 --- 确保 `des` 中没有重复的键。
---- @param des table 目标表。
---- @param src table 源表。
---- @return table 更新后的目标表。
+---@param des table 目标表。
+---@param src table 源表。
+---@return table<string, table> 更新后的目标表。
 function M.table_insert_unique_keys(des, src)
   if not des then
     des = {}
@@ -114,6 +107,17 @@ function M.table_insert_unique_keys(des, src)
   end
 
   return des
+end
+
+--- To close the buffer
+---@param bufnr number: Incoming buffer number(default bufnr = 0)
+---@param force boolean: Force Close
+function M.close(bufnr, force)
+  if not bufnr or bufnr == 0 then
+    bufnr = vim.api.nvim_get_current_buf()
+  end
+  local buftype = vim.api.nvim_get_option_value("buftype", { buf = bufnr })
+  vim.cmd(("silent! %s %d"):format((force or buftype == "terminal") and "bdelete!" or "confirm bdelete", bufnr))
 end
 
 return M

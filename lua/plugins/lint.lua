@@ -4,6 +4,7 @@ end
 
 return {
 	"mfussenegger/nvim-lint",
+	-- event = 'LspAttach',
 	opts = {
 		events = { "BufWritePost", "BufReadPost", "InsertLeave" },
 		linters_by_ft = {
