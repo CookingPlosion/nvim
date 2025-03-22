@@ -1,9 +1,9 @@
 -- 主题
 return {
   {
-    "killitar/obscure.nvim",
+    -- "killitar/obscure.nvim",
     -- event = 'VeryLazy',
-    -- dir = "~/code/obscure.nvim/",
+    dir = "~/code/obscure.nvim/",
     -- lazy = false,
     -- priority = 1000,
     opts = function (_, opts)

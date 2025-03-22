@@ -322,9 +322,12 @@ if is_available 'telescope.nvim' then
 end
 
 -- sessions
-maps.n['<leader>sw'] = { '<cmd>ProjectAdd<cr>', desc = "Save a session" }
-maps.n['<leader>sf'] = { '<cmd>ProjectSwitch<cr>', desc = "Select a session" }
-
+maps.n['<leader>sc'] = { '<cmd>ProjectClose<cr>', desc = "Close curret project" }
+maps.n['<leader>sa'] = { '<cmd>ProjectAdd<cr>', desc = "Create a project" }
+maps.n['<leader>sw'] = { '<cmd>ProjectSave<cr>', desc = "Save existing project" }
+maps.n['<leader>sf'] = { '<cmd>ProjectLoad<cr>', desc = "Switch a project" }
+maps.n['<leader>so'] = { '<cmd>ProjectToggle<cr>', desc = "Toggle project" }
+-- require('telescope.pickers').new({}, require('telescope.finders').new_table()):find()
 -- maps.n[':'] = { ":Telescope cmdline<CR>", desc = "CmdLine" }
 -- maps.n['<leader><leader>'] = { ":Telescope cmdline<CR>", desc = "CmdLine" }
 -- vim.keymap.set('n', ':', '<cmd>Telescope cmdline<CR>', { desc = "Cmdline" })

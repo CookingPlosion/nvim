@@ -34,7 +34,7 @@ return {
       local builtin = require('statuscol.builtin')
       return {
         relculright = true,
-        ft_ignore = { 'sagaoutline', 'help', 'noice', 'neo-tree', 'Trouble', 'lazy', 'man' },
+        ft_ignore = { 'sagaoutline', 'help', 'noice', 'neo-tree', 'Trouble', 'lazy', 'man', 'terminal' },
         segments = {
           { sign = { namespace = { 'diagnostic/signs' }, colwidth = 3 }, click = 'v:lua.ScSa' },
           { text = { builtin.lnumfunc },                                 click = 'v:lua.ScLa' },
@@ -50,7 +50,8 @@ return {
       vim.api.nvim_create_autocmd({ 'BufEnter', 'BufNew' }, {
         callback = function()
           if vim.tbl_contains(opts.ft_ignore, vim.bo.filetype) then
-            -- vim.opt_local.foldcolumn = '0'
+            vim.opt_local.list = false
+            vim.opt_local.foldcolumn = '0'
             vim.opt_local.number = false
             -- vim.opt_local.numberwidth = #tostring(vim.api.nvim_buf_line_count(0)) + 1
           end
