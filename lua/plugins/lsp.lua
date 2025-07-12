@@ -2,7 +2,7 @@ return {
   {
     'williamboman/mason.nvim',
     opts = function(_, opts)
-      opts.ui = { width = 1, height = 0.95 }
+      opts.ui = { width = 1, height = 1, border = 'none' }
     end,
   },
   {
@@ -15,7 +15,7 @@ return {
   },
   {
     'WhoIsSethDaniel/mason-tool-installer.nvim',
-    event = 'VeryLazy',
+    -- event = 'VeryLazy',
     -- cmd = { 'MasonToolsInstall', 'MasonToolsUpdate', 'MasonToolsClean', 'MasonToolsUpdateSync' },
     opts = function(_, opts)
       opts.ensure_installed = require('utils').list_insert_unique(opts.ensure_installed, { 'stylua', 'selene' })
@@ -27,18 +27,18 @@ return {
     opts = function(_, opts)
       local server = {
         lua_ls = {
-          cmd = { 'lua-language-server', '--locale=zh-cn', },
+          cmd = { 'lua-language-server', '--locale=zh-cn' },
           settings = {
             Lua = {
               telemetry = {
                 enable = false,
               },
               runtime = {
-                path = vim.split(package.path, ";"),
+                path = vim.split(package.path, ';'),
               },
               diagnostics = {
                 enable = true,
-                globals = { "vim", "describe", "it", "before_each", "teardown", "pending" },
+                globals = { 'vim', 'describe', 'it', 'before_each', 'teardown', 'pending' },
               },
             },
           },
@@ -51,18 +51,9 @@ return {
         textDocument = {},
       }
       capabities = require('blink-cmp').get_lsp_capabilities(capabities)
-      local handlers = {
-        ['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
-          border = 'single',
-          -- title = 'hover',
-        }),
-        ['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-          border = 'single',
-        }),
-      }
       for server, config in pairs(opts.servers) do
         config.capabilities = vim.tbl_deep_extend('force', capabities, config.capabilities or {})
-        config.handlers = vim.tbl_deep_extend('force', handlers, config.handlers or {})
+        -- config.handlers = vim.tbl_deep_extend('force', handlers, config.handlers or {})
         require('lspconfig')[server].setup(config)
       end
     end,
@@ -71,9 +62,9 @@ return {
     'glepnir/lspsaga.nvim',
     event = 'LspAttach',
     opts = {
-      ui = { border = 'single' },
+      ui = { border = 'single', title = true },
       breadcrumbs = { enable = true },
-      implement = { enable = true, lang = { 'c' } },
+      -- implement = { enable = true, lang = { 'c' } },
     },
     keys = {
       { 'ga',         '<cmd>Lspsaga finder<cr>',                          desc = "Open symbol finder" },
@@ -96,7 +87,7 @@ return {
       { '<leader>la', '<cmd>Lspsaga code_action<cr>',                     desc = "LSP code action", },
       { '[d',         '<cmd>Lspsaga diagnostic_jump_prev<cr>',            desc = "Jump to previous diagnostic" },
       { ']d',         '<cmd>Lspsaga diagnostic_jump_next<cr>',            desc = "Jump to next diagnostic" },
-      { 'K',          '<cmd>lua vim.lsp.buf.hover()<cr>',                 desc = "Show symbol information",    mode = { 'n', 'v' } },
+      { '<C-k>',          '<cmd>Lspsaga hover_doc<cr>',                 desc = "Show symbol information",    mode = { 'n', 'v' } },
       -- { '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', desc = 'Show symbol document', mode = { 'i' } },
       {
         '[e',

@@ -1,11 +1,6 @@
 return {
   'sapnvim/sapnvim_project.nvim',
   -- dir = '~/code/sapnvim_project.nvim/',
-  dependencies = {
-    { 'fzf-lua' },
-    { 'nvim-tree/nvim-web-devicons' },
-    { 'echasnovski/mini.icons' },
-  },
   opts = function(_, _)
     return {
       --- The address where the project is stored
@@ -21,7 +16,7 @@ return {
       --- View details :h sessionoptions
       sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" },
 
-      auto_session_restore = 'last',
+      -- auto_session_restore = 'last',
 
       picker = 'telescope',
     }

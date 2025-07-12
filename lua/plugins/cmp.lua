@@ -36,10 +36,10 @@ return {
     completion = {
       keyword = { range = 'full' },
       ghost_text = { enabled = true },
-      documentation = { window = { border = 'single' }, auto_show = true },
+      -- documentation = { window = { border = 'single' }, auto_show = true },
       list = { selection = { preselect = false, auto_insert = false } },
       menu = {
-        border = 'single',
+        -- border = 'single',
         draw = {
           padding = 1,
           gap = 2,
@@ -68,6 +68,6 @@ return {
         },
       },
     },
-    signature = { enabled = true, window = { border = 'single' } },
+    signature = { enabled = true },
   },
 }

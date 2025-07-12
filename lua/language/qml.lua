@@ -4,7 +4,7 @@ return {
     opts = function(_, opts)
       if opts.ensure_installed ~= 'all' then
         opts.ensure_installed =
-          require('utils').list_insert_unique(opts.ensure_installed, { 'c', 'cpp', 'objc', 'cuda', 'cmake' })
+          require('utils').list_insert_unique(opts.ensure_installed, { 'qmljs' })
       end
     end,
   },
@@ -16,19 +16,19 @@ return {
       opts.ensure_installed = require('utils').list_insert_unique(opts.ensure_installed, { 'qmlls' })
     end,
   },
-  {
-    'williamboman/mason-lspconfig.nvim',
-    opts = function(_, opts)
-      opts.ensure_installed = require('utils').list_insert_unique(opts.ensure_installed, { 'clangd', 'neocmake', })
-    end,
-  },
+  -- {
+  --   'williamboman/mason-lspconfig.nvim',
+  --   opts = function(_, opts)
+  --     opts.ensure_installed = require('utils').list_insert_unique(opts.ensure_installed, { 'clangd', 'neocmake', })
+  --   end,
+  -- },
   {
     'neovim/nvim-lspconfig',
     opts = function(_, opts)
       local server = {
-        clangd = {
+        qmlls = {
           capabilities = { general = { positionEncodings = { 'utf-8' } } },
-          cmd = { 'clangd', '--clang-tidy' },
+          cmd = { 'qmlls' },
         },
       }
       opts.servers = require('utils').table_insert_unique_keys(opts.servers, server)

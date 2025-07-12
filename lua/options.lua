@@ -68,6 +68,7 @@ opt.wildmode = 'longest:full,full'
 opt.winminwidth = 5
 opt.wrap = false
 opt.writebackup = false
+opt.winborder = 'single'
 vim.bo.indentexpr = "nvim_treesitter#indent()"
 vim.opt.backspace:append { "nostop" }  -- don't stop backspace at insert
 if vim.fn.has "nvim-0.9" == 1 then
