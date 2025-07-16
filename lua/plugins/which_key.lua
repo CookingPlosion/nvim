@@ -1,24 +1,27 @@
 return {
   "folke/which-key.nvim",
-  event = "VeryLazy",
-  opts_extend = { "spec", "disable.ft", "disable.bt" },
-  config = function()
-    -- require("which-key").add({
-    --   { "<leader>f", group = "file" },  -- group
-    --   {
-    --     "<leader>b",
-    --     group = "buffers",
-    --     expand = function()
-    --       return require("which-key.extras").expand.buf()
-    --     end
-    --   },
-    -- })
-    require('which-key').setup({
-      icons = {
-        group = vim.g.icons_enabled ~= false and "" or "+",
-        rules = false,
-        separator = "-",
-      },
-    })
+  event = 'bufEnter',
+  keys = {
+    {
+      '<leader>?',
+      function()
+        require('which-key').show({ global = false })
+      end,
+      desc = 'Buffer local keymaps (which-key)',
+    },
+  },
+  opts = function(_, opts)
+    opts.win = {
+      no_overlap = false,
+    }
+    opts.icons = {
+      mappings = false,
+      group = vim.g.icons_enabled ~= false and "" or "+",
+      separator = "-",
+    }
+    opts.layout = {
+      width = { min = 20 }, -- min and max width of the columns
+      spacing = 3,          -- spacing between columns
+    }
   end,
 }

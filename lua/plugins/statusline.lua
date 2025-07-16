@@ -2,7 +2,19 @@
 return {
   {
     'akinsho/bufferline.nvim',
-    -- lazy = false,
+    event = 'BufEnter',
+    keys = {
+      { '<leader>br', '<cmd>BufferLineCloseRight<cr>',      desc = 'Close all buffers to the right' },
+      { '<leader>bl', '<cmd>BufferLineCloseLeft<cr>',       desc = 'Close all buffers to the left' },
+      { '<leader>bb', '<cmd>BufferLinePick<cr>',            desc = 'Select buffer from bufferline' },
+      { '<leader>bd', '<cmd>BufferLinePickClose<cr>',       desc = 'Close buffer from bufferline' },
+      { '<leader>bp', '<cmd>BufferLineTogglePin<cr>',       desc = 'Toggle pinned' },
+      { '<leader>bo', '<cmd>BufferLineCloseOthers<cr>',     desc = 'Close other buffers' },
+      { '<leader>bs', '<cmd>BufferLineSortByExtension<cr>', desc = 'Sort buffers' },
+      { '<tab>',      '<cmd>b#<cr>',                        desc = 'Previous buffer' },
+      { '[b',         '<cmd>BufferLineCycleNext<cr>',       desc = 'Next buffer' },
+      { ']b',         '<cmd>BufferLineCyclePrev<cr>',       desc = 'Previous buffer' },
+    },
     opts = function()
       return {
         options = {
