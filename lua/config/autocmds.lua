@@ -34,6 +34,17 @@ api.nvim_create_autocmd({ 'VimResized', 'WinEnter', 'WinNew', 'WinClosed', 'WinR
   end,
 })
 
+vim.api.nvim_create_autocmd({ 'BufEnter', 'BufNew' }, {
+  callback = function()
+    if vim.tbl_contains({ 'sagaoutline', 'help' }, vim.bo.filetype) then
+      vim.opt_local.list = false
+      vim.opt_local.number = false
+      vim.opt_local.foldcolumn = '0'
+      -- vim.opt_local.numberwidth = #tostring(vim.api.nvim_buf_line_count(0)) + 1
+    end
+  end,
+})
+
 if vim.fn.has('wsl') == 1 then
   api.nvim_create_augroup('Sapnvim_yank', { clear = true })
   api.nvim_create_autocmd('TextYankPost', {
@@ -54,6 +65,39 @@ api.nvim_create_autocmd("TextYankPost", {
     (vim.hl or vim.highlight).on_yank()
   end,
 })
+
+api.nvim_create_augroup('Sapnvim_diagnostic', { clear = true })
+api.nvim_create_autocmd({ 'BufLeave' }, {
+  desc = "Refresh qfline Diagnostic",
+  group = 'Sapnvim_diagnostic',
+  callback = function()
+    if vim.bo.filetype == 'qf' then
+      vim.cmd.wincmd('p')
+    end
+  end
+})
+
+-- -- 清空 quickfix 列表
+-- vim.fn.setqflist({}, 'r')
+--
+-- -- 设置诊断结果
+-- local diagnostics = vim.diagnostic.get(0)
+-- local qf_items = {}
+-- for _, d in ipairs(diagnostics) do
+--   table.insert(qf_items, {
+--     bufnr = d.bufnr,
+--     lnum = d.lnum + 1,
+--     col = d.col + 1,
+--     text = d.message,
+--     type = ({
+--       [vim.diagnostic.severity.ERROR] = 'E',
+--       [vim.diagnostic.severity.WARN] = 'W',
+--       [vim.diagnostic.severity.INFO] = 'I',
+--       [vim.diagnostic.severity.HINT] = 'H',
+--     })[d.severity] or 'E'
+--   })
+-- end
+-- vim.fn.setqflist(qf_items, 'r')
 -- 根据文件类型设置缩进
 -- vim.cmd [[
 --   augroup Indentation

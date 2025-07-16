@@ -1,11 +1,18 @@
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ';'
-vim.g.git_worktrees = nil
-vim.g.max_file = { size = 1024 * 100, lines = 10000 }
-
+local g = vim.g
 local opt = vim.opt
+
+g.mapleader = ' '
+g.maplocalleader = ' '
+g.git_worktrees = nil
+g.max_file = { size = 1024 * 100, lines = 10000 }
+g.icons_enabled = false
+g.diagnostic_line_info = false
+g.diagnostic_text_info = false
+g.diagnostic_qflist = false -- Use qflist to view diagnostic information in the buffer
+
 -- opt.formatexpr =
 -- opt.formatoptions =
+
 opt.autowrite = false -- 关闭离开buffer的自动保存
 opt.breakindent = true
 opt.clipboard = vim.env.SSH_TTY and '' or 'unnamedplus'
@@ -19,7 +26,7 @@ opt.cursorline = true
 opt.expandtab = true
 opt.fileencoding = 'utf-8'
 opt.fillchars = { foldopen = '', foldclose = '', fold = ' ', foldsep = ' ', diff = '/', eob = ' ' }
-opt.foldcolumn = '0'
+opt.foldcolumn = '1'
 opt.foldlevel = 99
 opt.foldlevelstart = -1
 opt.grepformat = '%f:%l:%c:%m'
@@ -33,6 +40,7 @@ opt.linebreak = true
 opt.list = true
 opt.mouse = 'a'
 opt.number = true
+opt.numberwidth = 1
 opt.preserveindent = true
 opt.pumblend = 100
 opt.pumheight = 10
@@ -57,7 +65,7 @@ opt.splitright = true
 opt.statuscolumn = ''
 opt.tabstop = 2
 opt.termguicolors = true
-opt.timeoutlen = 200
+opt.timeoutlen = 500
 opt.undodir = os.getenv('HOME') .. '/.config/nvim/cache/undodir'
 opt.undofile = true
 opt.undolevels = 10000
@@ -68,17 +76,14 @@ opt.wildmode = 'longest:full,full'
 opt.winminwidth = 5
 opt.wrap = false
 opt.writebackup = false
-opt.winborder = 'single'
-vim.bo.indentexpr = "nvim_treesitter#indent()"
-vim.opt.backspace:append { "nostop" }  -- don't stop backspace at insert
-if vim.fn.has "nvim-0.9" == 1 then
-	vim.opt.diffopt:append "linematch:60" -- enable linematch diff algorithm
+-- opt.winborder = 'single'
+vim.bo.indentexpr = 'nvim_treesitter#indent()'
+vim.opt.backspace:append { 'nostop' } -- don't stop backspace at insert
+if vim.fn.has 'nvim-0.9' == 1 then
+  vim.opt.diffopt:append 'linematch:60' -- enable linematch diff algorithm
 end
 -- 行结尾可以跳到下一行
 -- vim.opt.whichwrap = 'b,s,[,],h'
-
-
-
 
 -- vim.opt.viewoptions:remove "curdir"    -- disable saving current directory with views
 --   g = {
