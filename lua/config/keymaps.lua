@@ -32,7 +32,7 @@ vim.cmd([[
 -- Standard Operatons
 maps.v['<M-p>'] = { ":m '>-2<CR>gv=gv", desc = 'Move up row' }
 maps.v['<M-n>'] = { ":m '>+1<CR>gv=gv", desc = 'Move down row' }
-maps.i['jk'] = { '<ESC>', desc = 'Quit insert mode' }
+-- maps.i['jk'] = { '<ESC>', desc = 'Quit insert mode' }
 maps.n['j'] = { "v:count == 0 ? 'gj' : 'j'", expr = true, desc = 'Move cursor down' }
 maps.n['k'] = { "v:count == 0 ? 'gk' : 'k'", expr = true, desc = 'Move cursor up' }
 maps.n['<leader>w'] = { '<cmd>silent! w<cr>', desc = 'Save' }
