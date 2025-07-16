@@ -18,48 +18,48 @@ return {
     opts = function()
       return {
         options = {
-          separator_style = "slope",
-          indicator = { style = "none" },
+          separator_style = 'slope',
+          indicator = { style = 'none' },
           show_buffer_close_icons = false,
           show_close_icon = false,
           hover = {
             enabled = true,
             delay = 200,
-            reveal = { 'close' }
+            reveal = { 'close' },
           },
           highlights = {
             tab_selected = {
               bg = {
-                attribute = "fg",
-                highlight = "Pmenu",
+                attribute = 'fg',
+                highlight = 'Pmenu',
               },
             },
           },
           groups = {
             options = {
-              toggle_hidden_on_enter = true -- when you re-enter a hidden group this options re-opens that group so the buffer is visible
+              toggle_hidden_on_enter = true, -- when you re-enter a hidden group this options re-opens that group so the buffer is visible
             },
             items = {
               {
-                name = "Docs ",
-                highlight = { sp = "#24282D" },
-                icon = " ",
+                name = 'Docs ',
+                highlight = { sp = '#24282D' },
+                icon = ' ',
                 priority = 2,
                 auto_close = true,
                 matcher = function(buf)
                   local filename = vim.api.nvim_buf_get_name(buf.id)
-                  return filename:match("%.md") or filename:match("%.txt")
+                  return filename:match('%.md') or filename:match('%.txt')
                 end,
               },
               require('bufferline.groups').builtin.ungrouped,
               {
-                name = "Tests ",
-                highlight = { sp = "#586065" },
+                name = 'Tests ',
+                highlight = { sp = '#586065' },
                 auto_close = true,
-                icon = " ",
+                icon = ' ',
                 matcher = function(buf)
                   local filename = vim.api.nvim_buf_get_name(buf.id)
-                  return filename:match("test.*%.txt$") or filename:match("%test")
+                  return filename:match('test.*%.txt$') or filename:match('%test')
                 end,
               },
             },
@@ -74,13 +74,13 @@ return {
           vim.schedule(function()
             pcall(nvim_bufferline)
           end)
-        end
+        end,
       })
-    end
+    end,
   },
   {
     'nvim-lualine/lualine.nvim',
-    -- lazy = false,
+    event = 'BufEnter',
     config = function()
       -- Eviline config for lualine
       -- Author: shadmansaleh
@@ -127,7 +127,7 @@ return {
           component_separators = '',
           section_separators = '',
           always_divide_middle = false,
-          theme = "auto",
+          theme = 'auto',
           -- {
           --   -- We are going to use lualine_c an lualine_x as left and
           --   -- right section. Both are highlighted by c theme .  So we
@@ -171,7 +171,7 @@ return {
         function()
           return '▊'
         end,
-        color = { fg = colors.blue },  -- Sets highlighting of component
+        color = { fg = colors.blue },      -- Sets highlighting of component
         padding = { left = 0, right = 1 }, -- We don't need space before this
       }
 
@@ -210,12 +210,12 @@ return {
       }
 
       ins_left {
-        "filesize",
+        'filesize',
         fmt = trunc(0, 0, 60, true),
       }
 
       ins_left {
-        "filetype",
+        'filetype',
         icon_only = true,
         fmt = trunc(0, 0, 60, true),
         padding = { left = 0, right = 0 },
@@ -233,28 +233,30 @@ return {
         'diagnostics',
         fmt = trunc(0, 0, 100, true),
         sources = { 'nvim_diagnostic' },
-        symbols = { error = ' ', warn = ' ', info = ' ' },
+        symbols = { error = ' ', warn = ' ', info = ' ', hint = '󱠀 ' },
         diagnostics_color = {
           color_error = { fg = colors.red },
           color_warn = { fg = colors.yellow },
-          color_info = { fg = colors.cyan },
+          color_info = { fg = colors.blue },
+          color_hint = { fg = colors.cyan },
         },
         always_visible = false,
       }
 
       -- show recording
-      ins_left {
-        function()
-          local record = vim.fn.reg_recording()
-          if record ~= '' then
-            return string.format('@%s', record)
-          end
-          return ''
-        end,
-        icon = ' :',
-        color = { fg = colors.orange, gui = 'bold' },
-        fmt = trunc(0, 0, 100, true)
-      }
+      -- ins_left {
+      --   function()
+      --     local record = vim.fn.reg_recording()
+      --     if record ~= '' then
+      --       vim.notify(record)
+      --       return string.format(' :%s', record)
+      --     end
+      --     return ''
+      --   end,
+      --   -- icon = '',
+      --   color = { fg = colors.orange, gui = 'bold' },
+      --   fmt = trunc(0, 0, 100, true),
+      -- }
 
       ins_right {
         function()
@@ -363,5 +365,5 @@ return {
       -- Now don't forget to initialize lualine
       lualine.setup(config)
     end,
-  }
+  },
 }

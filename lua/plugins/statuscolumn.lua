@@ -29,12 +29,12 @@ end
 return {
   {
     'luukvbaal/statuscol.nvim',
-    -- lazy = false,
+    event = 'BufEnter',
     opts = function()
       local builtin = require('statuscol.builtin')
       return {
         relculright = true,
-        ft_ignore = { 'sagaoutline', 'help', 'noice', 'neo-tree', 'Trouble', 'lazy', 'man', 'terminal' },
+        ft_ignore = { 'help', 'man', 'terminal' },
         segments = {
           { sign = { namespace = { 'diagnostic/signs' }, colwidth = 3 }, click = 'v:lua.ScSa' },
           { text = { builtin.lnumfunc },                                 click = 'v:lua.ScLa' },
@@ -43,26 +43,11 @@ return {
         },
       }
     end,
-    config = function(_, opts)
-      vim.opt.foldcolumn = '1'
-      vim.opt.numberwidth = 1
-      require('statuscol').setup(opts)
-      vim.api.nvim_create_autocmd({ 'BufEnter', 'BufNew' }, {
-        callback = function()
-          if vim.tbl_contains(opts.ft_ignore, vim.bo.filetype) then
-            vim.opt_local.list = false
-            vim.opt_local.foldcolumn = '0'
-            vim.opt_local.number = false
-            -- vim.opt_local.numberwidth = #tostring(vim.api.nvim_buf_line_count(0)) + 1
-          end
-        end,
-      })
-    end,
   },
   {
     'kevinhwang91/nvim-ufo',
-    -- event = 'BufRead',
-    event = 'VeryLazy',
+    event = 'BufReadPost',
+    -- event = 'VeryLazy',
     opts = {
       fold_virt_text_handler = handler,
       preview = {
@@ -149,6 +134,6 @@ return {
   {
     'NMAC427/guess-indent.nvim',
     lazy = false,
-    opts = {}
-  }
+    opts = {},
+  },
 }

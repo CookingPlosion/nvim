@@ -2,7 +2,7 @@
 return {
   {
     "killitar/obscure.nvim",
-    -- event = 'VeryLazy',
+    -- event = 'BufEnter',
     -- dir = "~/code/obscure.nvim/",
     -- lazy = false,
     -- priority = 1000,
