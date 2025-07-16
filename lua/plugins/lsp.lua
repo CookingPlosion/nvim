@@ -29,7 +29,7 @@ return {
     'glepnir/lspsaga.nvim',
     event = 'LspAttach',
     opts = {
-      ui = { border = 'single', title = true },
+      ui = { title = true },
       breadcrumbs = { enable = true },
       -- implement = { enable = true, lang = { 'c' } },
     },

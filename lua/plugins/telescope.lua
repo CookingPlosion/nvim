@@ -112,7 +112,7 @@ return {
         },
         dynamic_preview_title = true,
         path_display = { truncate = 2 },
-        -- border = false
+        border = false
       },
       extensions = {
         file_browser = {
