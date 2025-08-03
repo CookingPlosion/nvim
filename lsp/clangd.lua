@@ -8,7 +8,11 @@ return {
   --   offsetEncoding = { 'utf-8', 'utf-16' },
   -- },
   -- cmd = { 'clangd', '--malloc-trim' },
-  cmd = { 'clangd', '--clang-tidy' },
+  cmd = {
+    'clangd',
+    '--clang-tidy',
+    '--header-insertion=never',
+  },
   filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
   root_markers = {
     '.clangd',
