@@ -53,7 +53,6 @@ opt.shiftwidth = 2
 opt.shortmess:append({ W = true, I = true, c = true, C = true })
 opt.showmatch = true
 opt.showmode = true
-opt.sidescrolloff = math.ceil(vim.api.nvim_win_get_width(0) / 4)
 opt.signcolumn = 'no'
 opt.smartcase = true
 opt.smartindent = true

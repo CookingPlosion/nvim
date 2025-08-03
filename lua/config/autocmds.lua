@@ -44,6 +44,22 @@ vim.api.nvim_create_autocmd({ 'BufEnter', 'BufNew' }, {
     end
   end,
 })
+api.nvim_create_autocmd({ 'VimResized', 'WinResized' }, {
+  desc = "Dynamically adjust scrolloff and sidescrolloff for the current window",
+  group = 'Sapnvim_bufs',
+  callback = function()
+    if not vim.tbl_contains({ 'terminal' }, vim.bo.filetype) then
+      local height = vim.api.nvim_win_get_height(0)
+      local width = vim.api.nvim_win_get_width(0)
+      if height > 2 then
+        vim.opt_local.scrolloff = math.ceil(height / 2)
+      end
+      if width > 4 then
+        vim.opt_local.sidescrolloff = math.ceil(width / 4)
+      end
+    end
+  end,
+})
 
 if vim.fn.has('wsl') == 1 then
   api.nvim_create_augroup('Sapnvim_yank', { clear = true })

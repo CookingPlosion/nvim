@@ -4,29 +4,29 @@ local maps = utils.empty_map_table()
 
 -- 将常用按键(容易错的)替换
 vim.cmd([[
-    cnoreabbrev Q q
-    cnoreabbrev q1 q!
-    cnoreabbrev Q! q!
-    cnoreabbrev Q1 q!
-    cnoreabbrev Qa qa
-    cnoreabbrev Qa! qa!
-    cnoreabbrev Qa1 qa!
-    cnoreabbrev Qall qall
-    cnoreabbrev Qall! qall!
-    cnoreabbrev W w
-    cnoreabbrev W! w!
-    cnoreabbrev w1 w!
-    cnoreabbrev W1 w!
-    cnoreabbrev WQ wq
-    cnoreabbrev WQ1 wq!
-    cnoreabbrev Wa wa
-    cnoreabbrev Wq wq
-    cnoreabbrev Wq1 wq!
-    cnoreabbrev wQ wq
-    cnoreabbrev wQ1 wq!
-    cnoreabbrev wq1 wq!
-    cnoreabbrev Y y
-    cnoreabbrev N n
+  cnoreabbrev Q q
+  cnoreabbrev q1 q!
+  cnoreabbrev Q! q!
+  cnoreabbrev Q1 q!
+  cnoreabbrev Qa qa
+  cnoreabbrev Qa! qa!
+  cnoreabbrev Qa1 qa!
+  cnoreabbrev Qall qall
+  cnoreabbrev Qall! qall!
+  cnoreabbrev W w
+  cnoreabbrev W! w!
+  cnoreabbrev w1 w!
+  cnoreabbrev W1 w!
+  cnoreabbrev WQ wq
+  cnoreabbrev WQ1 wq!
+  cnoreabbrev Wa wa
+  cnoreabbrev Wq wq
+  cnoreabbrev Wq1 wq!
+  cnoreabbrev wQ wq
+  cnoreabbrev wQ1 wq!
+  cnoreabbrev wq1 wq!
+  cnoreabbrev Y y
+  cnoreabbrev N n
 ]])
 
 -- Standard Operatons
