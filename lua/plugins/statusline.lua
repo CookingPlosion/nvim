@@ -178,7 +178,7 @@ return {
       ins_left {
         -- mode component
         function()
-          return '' -- 
+          return '' -- 
         end,
         color = function()
           -- auto change color according to neovims mode
@@ -206,19 +206,20 @@ return {
           }
           return { fg = mode_color[vim.fn.mode()] }
         end,
-        padding = { right = 1 },
+        padding = { left = 0, right = 1 },
       }
 
       ins_left {
         'filesize',
         fmt = trunc(0, 0, 60, true),
+        padding = { left = 1, right = 1 },
       }
 
       ins_left {
         'filetype',
         icon_only = true,
         fmt = trunc(0, 0, 60, true),
-        padding = { left = 0, right = 0 },
+        padding = { left = 1, right = 1 },
       }
 
       -- ins_left { 'location', fmt = trunc(0, 0, 60, true), }
@@ -227,6 +228,7 @@ return {
         'progress',
         color = { fg = colors.fg, gui = 'bold' },
         fmt = trunc(0, 0, 30, true),
+        padding = { left = 1, right = 1 },
       }
 
       ins_left {
@@ -241,6 +243,7 @@ return {
           color_hint = { fg = colors.cyan },
         },
         always_visible = false,
+        padding = { left = 1, right = 1 },
       }
 
       -- show recording
@@ -313,7 +316,9 @@ return {
           end
         end,
         color = { fg = colors.red, gui = 'bold' },
-        fmt = trunc(0, 0, 80, true)
+        fmt = trunc(0, 0, 80, true),
+        always_visible = true,
+        padding = { left = 1, right = 1 },
       }
 
       -- Add components to right sections
@@ -321,14 +326,6 @@ return {
         'o:encoding', -- option component same as &encoding in viml
         fmt = trunc(0, 0, 50, true),
         -- cond = conditions.hide_in_width,
-        padding = { left = 0, right = 0 },
-        color = { fg = colors.green, gui = 'bold' },
-      }
-
-      ins_right {
-        'fileformat',
-        fmt = trunc(0, 0, 70, true),
-        icons_enabled = true, -- I think icons are cool but Eviline doesn't have them. sigh
         color = { fg = colors.green, gui = 'bold' },
         padding = { left = 1, right = 1 },
       }
@@ -351,6 +348,14 @@ return {
           modified = { fg = colors.orange },
           removed = { fg = colors.red },
         },
+        padding = { left = 1, right = 1 },
+      }
+
+      ins_right {
+        'fileformat',
+        fmt = trunc(0, 0, 70, true),
+        icons_enabled = true, -- I think icons are cool but Eviline doesn't have them. sigh
+        color = { fg = colors.green, gui = 'bold' },
         padding = { left = 1, right = 0 },
       }
 
