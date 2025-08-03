@@ -5,11 +5,11 @@ vim.api.nvim_command([[ au BufReadPost * if line("'\"") > 1 && line("'\"") <= li
 
 -- 取消换行注释
 -- 用o换行不要延续注释
-api.nvim_create_augroup('Sapnvim_comments_autocmd_group', { clear = true })
+api.nvim_create_augroup('Sapnvim_edit', { clear = true })
 api.nvim_create_autocmd({ 'BufEnter' }, {
   desc = "O and o, do not continue with the comment, but continue when you hit the enter key.",
   pattern = { '*' },
-  group = 'Sapnvim_comments_autocmd_group',
+  group = 'Sapnvim_edit',
   callback = function()
     vim.opt.formatoptions = vim.opt.formatoptions
         - 'o' -- O and o, don't continue comments
@@ -17,24 +17,20 @@ api.nvim_create_autocmd({ 'BufEnter' }, {
   end,
 })
 
+api.nvim_create_augroup('unlist_quickfist', { clear = true })
 api.nvim_create_autocmd('FileType', {
   desc = "Unlist quickfist buffers",
-  group = api.nvim_create_augroup('unlist_quickfist', { clear = true }),
+  group = 'unlist_quickfist',
   pattern = 'qf',
   callback = function()
     vim.opt_local.buflisted = false
   end,
 })
 
-api.nvim_create_autocmd({ 'VimResized', 'WinEnter', 'WinNew', 'WinClosed', 'WinResized' }, {
-  desc = "Dynamically adjust scrolloff and sidescrolloff based on window size changes",
-  callback = function()
-    vim.opt.scrolloff = math.ceil(vim.api.nvim_win_get_height(0) / 2)
-    vim.opt.sidescrolloff = math.ceil(vim.api.nvim_win_get_width(0) / 4)
-  end,
-})
-
-vim.api.nvim_create_autocmd({ 'BufEnter', 'BufNew' }, {
+api.nvim_create_augroup('Sapnvim_bufs', { clear = true })
+api.nvim_create_autocmd({ 'BufEnter', 'BufNew' }, {
+  desc = "Ignore nvim options in the specified buffer",
+  group = 'Sapnvim_bufs',
   callback = function()
     if vim.tbl_contains({ 'sagaoutline', 'help' }, vim.bo.filetype) then
       vim.opt_local.list = false
