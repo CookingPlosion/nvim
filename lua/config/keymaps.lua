@@ -52,17 +52,38 @@ maps.n['\\'] = { '<cmd>split<cr>', desc = 'Horizontal Split' }
 -- Manage Buffers
 maps.n['<leader>c'] = {
   function()
-    utils.close(0, false)
+    if vim.api.nvim_get_option_value('filetype', { buf = 0 }) == 'terminal' then
+      utils.term.destroy(0, false)
+    else
+      utils.close(0, false)
+    end
   end,
   desc = 'Close buffer',
 }
 maps.n['<leader>C'] = {
   function()
-    require 'utils.buffer'.close(0, true)
+    if vim.api.nvim_get_option_value('filetype', { buf = 0 }) == 'terminal' then
+      utils.term.destroy(0, false)
+    else
+      utils.close(0, false)
+    end
   end,
   desc = 'Force close buffer',
 }
 
+-- terminal module
+maps.n['<leader>t'] = {
+  function()
+    utils.term.toggle('main', { startinsert = false })
+  end,
+  desc = 'Toggle term',
+}
+maps.n['<leader>e'] = {
+  function()
+    utils.term.get('yazi'):toggleTerm({ arg = 'yazi' })
+  end,
+  desc = 'Toggle yazi',
+}
 -- Navigate tabs
 -- maps.n[']t'] = {
 --   function()

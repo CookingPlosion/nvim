@@ -58,13 +58,13 @@ return {
         end,
         desc = 'Find nvim config files',
       },
-      {
-        '<leader>e',
-        function()
-          telescope_file_browser()
-        end,
-        desc = 'Specifying search directories',
-      },
+      -- {
+      --   '<leader>e',
+      --   function()
+      --     telescope_file_browser()
+      --   end,
+      --   desc = 'Specifying search directories',
+      -- },
       {
         '<leader>E',
         function()

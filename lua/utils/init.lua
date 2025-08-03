@@ -120,4 +120,6 @@ function M.close(bufnr, force)
   vim.cmd(("silent! %s %d"):format((force or buftype == "terminal") and "bdelete!" or "confirm bdelete", bufnr))
 end
 
+M.term = require('utils.term')
+
 return M
