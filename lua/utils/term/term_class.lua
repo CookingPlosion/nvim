@@ -1,17 +1,35 @@
 -- utils/term.lua
 local Term = {}
 Term.__index = Term
+local defaults = {
+  layout = 'only',
+  size = 0,
+  arg = '',
+  startinsert = true,
+}
 
-function Term:new(opts)
+function Term:validateOpts(opts)
+  for k, v in pairs(opts) do
+    if defaults[k] == nil then
+      error(k .. " is not a valid configuration option")
+      return false
+    end
+    if type(defaults[k]) ~= type(v) then
+      error("Invalid type for " .. k .. ": expected " .. type(defaults[k]) .. ", got " .. type(v))
+      return false
+    end
+  end
+  return true
+end
+
+function Term:new(name, opts)
+  name = name or 'SapnvimTmpTerm'
   opts = opts or {}
+  assert(self:validateOpts(opts))
   local obj = {
+    name = name,
     termBufnr = nil,
-    defaults = {
-      layout = opts.layout or 'only',
-      size = opts.size or 0,
-      arg = opts.arg or '',
-      startinsert = opts.startinsert or true,
-    }
+    defaults = vim.tbl_deep_extend('force', {}, defaults, opts)
   }
   setmetatable(obj, self)
   return obj
@@ -73,7 +91,7 @@ function Term:createTerm()
 end
 
 function Term:showTerm()
-  if self.termBufnr and vim.api.nvim_buf_is_valid(self.termBufnr) and curBufnr == self.termBufnr then
+  if self.termBufnr and vim.api.nvim_buf_is_valid(self.termBufnr) then
     local cmdStr = 'buffer ' .. self.termBufnr
     self:cmd(cmdStr)
     self:autoStartInsert()
@@ -92,10 +110,7 @@ function Term:hideTerm()
   end
 end
 
-function Term:toggleTerm(opts)
-  if opts and not self:setLayout(opts) then
-    return false
-  end
+function Term:toggleTerm()
   local curBufnr = vim.api.nvim_get_current_buf()
   if self.termBufnr and vim.api.nvim_buf_is_valid(self.termBufnr) and curBufnr == self.termBufnr then
     self:hideTerm()

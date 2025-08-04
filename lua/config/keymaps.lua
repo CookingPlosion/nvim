@@ -63,9 +63,9 @@ maps.n['<leader>c'] = {
 maps.n['<leader>C'] = {
   function()
     if vim.api.nvim_get_option_value('filetype', { buf = 0 }) == 'terminal' then
-      utils.term.destroy(0, false)
+      utils.term.destroy(0, true)
     else
-      utils.close(0, false)
+      utils.close(0, true)
     end
   end,
   desc = 'Force close buffer',
@@ -80,7 +80,7 @@ maps.n['<leader>t'] = {
 }
 maps.n['<leader>e'] = {
   function()
-    utils.term.get('yazi'):toggleTerm({ arg = 'yazi' })
+    utils.term.toggle('yazi', { arg = 'yazi' })
   end,
   desc = 'Toggle yazi',
 }

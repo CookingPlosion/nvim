@@ -2,31 +2,30 @@
 --- Examples:
 --- -- Example 1: toggle yazi.
 ---   local term = require('utils.term')
----   local myterm = term.get('myterm', { arg = 'yazi', startinsert = true })
----   vim.keymap.set('n', '<leader>e', function() myterm:toggleTerm() end, { silent = true })
----
---- -- Example 2: toggle yazi, override opts.
----   local term = require('utils.term')
----   local myterm = term.get('myterm')
 ---   vim.keymap.set('n', '<leader>e', function()
----     myterm:toggleTerm({ arg = 'yazi', startinsert = true })
+--      term.toggle('yazi', { arg = 'yazi', startinsert = true })
+---   end, { silent = true })
+---
+--- -- Example 2: toggle terminal.
+---   local term = require('utils.term')
+---   vim.keymap.set('n', '<leader>e', function()
+---     term.toggle('myterm')
 ---   end, { silent = true })
 ---
 --- -- Example 3: Close instance.
 ---   local term = require('utils.term')
----   local myterm = term.get('myterm')
 ---   vim.keymap.set('n', '<leader>c', function()
 ---     if vim.api.nvim_get_option_value('filetype', { buf = 0 }) == 'terminal' then
----       utils.term.destroy(0, false)
+---       utils.term.destroy(0, false) - false is no force
 ---     else
----       vim.cmd('bd!')
+---       vim.cmd('bd')
 ---     end
 ---   end, { silent = true })
 
 local term = require('utils.term.term_class')
 local M = {}
 local instances = {}
-local bufnr_to_name = {}
+local bufnrToName = {}
 
 do
   local serverPipe = vim.env.HOME .. '/.cache/nvim/server.pipe'
@@ -34,22 +33,20 @@ do
   vim.cmd(callCmd)
 end
 
---- Get or create Term instances.
----@param name string unique instances name.
----@param opts table? Default configuration fpr initial creation.
-function M.get(name, opts)
-  if not instances[name] then
-    instances[name] = term:new(opts or {})
-    -- 记录映射
-    if instances[name].termBufnr then
-      bufnr_to_name[instances[name].termBufnr] = name
-    end
-  end
-  return instances[name]
+--- debug, Show existing instances
+function M.showInstances()
+  local debug = {}
+  table.insert(debug, instances)
+  table.insert(debug, bufnrToName)
+  vim.notify(vim.inspect(debug))
 end
 
-function M.showInstances()
-  vim.notify(vim.inspect(instances))
+--- Register the name and bufnr id of an existing instance to the bufnrToname table
+---@param instance table? Instances that need to be registered
+local function registerBufnr(instance)
+  if instance.termBufnr and instance.name then
+    bufnrToName[instance.termBufnr] = instance.name
+  end
 end
 
 --- Destroy term instance
@@ -58,12 +55,11 @@ end
 function M.destroy(target, force)
   target = target or 0
   force = force or false
-  if target == 0 then target = vim.api.nvim_get_current_buf() end
 
   local name = target
   if type(target) == "number" then
-    -- 按 bufnr 查找实例名
-    name = bufnr_to_name[target]
+    if target == 0 then target = vim.api.nvim_get_current_buf() end
+    name = bufnrToName[target]
     if not name then return end
     local buf_type = vim.api.nvim_get_option_value('filetype', { buf = target })
     if not force and buf_type ~= 'terminal' then
@@ -74,7 +70,7 @@ function M.destroy(target, force)
     local bufnr = instances[name].termBufnr
     instances[name]:destroy(force)
     instances[name] = nil
-    if bufnr then bufnr_to_name[bufnr] = nil end
+    if bufnr then bufnrToName[bufnr] = nil end
   end
 end
 
@@ -82,32 +78,40 @@ end
 ---@param name string unique instances name.
 ---@param opts table? Default configuration fpr initial creation.
 function M.toggle(name, opts)
-  if not instances[name] or not instances[name].defaults then
-    instances[name] = term:new(opts or {})
-    if instances[name].termBufnr then
-      bufnr_to_name[instances[name].termBufnr] = name
-      vim.notify(vim.inspect(bufnr_to_name))
-    end
+  if not instances[name] then
+    instances[name] = term:new(name, opts or {})
   end
-  instances[name]:toggleTerm(opts)
+  -- 如果 buffer 没创建或失效，则创建 buffer并显示，不执行 toggle
+  if not instances[name].termBufnr or not vim.api.nvim_buf_is_valid(instances[name].termBufnr) then
+    instances[name]:createTerm()
+    registerBufnr(instances[name])
+    return
+  end
+  -- 否则执行 toggleTerm 切换显示/隐藏
+  instances[name]:toggleTerm()
 end
 
 vim.api.nvim_create_augroup('Sapnvim_term', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'terminal' },
+  desc = "Use <q> to quit the terminal buffer instance",
   group = 'Sapnvim_term',
   callback = function()
     vim.keymap.set('n', 'q', '<cmd>bd!<cr>', { buffer = true, silent = true })
   end
 })
-vim.api.nvim_create_autocmd('BufDelete', {
+vim.api.nvim_create_autocmd('BufWipeout', {
   group = 'Sapnvim_term',
+  desc = "Cleanup terminal buffer instances when wiped out",
   callback = function(args)
     local bufnr = args.buf
-    local name = bufnr_to_name[bufnr]
-    if name and instances[name] then
-      instances[name] = nil
-      bufnr_to_name[bufnr] = nil
+    local filetype = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
+    if filetype == 'terminal' then
+      local name = bufnrToName[bufnr]
+      if name and instances[name] then
+        instances[name] = nil
+        bufnrToName[bufnr] = nil
+      end
     end
   end
 })
