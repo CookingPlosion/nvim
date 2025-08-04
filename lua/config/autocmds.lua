@@ -17,27 +17,17 @@ api.nvim_create_autocmd({ 'BufEnter' }, {
   end,
 })
 
-api.nvim_create_augroup('unlist_quickfist', { clear = true })
-api.nvim_create_autocmd('FileType', {
-  desc = "Unlist quickfist buffers",
-  group = 'unlist_quickfist',
-  pattern = 'qf',
-  callback = function()
-    vim.opt_local.buflisted = false
-  end,
-})
-
 api.nvim_create_augroup('Sapnvim_bufs', { clear = true })
-api.nvim_create_autocmd({ 'BufEnter', 'BufNew' }, {
-  desc = "Ignore nvim options in the specified buffer",
+api.nvim_create_autocmd({ 'FileType' }, {
+  desc = "Auto close some filetypes with <q>",
   group = 'Sapnvim_bufs',
+  pattern = { 'sagaoutline', 'help', 'qf' },
   callback = function()
     if vim.tbl_contains({ 'sagaoutline', 'help' }, vim.bo.filetype) then
-      vim.opt_local.list = false
-      vim.opt_local.number = false
       vim.opt_local.foldcolumn = '0'
-      -- vim.opt_local.numberwidth = #tostring(vim.api.nvim_buf_line_count(0)) + 1
     end
+    vim.opt_local.list = false
+    vim.keymap.set('n', 'q', '<cmd>close<cr>', { silent = true, buffer = true })
   end,
 })
 api.nvim_create_autocmd({ 'VimResized', 'WinResized' }, {
@@ -57,8 +47,17 @@ api.nvim_create_autocmd({ 'VimResized', 'WinResized' }, {
   end,
 })
 
+-- Highlight on yank
+api.nvim_create_augroup('Sapnvim_yank', { clear = true })
+api.nvim_create_autocmd("TextYankPost", {
+  desc = "highlight on yank",
+  group = 'Sapnvim_yank',
+  callback = function()
+    (vim.hl or vim.highlight).on_yank()
+  end,
+})
+-- wsl ceil
 if vim.fn.has('wsl') == 1 then
-  api.nvim_create_augroup('Sapnvim_yank', { clear = true })
   api.nvim_create_autocmd('TextYankPost', {
     desc = "Copying text using windows clip.exe",
     group = 'Sapnvim_yank',
@@ -67,16 +66,6 @@ if vim.fn.has('wsl') == 1 then
     end,
   })
 end
-
--- Highlight on yank
-api.nvim_create_augroup('Sapnvim_highlight_yank', { clear = true })
-api.nvim_create_autocmd("TextYankPost", {
-  desc = "highlight on yank",
-  group = 'Sapnvim_highlight_yank',
-  callback = function()
-    (vim.hl or vim.highlight).on_yank()
-  end,
-})
 
 api.nvim_create_augroup('Sapnvim_diagnostic', { clear = true })
 api.nvim_create_autocmd({ 'BufLeave' }, {
