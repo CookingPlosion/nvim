@@ -28,7 +28,8 @@ local instances = {}
 local bufnrToName = {}
 
 do
-  local serverPipe = vim.env.HOME .. '/.cache/nvim/server.pipe'
+  local pid = vim.fn.getpid()
+  local serverPipe = vim.fn.stdpath('cache') .. '/server_' .. pid .. '.pipe'
   local callCmd = string.format('call serverstart("%s")', serverPipe)
   vim.cmd(callCmd)
 end
@@ -42,7 +43,7 @@ function M.showInstances()
 end
 
 --- Register the name and bufnr id of an existing instance to the bufnrToname table
----@param instance table? Instances that need to be registered
+---@param instance table Instances that need to be registered
 local function registerBufnr(instance)
   if instance.termBufnr and instance.name then
     bufnrToName[instance.termBufnr] = instance.name
