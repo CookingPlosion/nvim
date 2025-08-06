@@ -15,7 +15,7 @@
     </p>
 </div>
 
-<img width="1406" height="964" alt="屏幕截图_20250807_030514" src="https://github.com/user-attachments/assets/0cfe11ef-a122-4bc6-a937-a9a941c5a9ef" />
+<img width=100% alt="屏幕截图_20250807_030514" src="https://github.com/user-attachments/assets/0cfe11ef-a122-4bc6-a937-a9a941c5a9ef" />
 
 # ✨ Features
 - [`✔️` nvim-tree:](https://github.com/nvim-neo-tree/neo-tree.nvim) **nvim**下更美观的文件树,支持任意位置.<details>
