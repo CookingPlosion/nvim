@@ -1,8 +1,13 @@
-# nvim 配置
+<div align="center">
+    <h1>A Neovim Config</h1>
+    <p>
+        <img src="https://github.com/user-attachments/assets/3a026901-5586-4320-a0c8-6217b3689a0e" width="300" />
+    </p>
+</div>
 
-Sapnvim（Simple and practical neovim）是一个自定义的[`nvim`](https://neovim.io)配置,目标是打造一个个性化的`IDE` 
+This repository is a collection of configurations for Neovim and community plugins. The goal is to create a ready-to-use and fully functional Neovim setup by relying mostly on built-in features, and to keep extra dependencies to a minimum except for essential functionality.  
 
-![预览图片](https://gitee.com/zhipeng33/nvim/raw/master/images/nvim.png)
+<img width="1406" height="964" alt="屏幕截图_20250807_030514" src="https://github.com/user-attachments/assets/0cfe11ef-a122-4bc6-a937-a9a941c5a9ef" />
 
 # ✨ Features
 - [`✔️` nvim-tree:](https://github.com/nvim-neo-tree/neo-tree.nvim) **nvim**下更美观的文件树,支持任意位置.<details>
