@@ -1,11 +1,19 @@
 <div align="center">
     <h1>A Neovim Config</h1>
     <p>
+        <a>[English]</a>
+        <a>|</a>
+        <a href="./readme/README_cn.md">[简体中文]</a>
+    </p>
+    <p>
         <img src="https://github.com/user-attachments/assets/3a026901-5586-4320-a0c8-6217b3689a0e" width="300" />
     </p>
+    <p>
+        This repository is a collection of configurations for Neovim and community plugins. 
+        The goal is to create a ready-to-use and fully functional Neovim setup by relying mostly on built-in features, 
+        and to keep extra dependencies to a minimum except for essential functionality.  
+    </p>
 </div>
-
-This repository is a collection of configurations for Neovim and community plugins. The goal is to create a ready-to-use and fully functional Neovim setup by relying mostly on built-in features, and to keep extra dependencies to a minimum except for essential functionality.  
 
 <img width="1406" height="964" alt="屏幕截图_20250807_030514" src="https://github.com/user-attachments/assets/0cfe11ef-a122-4bc6-a937-a9a941c5a9ef" />
 
