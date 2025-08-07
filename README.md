@@ -1,11 +1,6 @@
 <div align="center">
     <h1>A Neovim Config</h1>
     <p>
-        <a>[English]</a>
-        <a>|</a>
-        <a href="./readme/README_cn.md">[简体中文]</a>
-    </p>
-    <p>
 <!--         <img src="https://github.com/user-attachments/assets/3a026901-5586-4320-a0c8-6217b3689a0e" width="300" /> -->
 <!--         <img alt="Copilot_20250807_193925" src="https://github.com/user-attachments/assets/61813164-3c88-4454-90c5-7cc3c56a754c" width="300" /> -->
         <img alt="Gemini_Generated_Image_uxud1auxud1auxud" src="https://github.com/user-attachments/assets/603dc7e4-1afd-43cf-81b1-677932334a74" width=100% />
@@ -14,6 +9,11 @@
         <img alt="Static Badge" src="https://img.shields.io/badge/NEOVIM-%3E%3D0.11-blue">
         <img alt="Static Badge" src="https://img.shields.io/badge/OS-Linux-auto">
         <img alt="Static Badge" src="https://img.shields.io/badge/OS-Linux-auto">
+    </p>
+    <p>
+        <a>[English]</a>
+        <a>|</a>
+        <a href="./readme/README_cn.md">[简体中文]</a>
     </p>
     <p>
         This repository is a collection of configurations for Neovim and community plugins. 
