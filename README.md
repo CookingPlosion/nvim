@@ -11,6 +11,11 @@
         <img alt="Gemini_Generated_Image_uxud1auxud1auxud" src="https://github.com/user-attachments/assets/603dc7e4-1afd-43cf-81b1-677932334a74" width=100% />
     </p>
     <p>
+        <img alt="Static Badge" src="https://img.shields.io/badge/NEOVIM-%3E%3D0.11-blue">
+        <img alt="Static Badge" src="https://img.shields.io/badge/OS-Linux-auto">
+        <img alt="Static Badge" src="https://img.shields.io/badge/OS-Linux-auto">
+    </p>
+    <p>
         This repository is a collection of configurations for Neovim and community plugins. 
         The goal is to create a ready-to-use and fully functional Neovim setup by relying mostly on built-in features, 
         and to keep extra dependencies to a minimum except for essential functionality.  
