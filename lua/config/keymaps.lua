@@ -74,13 +74,13 @@ maps.n['<leader>C'] = {
 -- terminal module
 maps.n['<leader>t'] = {
   function()
-    utils.term.toggle('main', { startinsert = false })
+    utils.term.toggle({ name = 'main', opts = { cmdStr = { 'zsh' }, startinsert = false } })
   end,
   desc = 'Toggle term',
 }
 maps.n['<leader>e'] = {
   function()
-    utils.term.toggle('yazi', { arg = 'yazi' })
+    utils.term.toggle({ name = 'yazi', opts = { cmdStr = { 'zsh', '-c', 'yazi' } --[[ , arg = 'yazi' ]] } })
   end,
   desc = 'Toggle yazi',
 }

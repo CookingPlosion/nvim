@@ -3,13 +3,13 @@
 --- -- Example 1: toggle yazi.
 ---   local term = require('utils.term')
 ---   vim.keymap.set('n', '<leader>e', function()
---      term.toggle('yazi', { arg = 'yazi', startinsert = true })
+--      term.toggle({ name = 'yazi', opts = { cmdStr = { 'zsh', '-c', 'yazi' } } })
 ---   end, { silent = true })
 ---
 --- -- Example 2: toggle terminal.
 ---   local term = require('utils.term')
 ---   vim.keymap.set('n', '<leader>e', function()
----     term.toggle('myterm')
+---     term.toggle({ 'myterm' })
 ---   end, { silent = true })
 ---
 --- -- Example 3: Close instance.
@@ -76,11 +76,11 @@ function M.destroy(target, force)
 end
 
 --- Toggle term instance
----@param name string unique instances name.
----@param opts table? Default configuration fpr initial creation.
-function M.toggle(name, opts)
+---@param opts table Default configuration fpr initial creation.
+function M.toggle(opts)
+  local name = opts.name
   if not instances[name] then
-    instances[name] = term:new(name, opts or {})
+    instances[name] = term:new(opts or {})
   end
   -- 如果 buffer 没创建或失效，则创建 buffer并显示，不执行 toggle
   if not instances[name].termBufnr or not vim.api.nvim_buf_is_valid(instances[name].termBufnr) then

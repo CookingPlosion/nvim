@@ -1,14 +1,19 @@
 -- utils/term.lua
 local Term = {}
-Term.__index = Term
 local defaults = {
   layout = 'only',
   size = 0,
+  cmdStr = {},
   arg = '',
   startinsert = true,
 }
 
-function Term:validateOpts(opts)
+local env = {
+  EDITOR = 'nvim --server ' .. vim.env.HOME .. '/.cache/nvim/server_' .. vim.fn.getpid() .. '.pipe --remote '
+}
+
+local function validateOpts(opts)
+  if opts == nil then return true end
   for k, v in pairs(opts) do
     if defaults[k] == nil then
       error(k .. " is not a valid configuration option")
@@ -22,17 +27,18 @@ function Term:validateOpts(opts)
   return true
 end
 
-function Term:new(name, opts)
-  name = name or 'SapnvimTmpTerm'
-  opts = opts or {}
-  assert(self:validateOpts(opts))
-  local obj = {
-    name = name,
-    termBufnr = nil,
-    defaults = vim.tbl_deep_extend('force', {}, defaults, opts)
-  }
-  setmetatable(obj, self)
-  return obj
+function Term:new(term)
+  term = term or {}
+  self.__index = self
+  term.name = term.name or 'SapnvimTmpTerm'
+  term.termBufnr = term.termBufnr or nil
+  term.env = vim.F.if_nil(term.env, env)
+  term.opts = term.opts or {}
+  assert(validateOpts(term.opts))
+  term.opts = vim.tbl_deep_extend('force', {}, defaults, term.opts)
+  term.on_stdout = function() end
+  term.on_stderr = function() end
+  return setmetatable(term, self)
 end
 
 function Term:destroy(force)
@@ -45,49 +51,52 @@ function Term:destroy(force)
     self.termBufnr = nil
   end
   -- Cleanup status
-  self.defaults = nil
+  self.opts = nil
 end
 
 function Term:setLayout(opts)
   for k, _ in pairs(opts) do
-    if self.defaults[k] == nil then
+    if self.opts[k] == nil then
       error(k .. " is not a valid configuration option")
       return false
     end
-    local expectedType = type(self.defaults[k])
+    local expectedType = type(self.opts[k])
     local actualType = type(opts[k])
     if expectedType ~= actualType then
       error("Invalid type for " .. k .. ": expected " .. expectedType .. ", got " .. actualType)
       return false
     end
   end
-  self.defaults = vim.tbl_deep_extend('force', {}, self.defaults, opts or {})
+  self.opts = vim.tbl_deep_extend('force', {}, self.defaults, opts or {})
   return true
 end
 
 function Term:cmd(cmdStr)
-  if self.defaults.layout ~= 'only' then
-    cmdStr = self.defaults.layout .. ' | resize 10 | ' .. cmdStr
+  if self.opts.layout ~= 'only' then
+    cmdStr = self.opts.layout .. ' | resize 10 | ' .. cmdStr
   end
   vim.cmd(cmdStr)
 end
 
 function Term:autoStartInsert()
-  if self.defaults.startinsert then
+  if self.opts.startinsert then
     vim.cmd('startinsert')
   end
 end
 
 function Term:createTerm()
-  local cmdStr = 'term'
-  if self.defaults.arg ~= '' and self.defaults.arg ~= nil then
-    cmdStr = cmdStr .. ' ' .. self.defaults.arg
-  end
-  self:cmd(cmdStr)
-  self.termBufnr = vim.api.nvim_get_current_buf()
-  self:autoStartInsert()
+  local bufnr = vim.api.nvim_create_buf(false, true)
+  self.termBufnr = bufnr
   vim.api.nvim_set_option_value('filetype', 'terminal', { buf = self.termBufnr })
-  vim.api.nvim_set_option_value('buflisted', false, { buf = self.termBufnr })
+  vim.api.nvim_set_current_buf(self.termBufnr)
+  local job_id = vim.fn.jobstart(self.opts.cmdStr, {
+    term = true,
+    env = self.env,
+    on_stdout = self.on_stdout,
+    on_stderr = self.on_stderr
+  })
+  self:autoStartInsert()
+  print(job_id)
 end
 
 function Term:showTerm()
@@ -102,7 +111,7 @@ end
 
 function Term:hideTerm()
   if self.termBufnr and self.termBufnr == vim.api.nvim_get_current_buf() then
-    if self.defaults.layout == 'only' then
+    if self.opts.layout == 'only' then
       vim.cmd('b#')
     else
       vim.cmd('hide')
