@@ -6,9 +6,11 @@
         <img alt="Gemini_Generated_Image_uxud1auxud1auxud" src="https://github.com/user-attachments/assets/603dc7e4-1afd-43cf-81b1-677932334a74" width=100% />
     </p>
     <p>
-        <img alt="Static Badge" src="https://img.shields.io/badge/NEOVIM-%3E%3D0.11-blue">
-        <img alt="Static Badge" src="https://img.shields.io/badge/OS-Linux-auto">
-        <img alt="Static Badge" src="https://img.shields.io/badge/OS-Linux-auto">
+        <img alt="Static Badge" src="https://img.shields.io/badge/NEOVIM-%3E%3D0.11-auto?logo=neovim">
+        <img alt="Static Badge" src="https://img.shields.io/badge/Linux-auto?logo=linux">
+        <img alt="Lua" src="https://img.shields.io/badge/Lua-2C2D72?logo=lua&logoColor=white&style=flat">
+        <img alt="Static Badge" src="https://img.shields.io/badge/LSP-auto?logo=lsp">
+        <img alt="Static Badge" src="https://img.shields.io/badge/Treesitter-green?logo=Gumtree">
     </p>
     <p>
         <a>[English]</a>
