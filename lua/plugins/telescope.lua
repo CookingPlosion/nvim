@@ -8,33 +8,46 @@ return {
   },
   keys = function()
     local builtin = require('telescope.builtin')
-    local function telescope_file_browser(input)
-      if nil == input then
-        input = vim.fn.expand('%:p:h')
-      end
-      local telescope = require('telescope')
-      telescope.extensions.file_browser.file_browser({
-        path = input,
-        cwd = input,
-        respect_gitignore = false,
-        hidden = true,
-        grouped = true,
-        previewer = false,
-        initial_mode = 'normal',
-      })
-    end
+    local telescope = require('telescope')
     return {
-      { '<leader>fc',    '<cmd>Telescope cmdline<cr>',      desc = 'cmdline' },
-      { '<leader>f<cr>', builtin.resume,                    desc = 'Resume previous search' },
-      { '<leader>fw',    builtin.live_grep,                 desc = 'Find words in current working', },
-      { '<leader>fb',    builtin.buffers,                   desc = 'Find buffer in open buffers' },
-      { '<leader>ff',    builtin.find_files,                desc = 'Find file', },
-      { '<leader>fh',    builtin.help_tags,                 desc = 'Find Help' },
-      { '<leader>fk',    builtin.keymaps,                   desc = 'Find keymaps', },
-      { '<leader>fm',    builtin.man_pages,                 desc = 'Find man', },
-      { "<leader>f'",    builtin.marks,                     desc = 'Find marks', },
-      { '<leader>f/',    builtin.current_buffer_fuzzy_find, desc = 'Find words in current buffer', },
-      { '<leader>fs',    builtin.treesitter,                desc = 'Find treesitter symbols', },
+      { "<leader>f'", builtin.marks, desc = 'Find marks' },
+      { '<leader>f/', builtin.current_buffer_fuzzy_find, desc = 'Find words in current buffer' },
+      { '<leader>f<cr>', builtin.resume, desc = 'Resume previous search' },
+      { '<leader>fb', builtin.buffers, desc = 'Find buffer in open buffers' },
+      { '<leader>fc', '<cmd>Telescope cmdline<cr>', desc = 'Find commands in Cmdline' },
+      { '<leader>ff', builtin.find_files, desc = 'Find file' },
+      { '<leader>fh', builtin.help_tags, desc = 'Find Help' },
+      { '<leader>fk', builtin.keymaps, desc = 'Find keymaps' },
+      { '<leader>fm', builtin.man_pages, desc = 'Find man' },
+      { '<leader>fo', builtin.oldfiles, desc = 'Find old files' },
+      { '<leader>fs', builtin.treesitter, desc = 'Find treesitter symbols' },
+      { '<leader>fw', builtin.live_grep, desc = 'Find words in current working' },
+      {
+        '<leader>fe',
+        function()
+          local cwd = vim.fn.stdpath('config')
+          builtin.find_files({ prompt_title = 'Find nvim config files', cwd = cwd, follow = true })
+        end,
+        desc = 'Find nvim config files',
+      },
+      {
+        '<leader>fP',
+        function()
+          builtin.find_files({ cwd = require('lazy.core.config').options.root })
+        end,
+        desc = 'Find Plugin File',
+      },
+      {
+        '<leader>ft',
+        function()
+          builtin.colorscheme {
+            layout_strategy = 'horizontal',
+            enable_preview = true,
+            previewer = false,
+          }
+        end,
+        desc = 'Find themes',
+      },
       {
         '<leader>fW',
         function()
@@ -46,59 +59,33 @@ return {
         end,
         desc = 'Find words in current working(all files)',
       },
+      -- Telescope Explorer
       {
-        '<leader>fe',
+        '<leader>e',
         function()
-          local cwd = vim.fn.stdpath('config')
-          builtin.find_files({
-            prompt_title = 'Find nvim config files',
-            cwd = cwd,
-            follow = true,
-          })
+          telescope.extensions.file_browser.file_browser()
         end,
-        desc = 'Find nvim config files',
+        desc = 'Toggle Explorer',
       },
-      -- {
-      --   '<leader>e',
-      --   function()
-      --     telescope_file_browser()
-      --   end,
-      --   desc = 'Specifying search directories',
-      -- },
       {
         '<leader>E',
         function()
-          local path = vim.fn.expand('%:p:h')
-          vim.ui.input({
-            prompt = 'Enter directory path: ', -- Prompt user to input directory path
-            default = path,
-            completion = 'dir',                -- Use directory completion
-          }, function(input)
-            if 1 == vim.fn.isdirectory(vim.fn.expand(input)) then
-              telescope_file_browser(input)
-            else
-              vim.notify('ERROR: Invalid input path!')
-            end
-          end)
-        end,
-        desc = 'Specifying search directories',
-      },
-      {
-        '<leader>fP',
-        function()
-          builtin.find_files({
-            cwd = require('lazy.core.config').options.root,
+          telescope.extensions.file_browser.file_browser({
+            path = vim.fn.expand('%:p:h'),
+            cwd = vim.fn.expand('%:p:h'),
           })
         end,
-        desc = 'Find Plugin File',
+        desc = 'Toggle Explorer(current cwd)',
       },
-      {
-        '<leader>ft',
-        function()
-          builtin.colorscheme { enable_preview = true }
-        end,
-        desc = 'Find themes',
-      },
+      -- Git keymaps
+      { '<leader>gC', builtin.git_bcommits, desc = 'Git commits(current file)' },
+      { '<leader>gT', builtin.git_stash, desc = 'Git stash' },
+      { '<leader>gc', builtin.git_commits, desc = 'Git commits' },
+      { '<leader>gt', builtin.git_status, desc = 'Git status' },
+      -- LSP keymaps
+      { 'gO', builtin.lsp_document_symbols, desc = 'Search symbols' },
+      { '<leader>ls', builtin.lsp_document_symbols, desc = 'Search symbols' },
+      { '<leader>lG', builtin.lsp_dynamic_workspace_symbols, desc = 'Search workspace symbols' },
     }
   end,
   config = function(_, _)

@@ -14,6 +14,8 @@ return {
       { '<tab>',      '<cmd>b#<cr>',                        desc = 'Previous buffer' },
       { '[b',         '<cmd>BufferLineCycleNext<cr>',       desc = 'Next buffer' },
       { ']b',         '<cmd>BufferLineCyclePrev<cr>',       desc = 'Previous buffer' },
+      { '<s-l>', '<cmd>BufferLineCycleNext<cr>', desc = 'Next buffer' },
+      { '<s-h>', '<cmd>BufferLineCyclePrev<cr>', desc = 'Previous buffer' },
     },
     opts = function()
       return {

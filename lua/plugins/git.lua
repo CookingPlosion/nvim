@@ -1,87 +1,97 @@
 return {
   'lewis6991/gitsigns.nvim',
   event = 'VeryLazy',
-  keys = {
-    {
-      ']g',
-      function()
-        require('gitsigns').nav_hunk('next')
-      end,
-      desc = 'Next Git hunk',
-    },
-    {
-      '[g',
-      function()
-        require('gitsigns').nav_hunk('prev')
-      end,
-      desc = 'Previous Git hunk',
-    },
-    {
-      '<leader>gl',
-      function()
-        require('gitsigns').blame_line()
-      end,
-      desc = 'View Git blame',
-    },
-    {
-      '<leader>gL',
-      function()
-        require('gitsigns').blame_line { full = true }
-      end,
-      desc = 'View full Git blame',
-    },
-    {
-      '<leader>gp',
-      function()
-        require('gitsigns').preview_hunk()
-      end,
-      desc = 'Preview Git hunk',
-    },
-    {
-      '<leader>gh',
-      function()
-        require('gitsigns').reset_hunk()
-      end,
-      desc = 'Reset Git hunk',
-    },
-    {
-      '<leader>gr',
-      function()
-        require('gitsigns').reset_buffer()
-      end,
-      desc = 'Reset Git buffer',
-    },
-    {
-      '<leader>gs',
-      function()
-        require('gitsigns').stage_hunk()
-      end,
-      desc = 'Stage Git hunk',
-    },
-    {
-      '<leader>gS',
-      function()
-        require('gitsigns').stage_buffer()
-      end,
-      desc = 'Stage Git buffer',
-    },
-    {
-      '<leader>gu',
-      function()
-        require('gitsigns').undo_stage_hunk()
-      end,
-      desc = 'Unstage Git hunk',
-    },
-    {
-      '<leader>gd',
-      function()
-        require('gitsigns').diffthis()
-      end,
-      desc = 'View Git diff',
-    },
-  },
+  keys = function()
+    local gitsigns = require('gitsigns')
+    return {
+      {
+        ']c',
+        function()
+          if vim.wo.diff then
+            vim.cmd.normal({ ']c', bang = true })
+          else
+            gitsigns.nav_hunk('next')
+          end
+        end,
+        desc = 'Next Git hunk',
+      },
+      {
+        '[c',
+        function()
+          if vim.wo.diff then
+            vim.cmd.normal({ '[c', bang = true })
+          else
+            gitsigns.nav_hunk('prev')
+          end
+        end,
+        desc = 'Previous Git hunk',
+      },
+      {
+        '<leader>gl',
+        gitsigns.blame_line,
+        desc = 'View Git blame',
+      },
+      {
+        '<leader>gL',
+        function()
+          gitsigns.blame_line { full = true }
+        end,
+        desc = 'View full Git blame',
+      },
+      {
+        '<leader>gp',
+        gitsigns.preview_hunk,
+        desc = 'Preview Git hunk',
+      },
+      {
+        '<leader>gr',
+        function()
+          gitsigns.reset_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end,
+        mode = 'v',
+        desc = 'Reset Git hunk in virtual',
+      },
+      {
+        '<leader>gr',
+        gitsigns.reset_hunk,
+        desc = 'Reset Git hunk',
+      },
+      {
+        '<leader>gR',
+        gitsigns.reset_buffer,
+        desc = 'Reset Git buffer',
+      },
+      {
+        '<leader>gs',
+        function()
+          gitsigns.stage_hunk { vim.fn.line '.', vim.fn.line 'v' }
+        end,
+        mode = 'v',
+        desc = 'Stage Git hunk in virtual',
+      },
+      {
+        '<leader>gs',
+        gitsigns.stage_hunk,
+        desc = 'Stage Git hunk',
+      },
+      {
+        '<leader>gS',
+        gitsigns.stage_buffer,
+        desc = 'Stage Git buffer',
+      },
+      {
+        '<leader>gd',
+        gitsigns.diffthis,
+        desc = 'View Git diff',
+      },
+      {
+        '<leader>gh',
+        gitsigns.select_hunk,
+        desc = 'Select Git hunk',
+      },
+    }
+  end,
   opts = {
-    culhl = true,
     worktrees = vim.g.git_worktrees,
   },
 }

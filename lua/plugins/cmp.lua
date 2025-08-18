@@ -90,13 +90,16 @@ return {
           -- make lazydev completions top priority (see `:h blink.cmp`)
           score_offset = 100,
         },
+        buffer = { min_keyword_length = 3 },
+        cmdline = { min_keyword_length = 2 },
+        snippets = { min_keyword_length = 3 },
       },
     },
     signature = { enabled = true, },
     cmdline = {
       completion = {
-        menu = { auto_show = false },
-        ghost_text = { enabled = true, }
+        menu = { auto_show = true },
+        ghost_text = { enabled = true },
       },
       keymap = {
         ['<C-d>'] = { 'show', 'hide' },

@@ -42,12 +42,26 @@ maps.n['<leader>Q'] = { '<cmd>confirm qall<cr>', desc = 'Quit all' }
 maps.n['<leader>n'] = { '<cmd>enew<cr>', desc = 'New File' }
 maps.n['<C-s>'] = { '<cmd>w!<cr>', desc = 'Force write' }
 maps.n['<C-q>'] = { '<cmd>qa!<cr>', desc = 'Force quit' }
-maps.n['u'] = { '<cmd>silent undo<cr>', desc = 'silent undo' }
-maps.n['<C-r>'] = { '<cmd>silent redo<cr>', desc = 'silent redo' }
+-- maps.n['u'] = { '<cmd>silent undo<cr>', desc = 'silent undo' }
+-- maps.n['<C-r>'] = { '<cmd>silent redo<cr>', desc = 'silent redo' }
 maps.n['|'] = { '<cmd>vsplit<cr>', desc = 'Vertical Split' }
 maps.n['\\'] = { '<cmd>split<cr>', desc = 'Horizontal Split' }
 -- TODO: Remove when dropping support for <Neovim v0.10
 -- if not vim.ui.open then maps.n['gx'] = { utils.system_open, desc = "Open the file under cursor with system app" } end
+
+-- Navigate tabs
+maps.n[']t'] = {
+  function()
+    vim.cmd.tabnext()
+  end,
+  desc = 'Next tab',
+}
+maps.n['[t'] = {
+  function()
+    vim.cmd.tabprevious()
+  end,
+  desc = 'Previous tab',
+}
 
 -- Manage Buffers
 maps.n['<leader>c'] = {
