@@ -2,9 +2,10 @@ return {
   'nvim-telescope/telescope.nvim',
   event = 'VeryLazy',
   dependencies = {
+    { 'jonarrien/telescope-cmdline.nvim' },
+    { 'nvim-telescope/telescope-file-browser.nvim' },
     { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
-    'nvim-telescope/telescope-file-browser.nvim',
-    'jonarrien/telescope-cmdline.nvim',
+    { 'nvim-telescope/telescope-ui-select.nvim' },
   },
   keys = function()
     local builtin = require('telescope.builtin')
@@ -88,25 +89,89 @@ return {
       { '<leader>lG', builtin.lsp_dynamic_workspace_symbols, desc = 'Search workspace symbols' },
     }
   end,
-  config = function(_, _)
+  opts = {
+    defaults = {
+      dynamic_preview_title = true,
+      -- wrap_results = true,
+      path_display = 'shorten',
+      layout_strategy = 'horizontal',
+      layout_config = {
+        horizontal = {
+          width = { padding = 0 },
+          height = 0.8,
+          preview_width = 0.5,
+          preview_cutoff = 120,
+        },
+      },
+      mappings = {
+        n = {
+          ['q'] = 'close',
+        },
+      },
+    },
+  },
+  config = function(_, opts)
     local telescope = require('telescope')
-    telescope.setup({
-      defaults = {
-        mappings = {
-          n = {
-            ["q"] = require('telescope.actions').close,
+
+    opts.extensions = {
+      ['ui-select'] = {
+        require('telescope.themes').get_dropdown {
+          -- even more opts
+        },
+
+        -- pseudo code / specification for writing custom displays, like the one
+        -- for "codeactions"
+        -- specific_opts = {
+        --   [kind] = {
+        --     make_indexed = function(items) -> indexed_items, width,
+        --     make_displayer = function(widths) -> displayer
+        --     make_display = function(displayer) -> function(e)
+        --     make_ordinal = function(e) -> string
+        --   },
+        --   -- for example to disable the custom builtin "codeactions" display
+        --      do the following
+        --   codeactions = false,
+        -- }
+      },
+      file_browser = {
+        -- theme = 'ivy',
+        grouped = true,
+        hidden = true,
+        hide_parent_dir = true,
+        hijack_netrw = true,
+        initial_mode = 'normal',
+        previewer = false,
+        path_display = {},
+        prompt_title = 'Explorer',
+        respect_gitignore = false,
+        select_buffer = true,
+        -- results_title = true,
+        -- borderchars = {
+        --   preview = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+        --   prompt = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
+        --   results = { ' ', ' ', '─', ' ', ' ', ' ', '╮', '╭' },
+        -- },
+        -- layout_strategy = 'center',
+        -- sorting_strategy = 'descending',
+        layout_config = {
+          horizontal = {
+            width = 140,
+            prompt_position = 'bottom',
           },
         },
-        dynamic_preview_title = true,
-        path_display = { truncate = 2 },
+        mappings = {
+          n = {
+            ['g'] = telescope.extensions.file_browser.actions.toggle_hidden,
+            ['h'] = telescope.extensions.file_browser.actions.goto_parent_dir,
+            ['l'] = 'select_default',
+          },
+        },
       },
-      extensions = {
-        file_browser = {
-          hijack_netrw = true,
-        }
-      }
-    })
-    require("telescope").load_extension("fzf")
-    require("telescope").load_extension("file_browser")
+    }
+
+    telescope.setup(opts)
+    require('telescope').load_extension('fzf')
+    require('telescope').load_extension('file_browser')
+    require('telescope').load_extension('ui-select')
   end,
 }
