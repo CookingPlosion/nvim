@@ -5,7 +5,7 @@ return {
   dependencies = { 'nvim-treesitter/nvim-treesitter-textobjects' },
   opts = function()
     return {
-      ensure_installed = { 'lua' },
+      ensure_installed = { 'lua', 'vimdoc' },
       sync_install = false,
       auto_install = false,
       modules = {},

@@ -1,6 +1,6 @@
 local utils = require('utils')
 
-local servers = { 'lua_ls', 'clangd', 'neocmake', 'qmlls' }
+local servers = { 'clangd', 'neocmake', 'qmlls' }
 local parsers = { 'cpp', 'objc', 'cuda', 'cmake', 'qmljs' }
 
 -- install treesitter parser packages
