@@ -37,9 +37,9 @@ return {
         ft_ignore = { 'help', 'man', 'terminal', 'gitsigns-blame' },
         segments = {
           { sign = { namespace = { 'diagnostic/signs' }, colwidth = 3 }, click = 'v:lua.ScSa' },
-          { text = { builtin.lnumfunc },                                 click = 'v:lua.ScLa' },
-          { sign = { namespace = { 'gitsign' }, colwidth = 1 },          click = 'v:lua.ScFa' },
-          { text = { builtin.foldfunc, ' ' },                            click = 'v:lua.ScFa' },
+          { text = { builtin.lnumfunc }, click = 'v:lua.ScLa' },
+          { sign = { namespace = { 'gitsign' }, colwidth = 1 }, click = 'v:lua.ScFa' },
+          { text = { builtin.foldfunc, ' ' }, click = 'v:lua.ScFa' },
         },
       }
     end,
@@ -103,16 +103,16 @@ return {
           end
         end
         return (filetype == '' or buftype == 'nofile') and 'indent' -- only use indent until a file is opened
-            or function(bufnr)
-              return require('ufo')
-                  .getFolds(bufnr, 'lsp')
-                  :catch(function(err)
-                    return handleFallbackException(bufnr, err, 'treesitter')
-                  end)
-                  :catch(function(err)
-                    return handleFallbackException(bufnr, err, 'indent')
-                  end)
-            end
+          or function(bufnr)
+            return require('ufo')
+              .getFolds(bufnr, 'lsp')
+              :catch(function(err)
+                return handleFallbackException(bufnr, err, 'treesitter')
+              end)
+              :catch(function(err)
+                return handleFallbackException(bufnr, err, 'indent')
+              end)
+          end
       end,
     },
   },

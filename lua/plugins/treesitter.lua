@@ -11,11 +11,11 @@ return {
       modules = {},
       ignore_install = {}, -- List of parsers to ignore installing
       highlight = {
-        enable = true,   -- false will disable the whole extension
+        enable = true, -- false will disable the whole extension
         is_supported = function()
           return vim.api.nvim_buf_line_count(0) < 10000
         end,
-        disable = {} -- list of language that will be disabled
+        disable = {}, -- list of language that will be disabled
       },
       incremental_selection = {
         enable = true,
@@ -23,8 +23,8 @@ return {
           init_selection = '<CR>',
           scope_incremental = '<CR>',
           node_incremental = '<TAB>',
-          node_decremental = '<S-TAB>'
-        }
+          node_decremental = '<S-TAB>',
+        },
       },
       indent = { enable = true },
       textobjects = {
@@ -46,7 +46,7 @@ return {
             ['iC'] = { query = '@class.inner', desc = 'Select inside class' },
             ['id'] = { query = '@conditional.inner', desc = 'Select inside conditional' },
             ['ad'] = { query = '@conditional.outer', desc = 'Select around conditional' },
-          }
+          },
         },
         move = {
           enable = true,

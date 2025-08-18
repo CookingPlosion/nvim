@@ -1,5 +1,5 @@
 return {
-  "folke/which-key.nvim",
+  'folke/which-key.nvim',
   event = 'bufEnter',
   keys = {
     {
@@ -33,7 +33,7 @@ return {
     }
     opts.layout = {
       width = { min = 20 }, -- min and max width of the columns
-      spacing = 3,          -- spacing between columns
+      spacing = 3, -- spacing between columns
     }
   end,
 }

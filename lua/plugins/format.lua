@@ -1,20 +1,20 @@
 return {
-  "stevearc/conform.nvim",
+  'stevearc/conform.nvim',
   event = 'LspAttach',
   opts = {
-    formatters_by_ft = { lua = { "stylua" } },
+    formatters_by_ft = { lua = { 'stylua' } },
   },
   keys = {
     {
-      "<leader>lf",
+      '<leader>lf',
       function()
-        require("conform").format({
+        require('conform').format({
           async = true,
           lsp_fallback = true,
         })
       end,
-      desc = "Format buffer",
-      mode = { "n", "v" },
+      desc = 'Format buffer',
+      mode = { 'n', 'v' },
     },
   },
 }

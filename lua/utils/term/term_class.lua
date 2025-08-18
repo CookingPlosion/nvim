@@ -9,18 +9,20 @@ local defaults = {
 }
 
 local env = {
-  EDITOR = 'nvim --server ' .. vim.env.HOME .. '/.cache/nvim/server_' .. vim.fn.getpid() .. '.pipe --remote '
+  EDITOR = 'nvim --server ' .. vim.env.HOME .. '/.cache/nvim/server_' .. vim.fn.getpid() .. '.pipe --remote ',
 }
 
 local function validateOpts(opts)
-  if opts == nil then return true end
+  if opts == nil then
+    return true
+  end
   for k, v in pairs(opts) do
     if defaults[k] == nil then
-      error(k .. " is not a valid configuration option")
+      error(k .. ' is not a valid configuration option')
       return false
     end
     if type(defaults[k]) ~= type(v) then
-      error("Invalid type for " .. k .. ": expected " .. type(defaults[k]) .. ", got " .. type(v))
+      error('Invalid type for ' .. k .. ': expected ' .. type(defaults[k]) .. ', got ' .. type(v))
       return false
     end
   end
@@ -46,7 +48,9 @@ function Term:destroy(force)
   -- close bufer
   if self.termBufnr and vim.api.nvim_buf_is_valid(self.termBufnr) then
     local cmdStr = 'bd ' .. self.termBufnr
-    if force then cmdStr = 'bd! ' .. self.termBufnr end
+    if force then
+      cmdStr = 'bd! ' .. self.termBufnr
+    end
     vim.cmd(cmdStr)
     self.termBufnr = nil
   end
@@ -57,13 +61,13 @@ end
 function Term:setLayout(opts)
   for k, _ in pairs(opts) do
     if self.opts[k] == nil then
-      error(k .. " is not a valid configuration option")
+      error(k .. ' is not a valid configuration option')
       return false
     end
     local expectedType = type(self.opts[k])
     local actualType = type(opts[k])
     if expectedType ~= actualType then
-      error("Invalid type for " .. k .. ": expected " .. expectedType .. ", got " .. actualType)
+      error('Invalid type for ' .. k .. ': expected ' .. expectedType .. ', got ' .. actualType)
       return false
     end
   end
@@ -93,7 +97,7 @@ function Term:createTerm()
     term = true,
     env = self.env,
     on_stdout = self.on_stdout,
-    on_stderr = self.on_stderr
+    on_stderr = self.on_stderr,
   })
   self:autoStartInsert()
   print(job_id)

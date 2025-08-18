@@ -58,10 +58,14 @@ function M.destroy(target, force)
   force = force or false
 
   local name = target
-  if type(target) == "number" then
-    if target == 0 then target = vim.api.nvim_get_current_buf() end
+  if type(target) == 'number' then
+    if target == 0 then
+      target = vim.api.nvim_get_current_buf()
+    end
     name = bufnrToName[target]
-    if not name then return end
+    if not name then
+      return
+    end
     local buf_type = vim.api.nvim_get_option_value('filetype', { buf = target })
     if not force and buf_type ~= 'terminal' then
       return -- 非终端且非强制，不销毁
@@ -71,7 +75,9 @@ function M.destroy(target, force)
     local bufnr = instances[name].termBufnr
     instances[name]:destroy(force)
     instances[name] = nil
-    if bufnr then bufnrToName[bufnr] = nil end
+    if bufnr then
+      bufnrToName[bufnr] = nil
+    end
   end
 end
 
@@ -95,15 +101,15 @@ end
 vim.api.nvim_create_augroup('Sapnvim_term', { clear = true })
 vim.api.nvim_create_autocmd('FileType', {
   pattern = { 'terminal' },
-  desc = "Use <q> to quit the terminal buffer instance",
+  desc = 'Use <q> to quit the terminal buffer instance',
   group = 'Sapnvim_term',
   callback = function()
     vim.keymap.set('n', 'q', '<cmd>bd!<cr>', { buffer = true, silent = true })
-  end
+  end,
 })
 vim.api.nvim_create_autocmd('BufWipeout', {
   group = 'Sapnvim_term',
-  desc = "Cleanup terminal buffer instances when wiped out",
+  desc = 'Cleanup terminal buffer instances when wiped out',
   callback = function(args)
     local bufnr = args.buf
     local filetype = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
@@ -114,7 +120,7 @@ vim.api.nvim_create_autocmd('BufWipeout', {
         bufnrToName[bufnr] = nil
       end
     end
-  end
+  end,
 })
 
 return M

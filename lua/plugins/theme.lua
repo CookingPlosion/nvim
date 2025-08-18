@@ -1,7 +1,7 @@
 -- 主题
 return {
   {
-    "killitar/obscure.nvim",
+    'killitar/obscure.nvim',
     -- event = 'BufEnter',
     -- dir = "~/code/obscure.nvim/",
     lazy = false,

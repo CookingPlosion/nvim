@@ -28,15 +28,22 @@ return {
       ['<Down>'] = { 'select_next', 'fallback' },
       ['<C-p>'] = {
         function(cmp)
-          if cmp.is_active() then cmp.select_prev() end
+          if cmp.is_active() then
+            cmp.select_prev()
+          end
         end,
-        'show', 'fallback_to_mappings'
+        'show',
+        'fallback_to_mappings',
       },
       ['<C-n>'] = {
         function(cmp)
-          if cmp.is_active then cmp.select_next() end
+          if cmp.is_active then
+            cmp.select_next()
+          end
         end,
-        'show', 'fallback_to_mappings' },
+        'show',
+        'fallback_to_mappings',
+      },
       -- select documentation
       ['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
       ['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
@@ -52,7 +59,9 @@ return {
         direction_priority = function()
           local ctx = require('blink.cmp').get_context()
           local item = require('blink.cmp').get_selected_item()
-          if ctx == nil or item == nil then return { 's', 'n' } end
+          if ctx == nil or item == nil then
+            return { 's', 'n' }
+          end
 
           local item_text = item.textEdit ~= nil and item.textEdit.newText or item.insertText or item.label
           local is_multi_line = item_text:find('\n') ~= nil
@@ -69,8 +78,8 @@ return {
           padding = { 1, 1 },
           treesitter = { 'lsp' },
           columns = {
-            { 'label',     'label_description', gap = 1 },
-            { 'kind_icon', 'kind',              gap = 1 }
+            { 'label', 'label_description', gap = 1 },
+            { 'kind_icon', 'kind', gap = 1 },
           },
           components = {
             -- customize the drawing of kind icons
@@ -107,7 +116,7 @@ return {
       },
     },
     sources = {
-      default = { 'lazydev', 'snippets', 'lsp', 'path', 'buffer', },
+      default = { 'lazydev', 'snippets', 'lsp', 'path', 'buffer' },
       providers = {
         -- cmdline = {
         --   enabled = false
@@ -123,7 +132,7 @@ return {
         },
       },
     },
-    signature = { enabled = true, },
+    signature = { enabled = true },
     cmdline = {
       completion = {
         menu = { auto_show = true },
@@ -131,7 +140,7 @@ return {
       },
       keymap = {
         ['<C-d>'] = { 'show', 'hide' },
-      }
+      },
     },
   },
 }

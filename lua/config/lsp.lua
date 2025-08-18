@@ -6,13 +6,13 @@ local parsers = { 'cpp', 'objc', 'cuda', 'cmake', 'qmljs' }
 -- install treesitter parser packages
 local installed_parsers = require('nvim-treesitter.info').installed_parsers()
 require('nvim-treesitter.configs').setup({
-  ensure_installed = utils.list_insert_unique(installed_parsers, parsers)
+  ensure_installed = utils.list_insert_unique(installed_parsers, parsers),
 })
 
 -- install language servers
 local installed_servers = require('mason-lspconfig').get_installed_servers()
 require('mason-lspconfig').setup({
-  ensure_installed = utils.list_insert_unique(installed_servers, servers)
+  ensure_installed = utils.list_insert_unique(installed_servers, servers),
 })
 
 -- enable lsp servsers
@@ -33,11 +33,10 @@ vim.diagnostic.handlers['qflist'] = {
   -- end
 }
 
-
 -- Open the location list on every diagnostic change (warnings/errors only).
 vim.diagnostic.config({
   ['qflist'] = {
-    open = vim.g.diagnostic_qflist -- view :h diagnostic-handlers
+    open = vim.g.diagnostic_qflist, -- view :h diagnostic-handlers
   },
   signs = {
     text = {
@@ -93,7 +92,7 @@ vim.api.nvim_create_user_command('DiagQF', function(opts)
         vim.diagnostic.config({ virtual_lines = false })
         vim.g.diagnostic_qflist = false
       end
-    end
+    end,
   }
 
   if actions[args] then
@@ -102,9 +101,9 @@ vim.api.nvim_create_user_command('DiagQF', function(opts)
     vim.notify('请使用: open, close, 或 toggle', vim.log.levels.ERROR)
   end
 end, {
-  desc = "管理诊断 quickfix 列表",
+  desc = '管理诊断 quickfix 列表',
   nargs = 1,
   complete = function()
     return { 'open', 'close', 'toggle' }
-  end
+  end,
 })

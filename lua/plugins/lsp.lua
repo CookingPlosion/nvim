@@ -4,7 +4,7 @@ return {
   {
     'williamboman/mason.nvim',
     keys = {
-      { '<leader>pm', '<cmd>Mason<cr>',       desc = 'Mason Installer' },
+      { '<leader>pm', '<cmd>Mason<cr>', desc = 'Mason Installer' },
       { '<leader>pM', '<cmd>MasonUpdate<cr>', desc = 'Mason Update' },
     },
     opts = function(_, opts)
@@ -101,7 +101,7 @@ return {
         opts.library = {
           { path = 'luvit-meta/library', words = { 'vim%.uv' } },
           { path = '${3rd}/luv/library', words = { 'vim%.uv' } },
-          { path = 'lazy.nvim',          words = { 'Lazy' } },
+          { path = 'lazy.nvim', words = { 'Lazy' } },
         }
       end
     end,

@@ -4,16 +4,16 @@ return {
     'akinsho/bufferline.nvim',
     event = 'BufEnter',
     keys = {
-      { '<leader>br', '<cmd>BufferLineCloseRight<cr>',      desc = 'Close all buffers to the right' },
-      { '<leader>bl', '<cmd>BufferLineCloseLeft<cr>',       desc = 'Close all buffers to the left' },
-      { '<leader>bb', '<cmd>BufferLinePick<cr>',            desc = 'Select buffer from bufferline' },
-      { '<leader>bd', '<cmd>BufferLinePickClose<cr>',       desc = 'Close buffer from bufferline' },
-      { '<leader>bp', '<cmd>BufferLineTogglePin<cr>',       desc = 'Toggle pinned' },
-      { '<leader>bo', '<cmd>BufferLineCloseOthers<cr>',     desc = 'Close other buffers' },
+      { '<leader>br', '<cmd>BufferLineCloseRight<cr>', desc = 'Close all buffers to the right' },
+      { '<leader>bl', '<cmd>BufferLineCloseLeft<cr>', desc = 'Close all buffers to the left' },
+      { '<leader>bb', '<cmd>BufferLinePick<cr>', desc = 'Select buffer from bufferline' },
+      { '<leader>bd', '<cmd>BufferLinePickClose<cr>', desc = 'Close buffer from bufferline' },
+      { '<leader>bp', '<cmd>BufferLineTogglePin<cr>', desc = 'Toggle pinned' },
+      { '<leader>bo', '<cmd>BufferLineCloseOthers<cr>', desc = 'Close other buffers' },
       { '<leader>bs', '<cmd>BufferLineSortByExtension<cr>', desc = 'Sort buffers' },
-      { '<tab>',      '<cmd>b#<cr>',                        desc = 'Previous buffer' },
-      { '[b',         '<cmd>BufferLineCycleNext<cr>',       desc = 'Next buffer' },
-      { ']b',         '<cmd>BufferLineCyclePrev<cr>',       desc = 'Previous buffer' },
+      { '<tab>', '<cmd>b#<cr>', desc = 'Previous buffer' },
+      { '[b', '<cmd>BufferLineCycleNext<cr>', desc = 'Next buffer' },
+      { ']b', '<cmd>BufferLineCyclePrev<cr>', desc = 'Previous buffer' },
       { '<s-l>', '<cmd>BufferLineCycleNext<cr>', desc = 'Next buffer' },
       { '<s-h>', '<cmd>BufferLineCyclePrev<cr>', desc = 'Previous buffer' },
     },
@@ -123,7 +123,7 @@ return {
         function()
           return '▊'
         end,
-        color = { fg = colors.blue },      -- Sets highlighting of component
+        color = { fg = colors.blue }, -- Sets highlighting of component
         padding = { left = 0, right = 1 }, -- We don't need space before this
       }
 
@@ -231,7 +231,7 @@ return {
         end,
         icon = ' LSP:',
         color = { fg = '#ffffff', gui = 'bold' },
-        fmt = trunc(0, 0, 120, true)
+        fmt = trunc(0, 0, 120, true),
       }
 
       -- Insert mid section. You can make any number of sections in neovim :)
@@ -255,7 +255,9 @@ return {
             mixed_same_line = vim.fn.search([[\v^(\t+ | +\t)]], 'nwc')
             mixed = mixed_same_line > 0
           end
-          if not mixed then return '' end
+          if not mixed then
+            return ''
+          end
           if mixed_same_line ~= nil and mixed_same_line > 0 then
             return 'MI:' .. mixed_same_line
           end

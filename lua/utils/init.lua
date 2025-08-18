@@ -116,8 +116,8 @@ function M.close(bufnr, force)
   if not bufnr or bufnr == 0 then
     bufnr = vim.api.nvim_get_current_buf()
   end
-  local buftype = vim.api.nvim_get_option_value("buftype", { buf = bufnr })
-  vim.cmd(("silent! %s %d"):format((force or buftype == "terminal") and "bdelete!" or "confirm bdelete", bufnr))
+  local buftype = vim.api.nvim_get_option_value('buftype', { buf = bufnr })
+  vim.cmd(('silent! %s %d'):format((force or buftype == 'terminal') and 'bdelete!' or 'confirm bdelete', bufnr))
 end
 
 M.term = require('utils.term')

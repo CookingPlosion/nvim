@@ -7,19 +7,19 @@ vim.api.nvim_command([[ au BufReadPost * if line("'\"") > 1 && line("'\"") <= li
 -- 用o换行不要延续注释
 api.nvim_create_augroup('Sapnvim_edit', { clear = true })
 api.nvim_create_autocmd({ 'BufEnter' }, {
-  desc = "O and o, do not continue with the comment, but continue when you hit the enter key.",
+  desc = 'O and o, do not continue with the comment, but continue when you hit the enter key.',
   pattern = { '*' },
   group = 'Sapnvim_edit',
   callback = function()
     vim.opt.formatoptions = vim.opt.formatoptions
-        - 'o' -- O and o, don't continue comments
-        + 'r' -- But do continue when pressing enter.
+      - 'o' -- O and o, don't continue comments
+      + 'r' -- But do continue when pressing enter.
   end,
 })
 
 api.nvim_create_augroup('Sapnvim_bufs', { clear = true })
 api.nvim_create_autocmd({ 'FileType' }, {
-  desc = "Auto close some filetypes with <q>",
+  desc = 'Auto close some filetypes with <q>',
   group = 'Sapnvim_bufs',
   pattern = { 'saga*', 'help', 'qf' },
   callback = function()
@@ -55,8 +55,8 @@ api.nvim_create_autocmd({ 'BufEnter' }, {
 
 -- Highlight on yank
 api.nvim_create_augroup('Sapnvim_yank', { clear = true })
-api.nvim_create_autocmd("TextYankPost", {
-  desc = "highlight on yank",
+api.nvim_create_autocmd('TextYankPost', {
+  desc = 'highlight on yank',
   group = 'Sapnvim_yank',
   callback = function()
     (vim.hl or vim.highlight).on_yank()
@@ -65,7 +65,7 @@ api.nvim_create_autocmd("TextYankPost", {
 -- wsl ceil
 if vim.fn.has('wsl') == 1 then
   api.nvim_create_autocmd('TextYankPost', {
-    desc = "Copying text using windows clip.exe",
+    desc = 'Copying text using windows clip.exe',
     group = 'Sapnvim_yank',
     callback = function()
       vim.fn.system('/mnt/c/windows/system32/clip.exe ', vim.fn.getreg('"'))
@@ -75,13 +75,13 @@ end
 
 api.nvim_create_augroup('Sapnvim_diagnostic', { clear = true })
 api.nvim_create_autocmd({ 'BufLeave' }, {
-  desc = "Refresh qfline Diagnostic",
+  desc = 'Refresh qfline Diagnostic',
   group = 'Sapnvim_diagnostic',
   callback = function()
     if vim.bo.filetype == 'qf' then
       vim.cmd.wincmd('p')
     end
-  end
+  end,
 })
 
 -- -- 清空 quickfix 列表
