@@ -32,7 +32,7 @@ function Term:new(term)
   self.__index = self
   term.name = term.name or 'SapnvimTmpTerm'
   term.termBufnr = term.termBufnr or nil
-  term.env = vim.F.if_nil(term.env, env)
+  term.env = vim.tbl_deep_extend('force', {}, env, term.env or {})
   term.opts = term.opts or {}
   assert(validateOpts(term.opts))
   term.opts = vim.tbl_deep_extend('force', {}, defaults, term.opts)

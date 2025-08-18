@@ -92,24 +92,21 @@ maps.n['<leader>t'] = {
   end,
   desc = 'Toggle term',
 }
-maps.n['<leader>e'] = {
+maps.n['<leader>a'] = {
   function()
-    utils.term.toggle({ name = 'yazi', opts = { cmdStr = { 'zsh', '-c', 'yazi' } --[[ , arg = 'yazi' ]] } })
+    utils.term.toggle({
+      name = 'gemini',
+      opts = {
+        cmdStr = { 'gemini' },
+      },
+      env = {
+        http_proxy = 'http://127.0.0.1:7897',
+        https_proxy = 'http://127.0.0.1:7897',
+        all_proxy = 'socks5://127.0.0.1:7897',
+      },
+    })
   end,
-  desc = 'Toggle yazi',
+  desc = 'Toggle gemini-cli',
 }
--- Navigate tabs
--- maps.n[']t'] = {
---   function()
---     vim.cmd.tabnext()
---   end,
---   desc = 'Next tab',
--- }
--- maps.n['[t'] = {
---   function()
---     vim.cmd.tabprevious()
---   end,
---   desc = 'Previous tab',
--- }
 
 utils.set_mappings(maps)
