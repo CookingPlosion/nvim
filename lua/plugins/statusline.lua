@@ -17,77 +17,27 @@ return {
       { '<s-l>', '<cmd>BufferLineCycleNext<cr>', desc = 'Next buffer' },
       { '<s-h>', '<cmd>BufferLineCyclePrev<cr>', desc = 'Previous buffer' },
     },
-    opts = function()
-      return {
-        options = {
-          separator_style = 'slope',
-          indicator = { style = 'none' },
-          show_buffer_close_icons = false,
-          show_close_icon = false,
-          hover = {
-            enabled = true,
-            delay = 200,
-            reveal = { 'close' },
-          },
-          highlights = {
-            tab_selected = {
-              bg = {
-                attribute = 'fg',
-                highlight = 'Pmenu',
-              },
-            },
-          },
-          groups = {
-            options = {
-              toggle_hidden_on_enter = true, -- when you re-enter a hidden group this options re-opens that group so the buffer is visible
-            },
-            items = {
-              {
-                name = 'Docs ',
-                highlight = { sp = '#24282D' },
-                icon = ' ',
-                priority = 2,
-                auto_close = true,
-                matcher = function(buf)
-                  local filename = vim.api.nvim_buf_get_name(buf.id)
-                  return filename:match('%.md') or filename:match('%.txt')
-                end,
-              },
-              require('bufferline.groups').builtin.ungrouped,
-              {
-                name = 'Tests ',
-                highlight = { sp = '#586065' },
-                auto_close = true,
-                icon = ' ',
-                matcher = function(buf)
-                  local filename = vim.api.nvim_buf_get_name(buf.id)
-                  return filename:match('test.*%.txt$') or filename:match('%test')
-                end,
-              },
-            },
-          },
+    opts = {
+      options = {
+        separator_style = 'slope',
+        indicator = { style = 'none' },
+        show_buffer_close_icons = false,
+        show_close_icon = false,
+        hover = {
+          enabled = true,
+          delay = 200,
+          reveal = { 'close' },
         },
-      }
-    end,
-    config = function(_, opts)
-      require('bufferline').setup(opts)
-      vim.api.nvim_create_autocmd({ 'BufAdd', 'BufDelete' }, {
-        callback = function()
-          vim.schedule(function()
-            pcall(nvim_bufferline)
-          end)
-        end,
-      })
-    end,
+      },
+    },
   },
   {
     'nvim-lualine/lualine.nvim',
     event = 'BufEnter',
-    config = function()
+    opts = function()
       -- Eviline config for lualine
       -- Author: shadmansaleh
       -- Credit: glepnir
-      local lualine = require('lualine')
 
       -- Color table for highlights
       -- stylua: ignore
@@ -370,7 +320,7 @@ return {
       }
 
       -- Now don't forget to initialize lualine
-      lualine.setup(config)
+      return config
     end,
   },
 }

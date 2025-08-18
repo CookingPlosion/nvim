@@ -9,6 +9,7 @@ g.icons_enabled = false
 g.diagnostic_line_info = false
 g.diagnostic_text_info = false
 g.diagnostic_qflist = false -- Use qflist to view diagnostic information in the buffer
+g.colorscheme = 'obscure'
 
 -- opt.formatexpr =
 -- opt.formatoptions =

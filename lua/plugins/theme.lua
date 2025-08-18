@@ -4,15 +4,11 @@ return {
     "killitar/obscure.nvim",
     -- event = 'BufEnter',
     -- dir = "~/code/obscure.nvim/",
-    -- lazy = false,
-    -- priority = 1000,
-    opts = function (_, opts)
-      return opts
+    lazy = false,
+    priority = 1000,
+    opts = function(_, _)
+      vim.cmd.colorscheme(vim.g.colorscheme)
     end,
-    config = function(_, opts)
-      require("obscure").setup(opts)
-      vim.cmd([[colorscheme obscure]])
-    end
   },
   {
     "NvChad/nvim-colorizer.lua",

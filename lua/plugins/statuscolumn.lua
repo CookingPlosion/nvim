@@ -34,7 +34,7 @@ return {
       local builtin = require('statuscol.builtin')
       return {
         relculright = true,
-        ft_ignore = { 'help', 'man', 'terminal' },
+        ft_ignore = { 'help', 'man', 'terminal', 'gitsigns-blame' },
         segments = {
           { sign = { namespace = { 'diagnostic/signs' }, colwidth = 3 }, click = 'v:lua.ScSa' },
           { text = { builtin.lnumfunc },                                 click = 'v:lua.ScLa' },

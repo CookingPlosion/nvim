@@ -21,7 +21,10 @@ end
 require('lazy').setup({
   { import = 'plugins' },
 }, {
-  ui = { size = { width = 1, height = 1 }, border = 'none' },
+  ui = {
+    size = { width = 1, height = vim.o.lines - 1 },
+    border = 'none',
+  },
   performance = {
     rtp = {
       -- disable some rtp plugins, add more to your liking
