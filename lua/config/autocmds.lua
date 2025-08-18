@@ -30,22 +30,21 @@ api.nvim_create_autocmd({ 'FileType' }, {
     vim.keymap.set('n', 'q', '<cmd>close<cr>', { silent = true, buffer = true })
   end,
 })
-api.nvim_create_autocmd({ 'VimResized', 'WinResized' }, {
-  desc = "Dynamically adjust scrolloff and sidescrolloff for the current window",
-  group = 'Sapnvim_bufs',
-  callback = function()
-    if not vim.tbl_contains({ 'terminal' }, vim.bo.filetype) then
-      local height = vim.api.nvim_win_get_height(0)
-      local width = vim.api.nvim_win_get_width(0)
-      if height > 2 then
-        vim.opt_local.scrolloff = math.ceil(height / 2)
-      end
-      if width > 4 then
-        vim.opt_local.sidescrolloff = math.ceil(width / 4)
-      end
-    end
-  end,
-})
+-- api.nvim_create_autocmd('CursorHold', {
+--   desc = 'Dynamically adjust scrolloff when cursor settles',
+--   group = 'Sapnvim_bufs',
+--   callback = function()
+--     if not vim.tbl_contains({ 'terminal' }, vim.bo.filetype) then
+--       local height = vim.api.nvim_win_get_height(0)
+--       if height > 2 then
+--         local new_scrolloff = math.floor(height / 2) - 1
+--         if vim.wo.scrolloff ~= new_scrolloff then
+--           vim.wo.scrolloff = new_scrolloff
+--         end
+--       end
+--     end
+--   end,
+-- })
 
 -- Highlight on yank
 api.nvim_create_augroup('Sapnvim_yank', { clear = true })

@@ -46,7 +46,6 @@ opt.pumblend = 100
 opt.pumheight = 10
 opt.relativenumber = false
 opt.ruler = false
-opt.scrolloff = math.ceil(vim.api.nvim_win_get_height(0) / 2)
 -- opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" }
 opt.shiftround = true
 opt.shiftwidth = 2
