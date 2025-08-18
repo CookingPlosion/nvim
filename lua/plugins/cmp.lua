@@ -66,7 +66,7 @@ return {
           return { 's', 'n' }
         end,
         draw = {
-          padding = { 0, 0 },
+          padding = { 1, 1 },
           treesitter = { 'lsp' },
           columns = {
             { 'label',     'label_description', gap = 1 },
@@ -121,9 +121,6 @@ return {
           -- make lazydev completions top priority (see `:h blink.cmp`)
           score_offset = 100,
         },
-        buffer = { min_keyword_length = 3 },
-        cmdline = { min_keyword_length = 2 },
-        snippets = { min_keyword_length = 3 },
       },
     },
     signature = { enabled = true, },
