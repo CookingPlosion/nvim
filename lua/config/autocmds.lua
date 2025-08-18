@@ -21,12 +21,8 @@ api.nvim_create_augroup('Sapnvim_bufs', { clear = true })
 api.nvim_create_autocmd({ 'FileType' }, {
   desc = "Auto close some filetypes with <q>",
   group = 'Sapnvim_bufs',
-  pattern = { 'sagaoutline', 'help', 'qf' },
+  pattern = { 'saga*', 'help', 'qf' },
   callback = function()
-    if vim.tbl_contains({ 'sagaoutline', 'help' }, vim.bo.filetype) then
-      vim.opt_local.foldcolumn = '0'
-    end
-    vim.opt_local.list = false
     vim.keymap.set('n', 'q', '<cmd>close<cr>', { silent = true, buffer = true })
   end,
 })
@@ -45,6 +41,17 @@ api.nvim_create_autocmd({ 'FileType' }, {
 --     end
 --   end,
 -- })
+api.nvim_create_autocmd({ 'BufEnter' }, {
+  desc = 'Option to disable specific file types',
+  group = 'Sapnvim_bufs',
+  callback = function()
+    if vim.tbl_contains({ 'sagafinder', 'sagaoutline', 'help' }, vim.bo.filetype) then
+      vim.opt_local.foldcolumn = '0'
+      vim.opt_local.list = false
+      vim.opt_local.number = false
+    end
+  end,
+})
 
 -- Highlight on yank
 api.nvim_create_augroup('Sapnvim_yank', { clear = true })
