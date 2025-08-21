@@ -30,6 +30,13 @@ local bufnrToName = {}
 do
   local pid = vim.fn.getpid()
   local serverPipe = vim.fn.stdpath('cache') .. '/server_' .. pid .. '.pipe'
+
+  local cacheDir = vim.fn.fnamemodify(serverPipe, ':h')
+  if vim.fn.isdirectory(cacheDir) == 0 then
+    vim.fn.mkdir(cacheDir, 'p')
+    vim.notify('Created cache directory: ' .. cacheDir, vim.log.levels.INFO)
+  end
+
   local callCmd = string.format('call serverstart("%s")', serverPipe)
   vim.cmd(callCmd)
 end
