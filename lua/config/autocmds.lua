@@ -21,26 +21,11 @@ api.nvim_create_augroup('Sapnvim_bufs', { clear = true })
 api.nvim_create_autocmd({ 'FileType' }, {
   desc = 'Auto close some filetypes with <q>',
   group = 'Sapnvim_bufs',
-  pattern = { 'saga*', 'help', 'qf' },
+  pattern = { 'saga*', 'help', 'qf', 'gitsigns*', 'checkhealth' },
   callback = function()
-    vim.keymap.set('n', 'q', '<cmd>close<cr>', { silent = true, buffer = true })
+    vim.keymap.set('n', 'q', '<cmd>bd<cr>', { silent = true, buffer = true, desc = 'quit the bufer' })
   end,
 })
--- api.nvim_create_autocmd('CursorHold', {
---   desc = 'Dynamically adjust scrolloff when cursor settles',
---   group = 'Sapnvim_bufs',
---   callback = function()
---     if not vim.tbl_contains({ 'terminal' }, vim.bo.filetype) then
---       local height = vim.api.nvim_win_get_height(0)
---       if height > 2 then
---         local new_scrolloff = math.floor(height / 2) - 1
---         if vim.wo.scrolloff ~= new_scrolloff then
---           vim.wo.scrolloff = new_scrolloff
---         end
---       end
---     end
---   end,
--- })
 api.nvim_create_autocmd({ 'BufEnter' }, {
   desc = 'Option to disable specific file types',
   group = 'Sapnvim_bufs',
@@ -83,37 +68,3 @@ api.nvim_create_autocmd({ 'BufLeave' }, {
     end
   end,
 })
-
--- -- 清空 quickfix 列表
--- vim.fn.setqflist({}, 'r')
---
--- -- 设置诊断结果
--- local diagnostics = vim.diagnostic.get(0)
--- local qf_items = {}
--- for _, d in ipairs(diagnostics) do
---   table.insert(qf_items, {
---     bufnr = d.bufnr,
---     lnum = d.lnum + 1,
---     col = d.col + 1,
---     text = d.message,
---     type = ({
---       [vim.diagnostic.severity.ERROR] = 'E',
---       [vim.diagnostic.severity.WARN] = 'W',
---       [vim.diagnostic.severity.INFO] = 'I',
---       [vim.diagnostic.severity.HINT] = 'H',
---     })[d.severity] or 'E'
---   })
--- end
--- vim.fn.setqflist(qf_items, 'r')
--- 根据文件类型设置缩进
--- vim.cmd [[
---   augroup Indentation
---     autocmd!
---     autocmd FileType python,java,ruby,go,swift,rust,php,html,css setlocal shiftwidth=4
---   augroup END
--- ]]
-
--- -- 自动在 nvim 启动时运行该函数
--- vim.api.nvim_create_autocmd("VimEnter", {
---   callback = utils.open_the_current_directory,
--- })
