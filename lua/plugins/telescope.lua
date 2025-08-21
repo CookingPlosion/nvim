@@ -97,7 +97,13 @@ return {
       layout_strategy = 'horizontal',
       layout_config = {
         horizontal = {
-          width = { padding = 0 },
+          width = function(_, max_columns)
+            if max_columns == 120 then
+              return max_columns
+            else
+              return math.floor(max_columns * 0.8)
+            end
+          end,
           height = 0.8,
           preview_width = 0.5,
           preview_cutoff = 120,
