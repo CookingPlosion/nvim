@@ -34,11 +34,11 @@ return {
       local builtin = require('statuscol.builtin')
       return {
         relculright = true,
-        ft_ignore = { 'help', 'man', 'terminal', 'gitsigns-blame' },
+        ft_ignore = { 'help', 'man', 'terminal', 'gitsigns-blame', 'lazy' },
         segments = {
-          { sign = { namespace = { 'diagnostic/signs' }, colwidth = 3 }, click = 'v:lua.ScSa' },
+          { sign = { namespace = { 'diagnostic*' }, colwidth = 3 }, click = 'v:lua.ScSa' },
           { text = { builtin.lnumfunc }, click = 'v:lua.ScLa' },
-          { sign = { namespace = { 'gitsign' }, colwidth = 1 }, click = 'v:lua.ScFa' },
+          { sign = { namespace = { 'gitsign*' }, colwidth = 1 }, click = 'v:lua.ScFa' },
           { text = { builtin.foldfunc, ' ' }, click = 'v:lua.ScFa' },
         },
       }

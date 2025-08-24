@@ -53,7 +53,7 @@ opt.shiftwidth = 2
 opt.shortmess:append({ W = true, I = true, c = true, C = true })
 opt.showmatch = true
 opt.showmode = true
-opt.signcolumn = 'no'
+opt.signcolumn = 'yes'
 opt.smartcase = true
 opt.smartindent = true
 opt.smoothscroll = true

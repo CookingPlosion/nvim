@@ -75,6 +75,7 @@ return {
       -- Config
       local config = {
         options = {
+          -- extensions = { 'quickfix', 'lazy' },
           -- Disable sections and component separators
           component_separators = '',
           section_separators = '',
@@ -95,230 +96,185 @@ return {
           lualine_y = {},
           lualine_z = {},
           -- These will be filled later
-          lualine_c = {},
-          lualine_x = {},
+          lualine_c = {
+            {
+              function()
+                return '▊'
+              end,
+              color = { fg = colors.blue }, -- Sets highlighting of component
+              padding = { left = 0, right = 1 }, -- We don't need space before this
+            },
+            {
+              -- mode component
+              function()
+                return '' -- 
+              end,
+              color = function()
+                -- auto change color according to neovims mode
+                local mode_color = {
+                  n = colors.red,
+                  i = colors.green,
+                  v = colors.blue,
+                  [''] = colors.blue,
+                  V = colors.blue,
+                  c = colors.magenta,
+                  no = colors.red,
+                  s = colors.orange,
+                  S = colors.orange,
+                  [''] = colors.orange,
+                  ic = colors.yellow,
+                  R = colors.violet,
+                  Rv = colors.violet,
+                  cv = colors.red,
+                  ce = colors.red,
+                  r = colors.cyan,
+                  rm = colors.cyan,
+                  ['r?'] = colors.cyan,
+                  ['!'] = colors.red,
+                  t = colors.red,
+                }
+                return { fg = mode_color[vim.fn.mode()] }
+              end,
+              padding = { left = 0, right = 1 },
+            },
+            {
+              'filesize',
+              fmt = trunc(0, 0, 60, true),
+              -- padding = { left = 1, right = 1 },
+            },
+            {
+              'filetype',
+              icon_only = true,
+              fmt = trunc(0, 0, 60, true),
+              -- padding = { left = 1, right = 1 },
+            },
+            {
+              'progress',
+              color = { fg = colors.fg, gui = 'bold' },
+              fmt = trunc(0, 0, 30, true),
+              -- padding = { left = 1, right = 1 },
+            },
+            -- Shows 'MI:line' in lualine when both tab and spaces are used for indenting current buffer.
+            {
+              function()
+                local space_pat = [[\v^ +]]
+                local tab_pat = [[\v^\t+]]
+                local space_indent = vim.fn.search(space_pat, 'nwc')
+                local tab_indent = vim.fn.search(tab_pat, 'nwc')
+                local mixed = (space_indent > 0 and tab_indent > 0)
+                local mixed_same_line
+                if not mixed then
+                  mixed_same_line = vim.fn.search([[\v^(\t+ | +\t)]], 'nwc')
+                  mixed = mixed_same_line > 0
+                end
+                if not mixed then
+                  return ''
+                end
+                if mixed_same_line ~= nil and mixed_same_line > 0 then
+                  return 'MI:' .. mixed_same_line
+                end
+                local space_indent_cnt = vim.fn.searchcount({ pattern = space_pat, max_count = 1e3 }).total
+                local tab_indent_cnt = vim.fn.searchcount({ pattern = tab_pat, max_count = 1e3 }).total
+                if space_indent_cnt > tab_indent_cnt then
+                  return 'MI:' .. tab_indent
+                else
+                  return 'MI:' .. space_indent
+                end
+              end,
+              color = { fg = colors.red, gui = 'bold' },
+              always_visible = true,
+              fmt = trunc(0, 0, 80, true),
+              -- padding = { left = 1, right = 1 },
+            },
+            {
+              'diagnostics',
+              sources = { 'nvim_diagnostic' },
+              symbols = { error = ' ', warn = ' ', info = ' ', hint = '󱠀 ' },
+              diagnostics_color = {
+                color_error = { fg = colors.red },
+                color_warn = { fg = colors.yellow },
+                color_info = { fg = colors.blue },
+                color_hint = { fg = colors.cyan },
+              },
+              always_visible = false,
+              fmt = trunc(0, 0, 100, true),
+              -- padding = { left = 1, right = 1 },
+            },
+          },
+          lualine_x = {
+            {
+              'lsp_status',
+              icon = '', -- f013
+              symbols = {
+                -- Standard unicode symbols to cycle through for LSP progress:
+                spinner = { '⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏' },
+                -- Standard unicode symbol for when LSP is done:
+                done = '✓',
+                -- Delimiter inserted between LSP names:
+                separator = ' ',
+              },
+              -- List of LSP names to ignore (e.g., `null-ls`):
+              ignore_lsp = {},
+              fmt = trunc(0, 0, 100, true),
+              -- padding = { left = 1, right = 1 },
+            },
+            -- Insert mid section. You can make any number of sections in neovim :)
+            -- for lualine it's any number greater then 2
+            {
+              function()
+                return '%='
+              end,
+            },
+            {
+              'o:encoding', -- option component same as &encoding in viml
+              -- cond = conditions.hide_in_width,
+              color = { fg = colors.green, gui = 'bold' },
+              fmt = trunc(0, 0, 50, true),
+              -- padding = { left = 1, right = 1 },
+            },
+            {
+              'branch',
+              icon = '',
+              color = { fg = colors.violet, gui = 'bold' },
+              fmt = trunc(0, 0, 40, true),
+              -- padding = { left = 1, right = 0 },
+            },
+            {
+              'diff',
+              -- Is it me or the symbol for modified us really weird
+              symbols = { added = ' ', modified = '󰝤 ', removed = ' ' },
+              diff_color = {
+                added = { fg = colors.green },
+                modified = { fg = colors.orange },
+                removed = { fg = colors.red },
+              },
+              fmt = trunc(0, 0, 120, true),
+              -- padding = { left = 1, right = 1 },
+            },
+            {
+              'fileformat',
+              icons_enabled = true, -- I think icons are cool but Eviline doesn't have them. sigh
+              color = { fg = colors.green, gui = 'bold' },
+              padding = { left = 1, right = 0 },
+            },
+            {
+              function()
+                return '▊'
+              end,
+              color = { fg = colors.blue },
+              padding = { left = 1, right = 0 },
+            },
+          },
         },
         inactive_sections = {
           -- these are to remove the defaults
-          lualine_a = {},
-          lualine_b = {},
-          lualine_y = {},
-          lualine_z = {},
-          lualine_c = {},
-          lualine_x = {},
+          -- lualine_a = {},
+          -- lualine_b = {},
+          -- lualine_y = {},
+          -- lualine_z = {},
+          -- lualine_c = {},
+          -- lualine_x = {},
         },
-      }
-
-      -- Inserts a component in lualine_c at left section
-      local function ins_left(component)
-        table.insert(config.sections.lualine_c, component)
-      end
-
-      -- Inserts a component in lualine_x at right section
-      local function ins_right(component)
-        table.insert(config.sections.lualine_x, component)
-      end
-
-      ins_left {
-        function()
-          return '▊'
-        end,
-        color = { fg = colors.blue }, -- Sets highlighting of component
-        padding = { left = 0, right = 1 }, -- We don't need space before this
-      }
-
-      ins_left {
-        -- mode component
-        function()
-          return '' -- 
-        end,
-        color = function()
-          -- auto change color according to neovims mode
-          local mode_color = {
-            n = colors.red,
-            i = colors.green,
-            v = colors.blue,
-            [''] = colors.blue,
-            V = colors.blue,
-            c = colors.magenta,
-            no = colors.red,
-            s = colors.orange,
-            S = colors.orange,
-            [''] = colors.orange,
-            ic = colors.yellow,
-            R = colors.violet,
-            Rv = colors.violet,
-            cv = colors.red,
-            ce = colors.red,
-            r = colors.cyan,
-            rm = colors.cyan,
-            ['r?'] = colors.cyan,
-            ['!'] = colors.red,
-            t = colors.red,
-          }
-          return { fg = mode_color[vim.fn.mode()] }
-        end,
-        padding = { left = 0, right = 1 },
-      }
-
-      ins_left {
-        'filesize',
-        fmt = trunc(0, 0, 60, true),
-        padding = { left = 1, right = 1 },
-      }
-
-      ins_left {
-        'filetype',
-        icon_only = true,
-        fmt = trunc(0, 0, 60, true),
-        padding = { left = 1, right = 1 },
-      }
-
-      -- ins_left { 'location', fmt = trunc(0, 0, 60, true), }
-
-      ins_left {
-        'progress',
-        color = { fg = colors.fg, gui = 'bold' },
-        fmt = trunc(0, 0, 30, true),
-        padding = { left = 1, right = 1 },
-      }
-
-      ins_left {
-        'diagnostics',
-        fmt = trunc(0, 0, 100, true),
-        sources = { 'nvim_diagnostic' },
-        symbols = { error = ' ', warn = ' ', info = ' ', hint = '󱠀 ' },
-        diagnostics_color = {
-          color_error = { fg = colors.red },
-          color_warn = { fg = colors.yellow },
-          color_info = { fg = colors.blue },
-          color_hint = { fg = colors.cyan },
-        },
-        always_visible = false,
-        padding = { left = 1, right = 1 },
-      }
-
-      -- show recording
-      -- ins_left {
-      --   function()
-      --     local record = vim.fn.reg_recording()
-      --     if record ~= '' then
-      --       vim.notify(record)
-      --       return string.format(' :%s', record)
-      --     end
-      --     return ''
-      --   end,
-      --   -- icon = '',
-      --   color = { fg = colors.orange, gui = 'bold' },
-      --   fmt = trunc(0, 0, 100, true),
-      -- }
-
-      ins_right {
-        function()
-          local msg = 'No Active Lsp'
-          local buf_ft = vim.api.nvim_get_option_value('filetype', { buf = 0 })
-          local clients = vim.lsp.get_clients()
-          if next(clients) == nil then
-            return msg
-          end
-          for _, client in ipairs(clients) do
-            local filetypes = client.config.filetypes
-            if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-              return client.name
-            end
-          end
-          return msg
-        end,
-        icon = ' LSP:',
-        color = { fg = '#ffffff', gui = 'bold' },
-        fmt = trunc(0, 0, 120, true),
-      }
-
-      -- Insert mid section. You can make any number of sections in neovim :)
-      -- for lualine it's any number greater then 2
-      ins_right {
-        function()
-          return '%='
-        end,
-      }
-
-      -- Shows 'MI:line' in lualine when both tab and spaces are used for indenting current buffer.
-      ins_right {
-        function()
-          local space_pat = [[\v^ +]]
-          local tab_pat = [[\v^\t+]]
-          local space_indent = vim.fn.search(space_pat, 'nwc')
-          local tab_indent = vim.fn.search(tab_pat, 'nwc')
-          local mixed = (space_indent > 0 and tab_indent > 0)
-          local mixed_same_line
-          if not mixed then
-            mixed_same_line = vim.fn.search([[\v^(\t+ | +\t)]], 'nwc')
-            mixed = mixed_same_line > 0
-          end
-          if not mixed then
-            return ''
-          end
-          if mixed_same_line ~= nil and mixed_same_line > 0 then
-            return 'MI:' .. mixed_same_line
-          end
-          local space_indent_cnt = vim.fn.searchcount({ pattern = space_pat, max_count = 1e3 }).total
-          local tab_indent_cnt = vim.fn.searchcount({ pattern = tab_pat, max_count = 1e3 }).total
-          if space_indent_cnt > tab_indent_cnt then
-            return 'MI:' .. tab_indent
-          else
-            return 'MI:' .. space_indent
-          end
-        end,
-        color = { fg = colors.red, gui = 'bold' },
-        fmt = trunc(0, 0, 80, true),
-        always_visible = true,
-        padding = { left = 1, right = 1 },
-      }
-
-      -- Add components to right sections
-      ins_right {
-        'o:encoding', -- option component same as &encoding in viml
-        fmt = trunc(0, 0, 50, true),
-        -- cond = conditions.hide_in_width,
-        color = { fg = colors.green, gui = 'bold' },
-        padding = { left = 1, right = 1 },
-      }
-
-      ins_right {
-        'branch',
-        icon = '',
-        color = { fg = colors.violet, gui = 'bold' },
-        fmt = trunc(0, 0, 40, true),
-        padding = { left = 1, right = 0 },
-      }
-
-      ins_right {
-        'diff',
-        fmt = trunc(0, 0, 120, true),
-        -- Is it me or the symbol for modified us really weird
-        symbols = { added = ' ', modified = '󰝤 ', removed = ' ' },
-        diff_color = {
-          added = { fg = colors.green },
-          modified = { fg = colors.orange },
-          removed = { fg = colors.red },
-        },
-        padding = { left = 1, right = 1 },
-      }
-
-      ins_right {
-        'fileformat',
-        fmt = trunc(0, 0, 70, true),
-        icons_enabled = true, -- I think icons are cool but Eviline doesn't have them. sigh
-        color = { fg = colors.green, gui = 'bold' },
-        padding = { left = 1, right = 0 },
-      }
-
-      ins_right {
-        function()
-          return '▊'
-        end,
-        color = { fg = colors.blue },
-        padding = { left = 1, right = 0 },
       }
 
       -- Now don't forget to initialize lualine

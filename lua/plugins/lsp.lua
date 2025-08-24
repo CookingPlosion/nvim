@@ -7,9 +7,14 @@ return {
       { '<leader>pm', '<cmd>Mason<cr>', desc = 'Mason Installer' },
       { '<leader>pM', '<cmd>MasonUpdate<cr>', desc = 'Mason Update' },
     },
-    opts = function(_, opts)
-      opts.ui = { width = 1, height = 1, border = 'none' }
-    end,
+    opts = {
+      ui = {
+        width = 1,
+        height = vim.o.lines - vim.o.cmdheight - 1,
+        border = 'none',
+        backdrop = 100,
+      },
+    },
   },
   {
     'williamboman/mason-lspconfig.nvim',

@@ -98,7 +98,7 @@ return {
       layout_config = {
         horizontal = {
           width = function(_, max_columns)
-            if max_columns == 120 then
+            if max_columns <= 140 then
               return max_columns
             else
               return math.floor(max_columns * 0.8)
