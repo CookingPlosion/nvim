@@ -20,6 +20,7 @@ end
 
 require('lazy').setup({
   { import = 'plugins' },
+  { import = 'lang' },
 }, {
   ui = {
     size = { width = 1, height = vim.o.lines - 1 },

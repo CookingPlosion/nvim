@@ -2,7 +2,16 @@ return {
   cmd = { 'neocmakelsp', '--stdio' },
   filetypes = { 'cmake' },
   root_markers = { '.git', 'build', 'cmake' },
-  single_file_support = true,
+  single_file_support = true, -- suggested
+  init_options = {
+    format = {
+      enable = false,
+    },
+    lint = {
+      enable = false,
+    },
+    scan_cmake_in_package = true, -- default is true
+  },
   docs = {
     description = [[
 https://github.com/Decodetalkers/neocmakelsp

@@ -1,28 +1,3 @@
-local utils = require('utils')
-
-local servers = { 'clangd', 'neocmake', 'qmlls' }
-local parsers = { 'cpp', 'objc', 'cuda', 'cmake', 'qmljs' }
-
--- install treesitter parser packages
-local installed_parsers = require('nvim-treesitter.info').installed_parsers()
-require('nvim-treesitter.configs').setup({
-  ensure_installed = utils.list_insert_unique(installed_parsers, parsers),
-})
-
--- install language servers
-local installed_servers = require('mason-lspconfig').get_installed_servers()
-require('mason-lspconfig').setup({
-  ensure_installed = utils.list_insert_unique(installed_servers, servers),
-})
-
--- enable lsp servsers
-vim.lsp.enable(servers)
-
-vim.keymap.set('n', 'gK', function()
-  local new_config = not vim.diagnostic.config().virtual_lines
-  vim.diagnostic.config({ virtual_lines = new_config })
-end, { desc = 'Toggle diagnostic virtual_lines' })
-
 vim.diagnostic.handlers['qflist'] = {
   show = function(ns, _, _, opts)
     vim.diagnostic.setqflist({ namespace = ns, open = opts.qflist.open or false })

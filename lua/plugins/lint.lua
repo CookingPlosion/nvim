@@ -8,7 +8,9 @@ return {
   opts = {
     events = { 'BufWritePost', 'BufReadPost', 'InsertLeave' },
     linters_by_ft = {
+      cmake = { 'cmakelint' },
       lua = { 'selene' },
+      qml = { 'qmlls' },
     },
     linters = {
       selene = {
