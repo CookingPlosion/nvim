@@ -88,7 +88,11 @@ maps.n['<leader>C'] = {
 -- terminal module
 maps.n['<leader>t'] = {
   function()
-    utils.term.toggle({ name = 'main', opts = { cmdStr = { 'zsh' }, startinsert = false } })
+    utils.term.toggle({
+      name = 'main',
+      cmdStr = { 'zsh' },
+      opts = { startinsert = false },
+    })
   end,
   desc = 'Toggle term',
 }
@@ -96,9 +100,7 @@ maps.n['<leader>a'] = {
   function()
     utils.term.toggle({
       name = 'gemini',
-      opts = {
-        cmdStr = { 'gemini' },
-      },
+      cmdStr = { 'gemini' },
       env = {
         http_proxy = 'http://127.0.0.1:7897',
         https_proxy = 'http://127.0.0.1:7897',

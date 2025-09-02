@@ -3,7 +3,7 @@
 --- -- Example 1: toggle yazi.
 ---   local term = require('utils.term')
 ---   vim.keymap.set('n', '<leader>e', function()
---      term.toggle({ name = 'yazi', opts = { cmdStr = { 'zsh', '-c', 'yazi' } } })
+--      term.toggle({ name = 'yazi', cmdStr = { 'zsh', '-c', 'yazi' } })
 ---   end, { silent = true })
 ---
 --- -- Example 2: toggle terminal.
@@ -97,7 +97,7 @@ function M.toggle(opts)
   end
   -- 如果 buffer 没创建或失效，则创建 buffer并显示，不执行 toggle
   if not instances[name].termBufnr or not vim.api.nvim_buf_is_valid(instances[name].termBufnr) then
-    instances[name]:createTerm()
+    instances[name]:showTerm()
     registerBufnr(instances[name])
     return
   end
@@ -112,6 +112,10 @@ vim.api.nvim_create_autocmd('FileType', {
   group = 'Sapnvim_term',
   callback = function()
     vim.keymap.set('n', 'q', '<cmd>bd!<cr>', { buffer = true, silent = true })
+    vim.keymap.set('n', '<C-w>s', '<Nop>', { buffer = true, silent = true })
+    vim.keymap.set('n', '<C-w>v', '<Nop>', { buffer = true, silent = true })
+    vim.keymap.set('n', '|', '<Nop>', { buffer = true, silent = true })
+    vim.keymap.set('n', '\\', '<Nop>', { buffer = true, silent = true })
   end,
 })
 vim.api.nvim_create_autocmd('BufWipeout', {

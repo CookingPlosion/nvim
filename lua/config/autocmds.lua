@@ -30,7 +30,7 @@ api.nvim_create_autocmd({ 'BufEnter' }, {
   desc = 'Option to disable specific file types',
   group = 'Sapnvim_bufs',
   callback = function()
-    if vim.tbl_contains({ 'sagafinder', 'sagaoutline', 'help' }, vim.bo.filetype) then
+    if vim.tbl_contains({ 'sagafinder', 'sagaoutline', 'help', 'terminal' }, vim.bo.filetype) then
       vim.opt_local.foldcolumn = '0'
       vim.opt_local.list = false
       vim.opt_local.number = false
