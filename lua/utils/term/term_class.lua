@@ -35,8 +35,8 @@ local defaults = { layout_strategy = 'vsplit', layout_config = layout_config, st
 local current_pipe = vim.fn.stdpath('cache') .. '/server_' .. vim.fn.getpid() .. '.pipe'
 local default_env = {
   NVIM_PIPE = current_pipe,
-  EDITOR = 'nvim --server ' .. current_pipe .. ' --remote',
-  VISUAL = 'nvim --server ' .. current_pipe .. ' --remote',
+  -- EDITOR = 'nvim --server ' .. current_pipe .. ' --remote',
+  -- VISUAL = 'nvim --server ' .. current_pipe .. ' --remote',
 }
 
 local layout_handlers = {
