@@ -91,7 +91,7 @@ maps.n['<leader>t'] = {
     utils.term.toggle({
       name = 'main',
       cmdStr = { 'zsh' },
-      opts = { startinsert = false },
+      opts = { layout_strategy = 'only', startinsert = false },
     })
   end,
   desc = 'Toggle term',

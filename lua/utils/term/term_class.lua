@@ -32,8 +32,12 @@ local layout_config = {
 
 local defaults = { layout_strategy = 'vsplit', layout_config = layout_config, startinsert = true }
 
-local env =
-  { EDITOR = 'nvim --server ' .. vim.env.HOME .. '/.cache/nvim/server_' .. vim.fn.getpid() .. '.pipe --remote ' }
+local current_pipe = vim.fn.stdpath('cache') .. '/server_' .. vim.fn.getpid() .. '.pipe'
+local default_env = {
+  NVIM_PIPE = current_pipe,
+  EDITOR = 'nvim --server ' .. current_pipe .. ' --remote',
+  VISUAL = 'nvim --server ' .. current_pipe .. ' --remote',
+}
 
 local layout_handlers = {
   vsplit = function(self)
@@ -82,7 +86,7 @@ function Term:new(term)
   term.augroup = 'TermInstance_' .. tostring(term)
   term.autocmd_ids = {}
   term.cmdStr = term.cmdStr or {}
-  term.env = vim.tbl_deep_extend('force', {}, env, term.env or {})
+  term.env = vim.tbl_deep_extend('force', {}, default_env, term.env or {})
   term.opts = term.opts or {}
   assert(validateOpts(term.opts))
   term.opts = vim.tbl_deep_extend('force', {}, defaults, term.opts)
@@ -134,31 +138,39 @@ function Term:recalculate_layout()
     return
   end
   local strategy = self.opts.layout_strategy
-    local config_generator = self.opts.layout_config[strategy]
-    if config_generator then
-      vim.api.nvim_win_set_config(self.winid, config_generator())
-    end
+  local config_generator = self.opts.layout_config[strategy]
+  if config_generator then
+    vim.api.nvim_win_set_config(self.winid, config_generator())
+  end
 end
 
 function Term:open_win()
   if self.winid and vim.api.nvim_win_is_valid(self.winid) then
-    return self.winid
+    return
   end
   if not (self.termBufnr and vim.api.nvim_buf_is_valid(self.termBufnr)) then
     self.termBufnr = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_set_option_value('filetype', 'terminal', { buf = self.termBufnr })
   end
+
   local strategy = self.opts.layout_strategy
   local handler = layout_handlers[strategy]
   if not handler then
-    error('Unknown layout strategy: ' .. tostring(strategy))
+    error(
+      string.format(
+        "Unknown layout strategy: '%s'. Use %s",
+        tostring(strategy),
+        vim.inspect(vim.tbl_keys(layout_config))
+      )
+    )
     return
   end
+
   self.winid = handler(self)
+
   if strategy == 'vsplit' or strategy == 'split' then
     vim.api.nvim_win_set_buf(self.winid, self.termBufnr)
   end
-  return self.winid
 end
 
 function Term:autoStartInsert()
@@ -168,11 +180,11 @@ function Term:autoStartInsert()
 end
 
 function Term:showTerm()
-  local winid = self:open_win()
-  if not winid then
+  self:open_win()
+
+  if not self.winid then
     return
   end
-  vim.api.nvim_set_current_win(winid)
   local job_id = vim.b[self.termBufnr] and vim.b[self.termBufnr].terminal_job_id
   if not (job_id and job_id > 0) then
     vim.fn.jobstart(self.cmdStr, {

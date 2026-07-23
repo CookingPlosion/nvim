@@ -9,7 +9,11 @@
 --- -- Example 2: toggle terminal.
 ---   local term = require('utils.term')
 ---   vim.keymap.set('n', '<leader>e', function()
----     term.toggle({ 'myterm' })
+---     utils.term.toggle({
+---      name = 'main',
+---      cmdStr = { 'zsh' },
+---      opts = { layout_strategy = 'only', startinsert = false },
+---     })
 ---   end, { silent = true })
 ---
 --- -- Example 3: Close instance.
@@ -27,18 +31,16 @@ local M = {}
 local instances = {}
 local bufnrToName = {}
 
-do
-  local pid = vim.fn.getpid()
-  local serverPipe = vim.fn.stdpath('cache') .. '/server_' .. pid .. '.pipe'
+local pid = vim.fn.getpid()
+local pipe_path = vim.fn.stdpath('cache') .. '/server_' .. pid .. '.pipe'
 
-  local cacheDir = vim.fn.fnamemodify(serverPipe, ':h')
-  if vim.fn.isdirectory(cacheDir) == 0 then
-    vim.fn.mkdir(cacheDir, 'p')
-    vim.notify('Created cache directory: ' .. cacheDir, vim.log.levels.INFO)
-  end
+local cache_dir = vim.fn.fnamemodify(pipe_path, ':h')
+if vim.fn.isdirectory(cache_dir) == 0 then
+  vim.fn.mkdir(cache_dir, 'p')
+end
 
-  local callCmd = string.format('call serverstart("%s")', serverPipe)
-  vim.cmd(callCmd)
+if vim.v.servername == '' or vim.v.servername ~= pipe_path then
+  pcall(vim.fn.serverstart, pipe_path)
 end
 
 --- debug, Show existing instances
@@ -92,17 +94,14 @@ end
 ---@param opts table Default configuration fpr initial creation.
 function M.toggle(opts)
   local name = opts.name
+
   if not instances[name] then
     instances[name] = term:new(opts or {})
   end
-  -- 如果 buffer 没创建或失效，则创建 buffer并显示，不执行 toggle
-  if not instances[name].termBufnr or not vim.api.nvim_buf_is_valid(instances[name].termBufnr) then
-    instances[name]:showTerm()
-    registerBufnr(instances[name])
-    return
-  end
-  -- 否则执行 toggleTerm 切换显示/隐藏
+
+  -- 执行 toggleTerm 切换显示/隐藏
   instances[name]:toggleTerm()
+  registerBufnr(instances[name])
 end
 
 vim.api.nvim_create_augroup('Sapnvim_term', { clear = true })
