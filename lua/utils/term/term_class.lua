@@ -120,17 +120,25 @@ function Term:new(term)
 end
 
 function Term:destroy(force)
+  if self.termBufnr and vim.api.nvim_buf_is_valid(self.termBufnr) then
+    pcall(vim.cmd, (force and 'bd! ' or 'bd ') .. self.termBufnr)
+    if vim.api.nvim_buf_is_valid(self.termBufnr) then
+      return false
+    end
+  end
+
   if self.autocmd_ids then
     for _, id in pairs(self.autocmd_ids) do
-      vim.api.nvim_del_autocmd(id)
+      pcall(vim.api.nvim_del_autocmd, id)
     end
     self.autocmd_ids = nil
   end
-  vim.api.nvim_del_augroup_by_name(self.augroup)
-  if self.termBufnr and vim.api.nvim_buf_is_valid(self.termBufnr) then
-    vim.cmd((force and 'bd! ' or 'bd ') .. self.termBufnr)
+  if self.augroup then
+    pcall(vim.api.nvim_del_augroup_by_name, self.augroup)
   end
   self.termBufnr, self.winid, self.opts = nil, nil, nil
+
+  return true
 end
 
 function Term:recalculate_layout()

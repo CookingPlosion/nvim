@@ -77,15 +77,18 @@ function M.destroy(target, force)
     end
     local buf_type = vim.api.nvim_get_option_value('filetype', { buf = target })
     if not force and buf_type ~= 'terminal' then
-      return -- 非终端且非强制，不销毁
+      return
     end
   end
+
   if instances[name] then
     local bufnr = instances[name].termBufnr
-    instances[name]:destroy(force)
-    instances[name] = nil
-    if bufnr then
-      bufnrToName[bufnr] = nil
+    local success = instances[name]:destroy(force)
+    if success then
+      instances[name] = nil
+      if bufnr then
+        bufnrToName[bufnr] = nil
+      end
     end
   end
 end
